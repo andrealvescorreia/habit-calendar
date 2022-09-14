@@ -1,0 +1,63 @@
+:root{
+    --success-color:green;
+    --failure-color:red;
+    --neutral-color:grey;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.calendar-wrapper {
+    max-width: 100%;
+    font: 100% system-ui;
+    
+}
+.calendar {
+    display: grid;
+    
+
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.day{
+    background-color: var(--neutral-color);
+    color: white;
+    outline: none;
+    border: none;
+    padding: 10px;
+}
+
+
+.day-name {
+    background: #eee;
+}
+
+h1 {
+    text-align: center;
+}
+ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+li {
+    padding: 9px;
+}
+
+/*.day-of-week,
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.date-grid button:first-child {
+    grid-column: 6;
+}*/
