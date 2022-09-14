@@ -16,9 +16,9 @@ body{
 
 .calendar-wrapper {
     max-width: 100%;
-    font: 100% system-ui;
-    
+    font: 100% system-ui;  
 }
+
 .calendar {
     display: grid;
     
