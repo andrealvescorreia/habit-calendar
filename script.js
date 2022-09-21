@@ -6,31 +6,28 @@ const neutralColor = String(getComputedStyle(document.body).getPropertyValue('--
 
 
 let september = [/* 30 days */
-    0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0
-]/*0: grey, 1: green, -1: red */
+            0,0,0,
+    0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,
+    0,0,0,0,0,0
+]/* 0: grey(neutral) | 1: green(success) | -1: red(failure) */
 
 let firstDayOfMonth = 5// Thursday
 
 
 document.getElementById('day-1').style.gridColumnStart = firstDayOfMonth;/* 1(Sunday), ... , 7(Saturday) */
 
-function updateHabitPercentage(){
-    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-    
-    let numOfSuccesfulDays = countOccurrences(september, 1)
-    let numOfFailedDays = countOccurrences(september, -1)
 
-
-    let SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
-    document.querySelector('#succes-percentage').innerHTML = SuccesPercentage
-}
 
 
 const dayBttns= document.querySelectorAll('.day')
+
 dayBttns.forEach( button =>{
     button.addEventListener("click", ()=>{changeDayState(button)} )
     button.style.backgroundColor = neutralColor
 })
+
 function changeDayState(dayButton){
     const day = parseInt( dayButton.getInnerHTML())
     const bgColor = dayButton.style.backgroundColor
@@ -59,10 +56,18 @@ for (let i = 31; i > september.length; i--) {
     button.disabled = true;
     button.style.backgroundColor = 'white';
     button.innerHTML = ''
-
 }
 
+function updateHabitPercentage(){
+    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+    
+    let numOfSuccesfulDays = countOccurrences(september, 1)
+    let numOfFailedDays = countOccurrences(september, -1)
 
+
+    let SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
+    document.querySelector('#succes-percentage').innerHTML = String(SuccesPercentage)+'%'
+}
 
 /*let obj = {
     name:'Maykzao',
