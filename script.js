@@ -2,7 +2,6 @@ const successColor = String(getComputedStyle(document.body).getPropertyValue('--
 const failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
 const neutralColor = String(getComputedStyle(document.body).getPropertyValue('--neutral-color'));
 
-
 /*
 let months = []
 months.push(month1)
@@ -16,7 +15,6 @@ dayBttns.forEach( button =>{
 })
 
 
-
 const monthPicker = document.getElementById('month-picker');
 monthPicker.addEventListener('change', () => {
     selectedMonth = new Month(monthPicker.value)
@@ -25,6 +23,8 @@ monthPicker.addEventListener('change', () => {
 });
 
 updateSelectedMonthDisplay()
+
+
 
 
 
@@ -44,7 +44,6 @@ function updateSelectedMonthDisplay(){
         button.disabled = false
     })
 
-
     // deactivate the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
     for (let i = 31; i > selectedMonth.getNumOfDays(); i--) {
         const button = dayBttns[i - 1];
@@ -52,10 +51,8 @@ function updateSelectedMonthDisplay(){
         button.style.backgroundColor = 'white';
         button.innerHTML = ''
     }
- 
     updateHabitPercentage()
 }
-
 
 function changeDayState(dayButton){
     const day = parseInt( dayButton.getInnerHTML())
