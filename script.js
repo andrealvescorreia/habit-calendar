@@ -8,21 +8,16 @@ class Month {
     #daysArray
 
     // to-do: validate if the year-month the user gave is valid.
-    constructor(id) {// use this constructor when creating a totally new month object   
-        this.#id = id;
-        this.#daysArray = this.#createDaysArray();
-    }
-
-    constructor(id, daysArray) {// use this if you are retrieving info from previously created month, for exemple a month from a json.
+    constructor(id, daysArray = this.#createDaysArray(id)) {// use this constructor when creating a totally new month object   
         this.#id = id;
         this.#daysArray = daysArray;
     }
 
-    #createDaysArray(){
-        return Array(parseInt(this.#countDaysInMonth())).fill(0)
+    #createDaysArray(id){
+        return Array(parseInt(this.#countDaysInMonth(id))).fill(0)
     }
-    #countDaysInMonth() { 
-        const date = new Date(this.#id + '-1')
+    #countDaysInMonth(id) { 
+        const date = new Date(id + '-1')
         return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate(); 
     } 
     
@@ -56,7 +51,13 @@ class Month {
 
     stringify(){
         let info = ''
-        info += '#id: ' + this.#id
+        info += '#id: ' + this.getId() +'\n'+
+                'name(): '+ this.getName()+'\n'+
+                'firstDay(): '+this.getFirstDay()+'\n'+
+                'numOfDays(): '+this.getNumOfDays()+'\n'+
+                '#daysArray: '+this.getDaysArray()
+        return info;
+        
     }
 
 
@@ -69,88 +70,111 @@ class Month {
         let jsonData = JSON.stringify(simpleMonth);
         return jsonData
     }
+    
+    changeDaysArray(dayIndex, newValue){
+        if(newValue != 0 && newValue != 1 && newValue != -1){return}
+        if(dayIndex >= this.#daysArray.lenght){return}
+        
+        this.#daysArray[dayIndex] = newValue;
+        
+        
+    }
 
 }
 
+const dayBttns= document.querySelectorAll('.day')
+dayBttns.forEach( button =>{
+    
+    
+    button.addEventListener("click", ()=>{changeDayState(button)} )
+})
 
 
-let month = new Month('2022-09')
-console.log(month.getNumOfDays() + ' '+month.getName() +' '+ month.getYear())
-console.log(month.getDaysArray())
-console.log(month.getFirstDay())
-console.log(month.getJson())
+let month1 = new Month('2022-09')
+let month2 = new Month('2022-02')
 
+//console.log(month.getJson())
+
+let months = []
+months.push(month1)
+months.push(month2)
+
+//alert(months[1].stringify())
+let selectedMonth = months[1]
+updateSelectedMonthDisplay()
 
 const monthPicker = document.getElementById('month-picker');
 monthPicker.addEventListener('change', (event) => {changed()});
 
 function changed(){
-    console.log(monthPicker.value )
+    selectedMonth = new Month(monthPicker.value)
+    updateSelectedMonthDisplay()
+    updateHabitPercentage()
 }
 
 
-
-let september = [/* 30 days */
-            0,0,0,
-    0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,
-    0,0,0,0,0,0
-]/* 0: grey(neutral) | 1: green(success) | -1: red(failure) */
-
-let firstDayOfMonth = 5// Thursday
-
-
-document.getElementById('day-1').style.gridColumnStart = firstDayOfMonth;/* 1(Sunday), ... , 7(Saturday) */
+//0: grey(neutral) | 1: green(success) | -1: red(failure) 
 
 
 
+function updateSelectedMonthDisplay(){
+ document.getElementById('day-1').style.gridColumnStart = selectedMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
+ document.getElementById('calendar-header').innerText = selectedMonth.getName()
 
-const dayBttns= document.querySelectorAll('.day')
-
-dayBttns.forEach( button =>{
-    button.addEventListener("click", ()=>{changeDayState(button)} )
+  // reseting the values of every bttn.
+  dayCount = 0
+  dayBttns.forEach( button =>{
+    dayCount++;
+    button.innerHTML = dayCount;
     button.style.backgroundColor = neutralColor
-})
+    button.disabled = false
+  })
+
+
+ // deactivate the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
+ for (let i = 31; i > selectedMonth.getNumOfDays(); i--) {
+    const button = dayBttns[i - 1];
+    button.disabled = true;
+    button.style.backgroundColor = 'white';
+    button.innerHTML = ''
+ }
+ 
+ updateHabitPercentage()
+}
+
 
 function changeDayState(dayButton){
     const day = parseInt( dayButton.getInnerHTML())
     const currentBgColor = dayButton.style.backgroundColor
 
-    if(day > september.length) return
+    if(day > selectedMonth.getNumOfDays()) return
 
     if(currentBgColor == neutralColor){
         dayButton.style.backgroundColor = successColor
-        september[day-1] = 1
+        selectedMonth.changeDaysArray(day-1, 1)
     }
     else if(currentBgColor == successColor){
         dayButton.style.backgroundColor = failureColor
-        september[day-1] = -1
+        selectedMonth.changeDaysArray(day-1, -1)
     }
     else if(currentBgColor == failureColor){
         dayButton.style.backgroundColor = neutralColor
-        september[day-1] = 0
+        selectedMonth.changeDaysArray(day-1, 0)
     }else{return}
     updateHabitPercentage()
+    
 }
-
-
-/* deactivate the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)*/
-for (let i = 31; i > september.length; i--) {
-    const button = dayBttns[i - 1];
-    button.disabled = true;
-    button.style.backgroundColor = 'white';
-    button.innerHTML = ''
-}
-
 function updateHabitPercentage(){
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
     
-    let numOfSuccesfulDays = countOccurrences(september, 1)
-    let numOfFailedDays = countOccurrences(september, -1)
-
-
-    let SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
+    const auxDaysArray = selectedMonth.getDaysArray()
+    let numOfSuccesfulDays = countOccurrences(auxDaysArray, 1)
+    let numOfFailedDays = countOccurrences(auxDaysArray, -1)
+    
+    let SuccesPercentage = 0
+    if(numOfSuccesfulDays + numOfFailedDays != 0){
+      SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
+    }
     document.querySelector('#succes-percentage').innerHTML = String(SuccesPercentage)+'%'
 }
 /*
