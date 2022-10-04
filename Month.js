@@ -1,3 +1,7 @@
+// exemples of valid ids:
+// '2020-01'
+// '2022-10'
+// '2029-12'
 class Month {
 
     #id 

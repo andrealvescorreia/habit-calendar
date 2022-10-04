@@ -2,12 +2,9 @@ const successColor = String(getComputedStyle(document.body).getPropertyValue('--
 const failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
 const neutralColor = String(getComputedStyle(document.body).getPropertyValue('--neutral-color'));
 
-/*
-let months = []
-months.push(month1)
-months.push(month2)*/
+var months = [] // all the data is basically stored here.
+var displayingMonth // a.k.a selected month by the user.
 
-var selectedMonth = new Month('2022-02')
 
 const dayBttns = document.querySelectorAll('.day')
 dayBttns.forEach( button =>{
@@ -17,11 +14,30 @@ dayBttns.forEach( button =>{
 
 const monthPicker = document.getElementById('month-picker');
 monthPicker.addEventListener('change', () => {
-    selectedMonth = new Month(monthPicker.value)
+    const existingMonth = getMonth(monthPicker.value)
+    if(existingMonth){
+        displayingMonth = existingMonth
+    } 
+    else {
+        newMonth = new Month(monthPicker.value)
+        displayingMonth = newMonth
+        months.push(newMonth)
+    }
     updateSelectedMonthDisplay()
-    updateHabitPercentage()
 });
 
+
+// makes sure that, the default displaying month when the page is loaded, it's the one the user is living in at the moment.
+const today = new Date()
+const todayMonthId = String( today.getFullYear()+ '-' + String(today.getMonth() + 1).padStart(2, '0'));
+const existingMonth = getMonth(todayMonthId)
+if(existingMonth){
+    displayingMonth = existingMonth
+} 
+else {
+    displayingMonth = new Month(todayMonthId)
+    months.push(displayingMonth)
+}
 updateSelectedMonthDisplay()
 
 
@@ -31,9 +47,28 @@ updateSelectedMonthDisplay()
 
 
 
+
+
+
+// ______FUNCTIONS______
+
+
+function getMonth(id){// returns false if not found it
+    let foundMonth = false
+    months.forEach(month =>{
+        if(month.getId() == id){
+            foundMonth = month
+            return
+        }
+    })   
+    return foundMonth
+}
+
+
+
 function updateSelectedMonthDisplay(){
-    document.getElementById('day-1').style.gridColumnStart = selectedMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
-    document.getElementById('calendar-header').innerText = selectedMonth.getName()
+    document.getElementById('day-1').style.gridColumnStart = displayingMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
+    document.getElementById('calendar-header').innerText = displayingMonth.getName()
 
     // reseting the values of every 'day' button.
     dayCount = 0
@@ -44,8 +79,15 @@ function updateSelectedMonthDisplay(){
         button.disabled = false
     })
 
+    // updating colors of the buttons
+    const aux = displayingMonth.getDaysArray()
+    for(let i = 0; i < aux.length; i++){
+        const button = dayBttns[i]
+        button.style.backgroundColor = ( (aux[i] == 1) ? successColor : ((aux[i] == -1) ? failureColor : neutralColor) )
+    }
+
     // deactivate the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
-    for (let i = 31; i > selectedMonth.getNumOfDays(); i--) {
+    for (let i = 31; i > displayingMonth.getNumOfDays(); i--) {
         const button = dayBttns[i - 1];
         button.disabled = true;
         button.style.backgroundColor = 'white';
@@ -58,19 +100,19 @@ function changeDayState(dayButton){
     const day = parseInt( dayButton.getInnerHTML())
     const currentBgColor = dayButton.style.backgroundColor
 
-    if(day > selectedMonth.getNumOfDays()) return
+    if(day > displayingMonth.getNumOfDays()) return
 
     if(currentBgColor == neutralColor){
         dayButton.style.backgroundColor = successColor
-        selectedMonth.changeDaysArray(day-1, 1)
+        displayingMonth.changeDaysArray(day-1, 1)
     }
     else if(currentBgColor == successColor){
         dayButton.style.backgroundColor = failureColor
-        selectedMonth.changeDaysArray(day-1, -1)
+        displayingMonth.changeDaysArray(day-1, -1)
     }
     else if(currentBgColor == failureColor){
         dayButton.style.backgroundColor = neutralColor
-        selectedMonth.changeDaysArray(day-1, 0)
+        displayingMonth.changeDaysArray(day-1, 0)
     }else{return}
     updateHabitPercentage()
 }
@@ -78,7 +120,7 @@ function changeDayState(dayButton){
 function updateHabitPercentage(){
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
     
-    const auxDaysArray = selectedMonth.getDaysArray()
+    const auxDaysArray = displayingMonth.getDaysArray()
     const numOfSuccesfulDays = countOccurrences(auxDaysArray, 1)
     const numOfFailedDays = countOccurrences(auxDaysArray, -1)
     
