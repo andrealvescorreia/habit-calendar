@@ -78,6 +78,8 @@ function updateSelectedMonthDisplay(){
         button.innerHTML = dayCount;
         button.style.backgroundColor = neutralColor
         button.disabled = false
+        button.style.position = "static"
+        button.style.zIndex = "1"
     })
 
     // updating colors of the buttons
@@ -90,9 +92,11 @@ function updateSelectedMonthDisplay(){
     // deactivate the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
     for (let i = 31; i > displayingMonth.getNumOfDays(); i--) {
         const button = dayBttns[i - 1];
-        button.disabled = true;
-        button.style.backgroundColor = 'white';
         button.innerHTML = ''
+        button.style.position = "absolute"
+        button.style.zIndex = "-1";
+        button.disabled = true;
+        
     }
     updateHabitPercentage()
 }

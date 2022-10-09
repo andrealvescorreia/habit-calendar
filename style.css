@@ -2,9 +2,11 @@
     --success-color:green;
     --failure-color:red;
     --neutral-color:grey;
+    --bg-color: antiquewhite;
 }
 
 body{
+    background-color:var(--bg-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,7 +28,7 @@ body{
     grid-template-columns: repeat(7, 1fr);
 }
 
-.day{
+.day{    
     background-color: var(--neutral-color);
     color: white;
     outline: none;
