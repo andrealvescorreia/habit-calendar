@@ -2,7 +2,6 @@ const successColor = String(getComputedStyle(document.body).getPropertyValue('--
 const failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
 const neutralColor = String(getComputedStyle(document.body).getPropertyValue('--neutral-color'));
 
-var months = [] // all the data is basically stored here.
 var displayingMonth // a.k.a selected month by the user.
 
 
@@ -21,7 +20,8 @@ monthPicker.addEventListener('change', () => {
     else {
         newMonth = new Month(monthPicker.value)
         displayingMonth = newMonth
-        months.push(newMonth)
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
+        
     }
     updateSelectedMonthDisplay()
 });
@@ -36,7 +36,7 @@ if(existingMonth){
 } 
 else {
     displayingMonth = new Month(todayMonthId)
-    months.push(displayingMonth)
+    localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
 }
 updateSelectedMonthDisplay()
 
@@ -54,13 +54,14 @@ updateSelectedMonthDisplay()
 
 
 function getMonth(id){// returns false if not found it
-    let foundMonth = false
-    months.forEach(month =>{
-        if(month.getId() == id){
-            foundMonth = month
-            return
-        }
-    })   
+    
+    let simpleMonth = JSON.parse(localStorage.getItem(id))
+    if(simpleMonth == null) {
+      return false;
+      
+    }
+    let foundMonth = new Month(simpleMonth.id, simpleMonth.daysArray);
+    
     return foundMonth
 }
 
@@ -105,14 +106,20 @@ function changeDayState(dayButton){
     if(currentBgColor == neutralColor){
         dayButton.style.backgroundColor = successColor
         displayingMonth.changeDaysArray(day-1, 1)
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
+        
     }
     else if(currentBgColor == successColor){
         dayButton.style.backgroundColor = failureColor
         displayingMonth.changeDaysArray(day-1, -1)
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
+        
     }
     else if(currentBgColor == failureColor){
         dayButton.style.backgroundColor = neutralColor
         displayingMonth.changeDaysArray(day-1, 0)
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
+        
     }else{return}
     updateHabitPercentage()
 }
@@ -132,16 +139,16 @@ function updateHabitPercentage(){
     // to-do: remove decimal places. ex: 70% instead of 70.333333%
 }
 
+
 /*
+function allStorage() {
+    let values = [],
+        keys = Object.keys(localStorage),
+        i = keys.length;
 
-let obj = {
-    name:'Maykzao',
-    age:'29'
+    while ( i-- ) {
+        values.push( localStorage.getItem(keys[i]) );
+    }
+    return values;
 }
-
-var jsonData = JSON.stringify(obj);
-
-localStorage.setItem('obj', jsonData);
-
-console.log(JSON.parse(localStorage.getItem('obj')))
-console.log(obj)*/
+*/
