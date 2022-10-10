@@ -83,10 +83,8 @@ monthSwitcherNext.addEventListener("click", ()=>{
 
 function getMonth(id){// returns false if not found it
     let simpleMonth = JSON.parse(localStorage.getItem(id))
-    if(simpleMonth == null) {
-      return false;
-    }
-    let foundMonth = new Month(simpleMonth.id, simpleMonth.daysArray);
+    if(simpleMonth == null) return false
+    let foundMonth = new Month(simpleMonth.id, simpleMonth.daysArray)
     return foundMonth
 }
 
@@ -125,8 +123,9 @@ function updateSelectedMonthDisplay(){
     updateHabitPercentage()
 }
 
+
 function changeDayState(dayButton){
-    const day = parseInt( dayButton.getInnerHTML())
+    const day = parseInt(dayButton.getInnerHTML())
     const currentBgColor = dayButton.style.backgroundColor
 
     if(day > displayingMonth.getNumOfDays()) return
@@ -150,6 +149,7 @@ function changeDayState(dayButton){
     updateHabitPercentage()
 }
 
+
 function updateHabitPercentage(){
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
     
@@ -158,7 +158,7 @@ function updateHabitPercentage(){
     const numOfFailedDays = countOccurrences(auxDaysArray, -1)
     
     let SuccesPercentage = 0
-    if(numOfSuccesfulDays + numOfFailedDays != 0){
+    if(numOfSuccesfulDays + numOfFailedDays > 0){
       SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
     }
     document.querySelector('#succes-percentage').innerHTML = String(parseInt(SuccesPercentage))+'%'
