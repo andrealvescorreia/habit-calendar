@@ -2,7 +2,7 @@ const successColor = String(getComputedStyle(document.body).getPropertyValue('--
 const failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
 const neutralColor = String(getComputedStyle(document.body).getPropertyValue('--neutral-color'));
 
-var displayingMonth // a.k.a selected month by the user.
+var displayingMonth
 
 
 const dayBttns = document.querySelectorAll('.day')
@@ -29,7 +29,7 @@ else {
     localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
 }
 updateSelectedMonthDisplay()
-console.log(displayingMonth.getNumber())
+
 
 monthSwitcherPrevious.addEventListener("click", ()=>{
     let previousId
@@ -82,14 +82,11 @@ monthSwitcherNext.addEventListener("click", ()=>{
 
 
 function getMonth(id){// returns false if not found it
-    
     let simpleMonth = JSON.parse(localStorage.getItem(id))
     if(simpleMonth == null) {
       return false;
-      
     }
     let foundMonth = new Month(simpleMonth.id, simpleMonth.daysArray);
-    
     return foundMonth
 }
 
@@ -107,7 +104,7 @@ function updateSelectedMonthDisplay(){
         button.style.backgroundColor = neutralColor
         button.disabled = false
         button.style.position = "static"
-        button.style.zIndex = "1"
+        button.style.zIndex = "auto"
     })
 
     // updating colors of the buttons
@@ -117,14 +114,13 @@ function updateSelectedMonthDisplay(){
         button.style.backgroundColor = ( (aux[i] == 1) ? successColor : ((aux[i] == -1) ? failureColor : neutralColor) )
     }
 
-    // deactivate the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
+    // hide the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
     for (let i = 31; i > displayingMonth.getNumOfDays(); i--) {
         const button = dayBttns[i - 1];
         button.innerHTML = ''
         button.style.position = "absolute"
         button.style.zIndex = "-1";
-        button.disabled = true;
-        
+        button.disabled = true;  
     }
     updateHabitPercentage()
 }
@@ -138,21 +134,19 @@ function changeDayState(dayButton){
     if(currentBgColor == neutralColor){
         dayButton.style.backgroundColor = successColor
         displayingMonth.changeDaysArray(day-1, 1)
-        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
-        
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());    
     }
     else if(currentBgColor == successColor){
         dayButton.style.backgroundColor = failureColor
         displayingMonth.changeDaysArray(day-1, -1)
         localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
-        
     }
     else if(currentBgColor == failureColor){
         dayButton.style.backgroundColor = neutralColor
         displayingMonth.changeDaysArray(day-1, 0)
-        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
-        
-    }else{return}
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());   
+    } 
+    else return
     updateHabitPercentage()
 }
 
@@ -167,8 +161,7 @@ function updateHabitPercentage(){
     if(numOfSuccesfulDays + numOfFailedDays != 0){
       SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
     }
-    document.querySelector('#succes-percentage').innerHTML = String(SuccesPercentage)+'%'
-    // to-do: remove decimal places. ex: 70% instead of 70.333333%
+    document.querySelector('#succes-percentage').innerHTML = String(parseInt(SuccesPercentage))+'%'
 }
 
 
