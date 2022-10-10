@@ -7,23 +7,33 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="Month.js" defer></script>
     <script src="script.js" defer></script>
 
 </head>
 <body>
    
-    <h1 id="succes-percentage">69%</h1>
-    <div class="calendar-wrapper">
+    <div id="succes-percentage">
+      <h1 id="succes-percentage-number">69</h1>
+      <h4 id="succes-percentage-symbol">%</h4>
+    </div>
+
+    
+    <div id="calendar-wrapper">
         <div id="calendar-header">
           <button class="month-switcher" id="month-switcher-left"> 
-            <img src="assets/left-arrow.svg" id="left-arrow" alt="previous month"> 
+            <img src="assets/left-arrow.svg" id="left-arrow-svg" class="bttn-svg" alt="previous month"> 
           </button>
 
           <h2 id="month-name">September 2022</h2>
 
           <button class="month-switcher" id="month-switcher-right"> 
-            <img src="assets/right-arrow.svg" id ="right-arrow" alt="next month"> 
+            <img src="assets/right-arrow.svg" id ="right-arrow-svg" class="bttn-svg" alt="next month"> 
           </button>
           
           
@@ -31,13 +41,13 @@
         
         <ol class="calendar">
           
-          <li class="day-name">Sun</li>
-          <li class="day-name">Mon</li>
-          <li class="day-name">Tue</li>
-          <li class="day-name">Wed</li>
-          <li class="day-name">Thu</li>
-          <li class="day-name">Fri</li>
-          <li class="day-name">Sat</li>
+          <li class="day-of-week">Su</li>
+          <li class="day-of-week">Mo</li>
+          <li class="day-of-week">Tu</li>
+          <li class="day-of-week">We</li>
+          <li class="day-of-week">Th</li>
+          <li class="day-of-week">Fr</li>
+          <li class="day-of-week">Sa</li>
           
           <button class="day" id="day-1">1</button>
           <button class="day" id="day-2">2</button>
@@ -72,6 +82,14 @@
           <button class="day" id="day-30">30</button>
           <button class="day" id="day-31">31</button>
         </ol>
+        <div id="calendar-footer">
+          <button id="trash-bttn">
+            <img src="assets/trash-can.svg" class="bttn-svg" alt="clear">
+          </button>
+          <button id="dark-mode-bttn">
+            <img id="dark-mode-bttn-svg" class="bttn-svg" src="assets/dark-mode.svg" alt="dark mode toggle">
+          </button>
+        </div>
         
       </div>
 

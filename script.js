@@ -1,6 +1,6 @@
 const successColor = String(getComputedStyle(document.body).getPropertyValue('--success-color'));
 const failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
-const neutralColor = String(getComputedStyle(document.body).getPropertyValue('--neutral-color'));
+
 
 var displayingMonth
 
@@ -12,7 +12,7 @@ dayBttns.forEach( button =>{
 
 const monthSwitcherPrevious = document.getElementById('month-switcher-left');
 const monthSwitcherNext = document.getElementById('month-switcher-right');
-
+const successPercentageNumberDisplay = document.getElementById('succes-percentage-number')
 
 
 
@@ -99,17 +99,28 @@ function updateSelectedMonthDisplay(){
     dayBttns.forEach( button =>{
         dayCount++;
         button.innerHTML = dayCount;
-        button.style.backgroundColor = neutralColor
         button.disabled = false
         button.style.position = "static"
         button.style.zIndex = "auto"
+        button.style.borderColor = "transparent"
+        
     })
 
     // updating colors of the buttons
     const aux = displayingMonth.getDaysArray()
     for(let i = 0; i < aux.length; i++){
         const button = dayBttns[i]
-        button.style.backgroundColor = ( (aux[i] == 1) ? successColor : ((aux[i] == -1) ? failureColor : neutralColor) )
+        
+        button.style.borderStyle = "solid"
+        if((aux[i] == 1)){    
+            button.style.borderColor = successColor
+        } else if(aux[i] == -1){
+            button.style.borderColor = failureColor
+        }
+        else{
+            button.style.borderStyle = "none"
+        }
+        
     }
 
     // hide the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
@@ -126,22 +137,23 @@ function updateSelectedMonthDisplay(){
 
 function changeDayState(dayButton){
     const day = parseInt(dayButton.getInnerHTML())
-    const currentBgColor = dayButton.style.backgroundColor
-
+    const currentBorderColor = dayButton.style.borderColor
+    
     if(day > displayingMonth.getNumOfDays()) return
-
-    if(currentBgColor == neutralColor){
-        dayButton.style.backgroundColor = successColor
-        displayingMonth.changeDaysArray(day-1, 1)
-        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());    
-    }
-    else if(currentBgColor == successColor){
-        dayButton.style.backgroundColor = failureColor
+    
+    if(dayButton.style.borderStyle == "none"){
+        dayButton.style.borderStyle = "solid"
+        dayButton.style.borderColor = failureColor
         displayingMonth.changeDaysArray(day-1, -1)
         localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
     }
-    else if(currentBgColor == failureColor){
-        dayButton.style.backgroundColor = neutralColor
+    else if(currentBorderColor == failureColor){     
+        dayButton.style.borderColor = successColor
+        displayingMonth.changeDaysArray(day-1, 1)
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());  
+    }
+    else if(currentBorderColor == successColor){
+        dayButton.style.borderStyle = "none"
         displayingMonth.changeDaysArray(day-1, 0)
         localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());   
     } 
@@ -161,7 +173,7 @@ function updateHabitPercentage(){
     if(numOfSuccesfulDays + numOfFailedDays > 0){
       SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
     }
-    document.querySelector('#succes-percentage').innerHTML = String(parseInt(SuccesPercentage))+'%'
+    successPercentageNumberDisplay.innerHTML = String(parseInt(SuccesPercentage))
 }
 
 
