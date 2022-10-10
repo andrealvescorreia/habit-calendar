@@ -1,5 +1,7 @@
 const successColor = String(getComputedStyle(document.body).getPropertyValue('--success-color'));
 const failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
+const numberColor  = String(getComputedStyle(document.body).getPropertyValue('--number-color'));
+const numberColorTransparent = String(getComputedStyle(document.body).getPropertyValue('--number-color-transparent'));
 
 
 var displayingMonth
@@ -91,19 +93,23 @@ function getMonth(id){// returns false if not found it
 
 
 function updateSelectedMonthDisplay(){
-    document.getElementById('day-1').style.gridColumnStart = displayingMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
-    document.getElementById('month-name').innerText = displayingMonth.getName()
+    
 
-    // reseting the values of every 'day' button.
+    document.getElementById('day-1').style.gridColumnStart = displayingMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
+    document.getElementById('month-name').innerText = displayingMonth.getName() + ' ' + displayingMonth.getYear()
+
+    // reseting the values of every 'day' button to default.
     dayCount = 0
     dayBttns.forEach( button =>{
         dayCount++;
-        button.innerHTML = dayCount;
+        button.innerText= dayCount;
         button.disabled = false
         button.style.position = "static"
         button.style.zIndex = "auto"
         button.style.borderColor = "transparent"
-        
+        button.style.fontWeight = "normal"  
+        button.style.opacity = "1"
+        button.style.color = numberColor  
     })
 
     // updating colors of the buttons
@@ -121,6 +127,22 @@ function updateSelectedMonthDisplay(){
             button.style.borderStyle = "none"
         }
         
+        //if the displaying month has already passed for the user (chronologically):
+        if((new Date(todayMonthId+'-1')).getTime() > (new Date(displayingMonth.getId()+'-1')).getTime() ){
+            button.style.fontWeight  = "700"
+            button.style.color = numberColorTransparent
+        }
+
+        //if the displaying month is the one the user is living at the moment:
+        else if(displayingMonth.getId() == todayMonthId){ 
+            if(i < today.getUTCDate() - 1){
+                button.style.fontWeight  = "700"
+                button.style.color = numberColorTransparent
+            }
+            else if(i == today.getUTCDate() - 1){
+                button.style.fontWeight  = "700"
+            }   
+        }
     }
 
     // hide the day bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
@@ -163,6 +185,8 @@ function changeDayState(dayButton){
 
 
 function updateHabitPercentage(){
+    
+    // 'countOccurrences' works as a function.
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
     
     const auxDaysArray = displayingMonth.getDaysArray()

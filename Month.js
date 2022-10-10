@@ -38,7 +38,9 @@ class Month {
 
     getName(){
         const date = new Date(this.#id + '-1')
-        return date.toLocaleString('default', { month: 'long' });
+        let monthName = date.toLocaleString('default', { month: 'long' })
+        monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        return monthName;
     }
     getYear(){
         const date = new Date(this.#id + '-1')

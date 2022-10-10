@@ -7,15 +7,16 @@
 }
 
 :root{
-    --success-color:rgba(0, 212, 8, 0.6);;
-    --failure-color:rgba(255, 0, 0, 0.5);;
-    /*--neutral-color:grey;*/
+    --success-color:rgba(0, 212, 8, 0.6);
+    --failure-color:rgba(255, 0, 0, 0.5);
     --bg-color: #D8E7CC;
-    
+    --number-color: rgb(47, 54, 46);
+    --number-color-transparent: rgb(47, 54, 46, 0.5);
+
 }
 
 body{
-    color: #2F362E;
+    color: var(--number-color);
     background-color:var(--bg-color);
     display: flex;
     justify-content: center;
@@ -51,14 +52,16 @@ button{
     background-color: transparent;
     border-color: transparent;
 }
-
+button:hover{
+    background-color: rgba(0, 0, 0, 0.15);
+}
 .bttn-svg{
     width: 26px; 
     opacity: 0.8;
 }
 
 
-#calendar-header{ /*left/right arrow navigation and month name*/
+#calendar-header{ /* left/right arrow navigation and month name */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,12 +70,14 @@ button{
 
     justify-content: space-between;
     padding: 20px;
-    
-
 }
 
 #succes-percentage{
     font-family: 'Lato', sans-serif;
+}
+
+#month-name{
+    font-size: 25px;
 }
 
 .calendar {
@@ -100,6 +105,7 @@ button{
 }
 
 
+
 .day-of-week{/* Su Mo Tu We Th Fr Sa*/
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
@@ -112,7 +118,7 @@ button{
 
 
 
-#calendar-footer{/*trash can and dark mode bttns*/
+#calendar-footer{/* trash can and dark mode bttns */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
