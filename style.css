@@ -7,13 +7,14 @@
 }
 
 :root{
-    --success-color:rgba(0, 212, 8, 0.6);
-    --failure-color:rgba(255, 0, 0, 0.5);
+    --success-color:rgba(0, 212, 8, 0.7);
+    --failure-color:rgba(255, 0, 0, 0.6);
     --bg-color: #D8E7CC;
     --number-color: rgb(47, 54, 46);
     --number-color-transparent: rgb(47, 54, 46, 0.5);
-
+    font-size: clamp(0.1rem, 0.1rem + 3.5vw, 1rem)
 }
+
 
 body{
     color: var(--number-color);
@@ -23,7 +24,9 @@ body{
     align-items: center;
     flex-direction: column;
     
-    width: 100%;
+    margin-top:    10vh;
+    margin-bottom: 10vh;
+    
 }
 
 #succes-percentage{
@@ -34,17 +37,17 @@ body{
 }
 
 #succes-percentage-number{
-    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.18);
-    font-size: 60px;
+    text-shadow: 0px 0px 0.625rem rgba(0, 0, 0, 0.18);
+    font-size: 3.75rem;
 }
 #succes-percentage-symbol{
-    font-size: 30px;
+    font-size: 1.875rem;
 }
 
 #calendar-wrapper {
     max-width: 100%;
     background-color: white; 
-    box-shadow: 0px 0px 33px 4px rgba(0, 0, 0, 0.09);
+    box-shadow: 0rem 0rem 2rem 0.25rem rgba(0, 0, 0, 0.09);
     border-radius: 3.8%;
 }
 
@@ -56,7 +59,7 @@ button:hover{
     background-color: rgba(0, 0, 0, 0.15);
 }
 .bttn-svg{
-    width: 26px; 
+    width: 1.625rem; 
     opacity: 0.8;
 }
 
@@ -69,7 +72,7 @@ button:hover{
     font-weight: 400;
 
     justify-content: space-between;
-    padding: 20px;
+    padding: 1.25rem;
 }
 
 #succes-percentage{
@@ -77,14 +80,14 @@ button:hover{
 }
 
 #month-name{
-    font-size: 25px;
+    font-size: 1.56rem;
 }
 
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0.187rem;
-    margin: 0 44px;
+    margin: 0 2.75rem;
 }
 
 .day{  
@@ -93,14 +96,14 @@ button:hover{
     justify-content: center;
 
     font-family: 'Lato', sans-serif;
-    font-size: 18px;
-    width: 38px;
-    height: 38px;
+    font-size: 1.125rem;
+    width: 2.375rem;
+    height: 2.375rem;
     background-color: transparent;
-    border: 1.25px;
+    border: 0.08rem;
   
     border-radius: 100%;
-    padding: 10px;
+    padding: 0.645rem;
     
 }
 
@@ -109,7 +112,7 @@ button:hover{
 .day-of-week{/* Su Mo Tu We Th Fr Sa*/
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 0.75rem;
     list-style: none;
     text-align: center;
     opacity: 0.3;
@@ -122,5 +125,5 @@ button:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 20px;
+    padding: 1.25rem;
 }
