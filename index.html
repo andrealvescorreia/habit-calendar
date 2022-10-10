@@ -12,17 +12,23 @@
 
 </head>
 <body>
-    <label for="month-picker">Month</label>
-    <input 
-        id="month-picker" 
-        type="month" 
-        name="month"
-        min="2020-01"
-        max="2029-12"
-    />
-    
+   
+    <h1 id="succes-percentage">69%</h1>
     <div class="calendar-wrapper">
-        <h1 id="calendar-header">September 2022</h1>
+        <div id="calendar-header">
+          <button class="month-switcher" id="month-switcher-left"> 
+            <img src="assets/left-arrow.svg" id="left-arrow" alt="previous month"> 
+          </button>
+
+          <h2 id="month-name">September 2022</h2>
+
+          <button class="month-switcher" id="month-switcher-right"> 
+            <img src="assets/right-arrow.svg" id ="right-arrow" alt="next month"> 
+          </button>
+          
+          
+        </div>
+        
         <ol class="calendar">
           
           <li class="day-name">Sun</li>
@@ -66,7 +72,7 @@
           <button class="day" id="day-30">30</button>
           <button class="day" id="day-31">31</button>
         </ol>
-        <h2 id="succes-percentage">69%</h2>
+        
       </div>
 
 </body>

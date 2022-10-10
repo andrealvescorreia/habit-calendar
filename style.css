@@ -1,3 +1,11 @@
+* {/* Reset CSS. */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+
+}
+
 :root{
     --success-color:green;
     --failure-color:red;
@@ -11,8 +19,7 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 0;
-    margin: 0;
+
     width: 100%;
 }
 
@@ -21,10 +28,25 @@ body{
     font: 100% system-ui;  
 }
 
+
+#left-arrow{
+    width: 10px;
+    
+}
+#right-arrow{
+    width: 10px;
+
+}
+
+#calendar-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .calendar {
     display: grid;
-    
-
     grid-template-columns: repeat(7, 1fr);
 }
 
@@ -41,9 +63,7 @@ body{
     background: #eee;
 }
 
-h1 {
-    text-align: center;
-}
+
 ol {
     list-style: none;
     margin: 0;
@@ -54,12 +74,3 @@ li {
     padding: 9px;
 }
 
-/*.day-of-week,
-.date-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.date-grid button:first-child {
-    grid-column: 6;
-}*/

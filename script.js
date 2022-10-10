@@ -10,26 +10,16 @@ dayBttns.forEach( button =>{
     button.addEventListener("click", ()=>{changeDayState(button)} )
 })
 
+const monthSwitcherPrevious = document.getElementById('month-switcher-left');
+const monthSwitcherNext = document.getElementById('month-switcher-right');
 
-const monthPicker = document.getElementById('month-picker');
-monthPicker.addEventListener('change', () => {
-    const existingMonth = getMonth(monthPicker.value)
-    if(existingMonth){
-        displayingMonth = existingMonth
-    } 
-    else {
-        newMonth = new Month(monthPicker.value)
-        displayingMonth = newMonth
-        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
-        
-    }
-    updateSelectedMonthDisplay()
-});
+
 
 
 // makes sure that, the default displaying month when the page is loaded, it's the one the user is living in at the moment.
 const today = new Date()
 const todayMonthId = String( today.getFullYear()+ '-' + String(today.getMonth() + 1).padStart(2, '0'));
+
 const existingMonth = getMonth(todayMonthId)
 if(existingMonth){
     displayingMonth = existingMonth
@@ -39,9 +29,47 @@ else {
     localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
 }
 updateSelectedMonthDisplay()
+console.log(displayingMonth.getNumber())
 
+monthSwitcherPrevious.addEventListener("click", ()=>{
+    let previousId
+    if(displayingMonth.getNumber() - 1 > 0){
+        previousId = displayingMonth.getYear() + '-' + String(displayingMonth.getNumber() - 1).padStart(2, '0')   
+    } 
+    else {
+        previousId = displayingMonth.getYear() - 1 + '-12'
+    }
+    const existingMonth = getMonth(previousId)
+    if(existingMonth){
+        displayingMonth = existingMonth
+    } 
+    else {
+        newMonth = new Month(previousId)
+        displayingMonth = newMonth
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
+    }
+    updateSelectedMonthDisplay()
+})
 
-
+monthSwitcherNext.addEventListener("click", ()=>{
+    let nextId
+    if(displayingMonth.getNumber() + 1 <= 12){
+        nextId = displayingMonth.getYear() + '-' + String(displayingMonth.getNumber() + 1).padStart(2, '0')   
+    } 
+    else {
+        nextId = displayingMonth.getYear() + 1 + '-01'
+    }
+    const existingMonth = getMonth(nextId)
+    if(existingMonth){
+        displayingMonth = existingMonth
+    } 
+    else {
+        newMonth = new Month(nextId)
+        displayingMonth = newMonth
+        localStorage.setItem(displayingMonth.getId(), displayingMonth.getJson());
+    }
+    updateSelectedMonthDisplay()
+})
 
 
 
@@ -69,7 +97,7 @@ function getMonth(id){// returns false if not found it
 
 function updateSelectedMonthDisplay(){
     document.getElementById('day-1').style.gridColumnStart = displayingMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
-    document.getElementById('calendar-header').innerText = displayingMonth.getName()
+    document.getElementById('month-name').innerText = displayingMonth.getName()
 
     // reseting the values of every 'day' button.
     dayCount = 0

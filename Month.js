@@ -44,6 +44,10 @@ class Month {
         const date = new Date(this.#id + '-1')
         return date.getFullYear()
     }
+    getNumber(){//january: 1, december: 12
+        const date = new Date(this.#id + '-1')
+        return date.getMonth()+1
+    }
     getFirstDay(){// 0 (Sunday), ... , 6 (Saturday)
         const date = new Date(this.#id + '-1')
         return date.getDay()
