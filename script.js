@@ -15,7 +15,7 @@ dayBttns.forEach( button =>{
 const successPercentageNumberDisplay = document.getElementById('succes-percentage-number')
 const monthSwitcherPrevious = document.getElementById('month-switcher-left');
 const monthSwitcherNext = document.getElementById('month-switcher-right');
-
+const trashCan = document.getElementById('trash-bttn')
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 
 
@@ -29,7 +29,7 @@ darkModeToggle.addEventListener("click", () => {
     updateDisplayTheme()
 });
 
-
+trashCan.addEventListener("click", ()=>{clearDisplayingMonth()});
 
 
 // makes sure that, the default displaying month when the page is loaded, it's the one the user is living in at the moment.
@@ -188,6 +188,13 @@ function updateDisplayTheme(){
             button.style.filter = "invert(100%)"
         })
     }
+    updateSelectedMonthDisplay()
+}
+
+function clearDisplayingMonth(){// trashCan
+    const cleanMonth = new Month(displayingMonth.getId())
+    localStorage.removeItem(displayingMonth.getId())
+    displayingMonth = cleanMonth
     updateSelectedMonthDisplay()
 }
 
