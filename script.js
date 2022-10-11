@@ -232,12 +232,7 @@ function updateHabitPercentage(){
     
     const auxDaysArray = displayingMonth.getDaysArray()
     const numOfSuccesfulDays = countOccurrences(auxDaysArray, 1)
-    const numOfFailedDays = countOccurrences(auxDaysArray, -1)
-    
-    let SuccesPercentage = 0
-    if(numOfSuccesfulDays + numOfFailedDays > 0){
-      SuccesPercentage = (numOfSuccesfulDays * 100) / (numOfSuccesfulDays+numOfFailedDays)
-    }
+    SuccesPercentage = (numOfSuccesfulDays * 100) / auxDaysArray.length
     successPercentageNumberDisplay.innerHTML = String(parseInt(SuccesPercentage))
 }
 
