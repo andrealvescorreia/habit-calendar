@@ -1,7 +1,7 @@
-const successColor = String(getComputedStyle(document.body).getPropertyValue('--success-color'));
-const failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
-const numberColor  = String(getComputedStyle(document.body).getPropertyValue('--number-color'));
-const numberColorTransparent = String(getComputedStyle(document.body).getPropertyValue('--number-color-transparent'));
+var successColor = String(getComputedStyle(document.body).getPropertyValue('--success-color'));
+var failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
+var numberColor  = String(getComputedStyle(document.body).getPropertyValue('--number-color'));
+var numberColorTransparent = String(getComputedStyle(document.body).getPropertyValue('--number-color-transparent'));
 
 
 var displayingMonth
@@ -12,9 +12,23 @@ dayBttns.forEach( button =>{
     button.addEventListener("click", ()=>{changeDayState(button)} )
 })
 
+const successPercentageNumberDisplay = document.getElementById('succes-percentage-number')
 const monthSwitcherPrevious = document.getElementById('month-switcher-left');
 const monthSwitcherNext = document.getElementById('month-switcher-right');
-const successPercentageNumberDisplay = document.getElementById('succes-percentage-number')
+
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+
+darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    if (window.localStorage.getItem("theme") === "dark") {
+        window.localStorage.setItem("theme", "light");
+    } else {
+        window.localStorage.setItem("theme", "dark")
+    }
+    updateDisplayTheme()
+});
+
 
 
 
@@ -32,6 +46,10 @@ else {
 }
 updateSelectedMonthDisplay()
 
+if(window.localStorage.getItem("theme") === "dark"){
+    document.body.classList.toggle("dark");
+    updateDisplayTheme()
+}
 
 monthSwitcherPrevious.addEventListener("click", ()=>{
     let previousId
@@ -156,6 +174,22 @@ function updateSelectedMonthDisplay(){
     updateHabitPercentage()
 }
 
+
+function updateDisplayTheme(){
+    numberColor = String(getComputedStyle(document.body).getPropertyValue('--number-color'));
+    numberColorTransparent = String(getComputedStyle(document.body).getPropertyValue('--number-color-transparent'));
+    const currentTheme = window.localStorage.getItem("theme")
+    if(currentTheme === "light"){
+        document.querySelectorAll('.bttn-svg').forEach(button =>{
+            button.style.filter = "none"
+        })
+    }else if(currentTheme === "dark"){
+        document.querySelectorAll('.bttn-svg').forEach(button =>{
+            button.style.filter = "invert(100%)"
+        })
+    }
+    updateSelectedMonthDisplay()
+}
 
 function changeDayState(dayButton){
     const day = parseInt(dayButton.getInnerHTML())

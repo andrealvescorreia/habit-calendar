@@ -7,14 +7,23 @@
 }
 
 :root{
+    font-size: clamp(0.1rem, 0.1rem + 3.5vw, 1rem);
+
     --success-color:rgba(0, 212, 8, 0.7);
     --failure-color:rgba(255, 0, 0, 0.6);
+
     --bg-color: #D8E7CC;
+    --calendar-bg-color: white;
     --number-color: rgb(47, 54, 46);
     --number-color-transparent: rgb(47, 54, 46, 0.5);
-    font-size: clamp(0.1rem, 0.1rem + 3.5vw, 1rem)
 }
 
+.dark{
+    --bg-color: #1B1B1B;
+    --calendar-bg-color: #2C3330;
+    --number-color: rgb(242, 255, 240);
+    --number-color-transparent: rgb(242, 255, 240, 0.5);
+}
 
 body{
     color: var(--number-color);
@@ -33,12 +42,13 @@ body{
     display: flex;
     align-items: baseline;
     font-family: 'Lato', sans-serif;
+    margin-bottom: 0.2rem;
     
 }
 
 #succes-percentage-number{
     text-shadow: 0px 0px 0.625rem rgba(0, 0, 0, 0.18);
-    font-size: 3.75rem;
+    font-size: 4.5rem;
 }
 #succes-percentage-symbol{
     font-size: 1.875rem;
@@ -46,7 +56,7 @@ body{
 
 #calendar-wrapper {
     max-width: 100%;
-    background-color: white; 
+    background-color: var(--calendar-bg-color); 
     box-shadow: 0rem 0rem 2rem 0.25rem rgba(0, 0, 0, 0.09);
     border-radius: 3.8%;
 }
@@ -59,6 +69,7 @@ button:hover{
     background-color: rgba(0, 0, 0, 0.15);
 }
 .bttn-svg{
+    
     width: 1.625rem; 
     opacity: 0.8;
 }
