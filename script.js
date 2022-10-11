@@ -135,11 +135,11 @@ function updateSelectedMonthDisplay(){
 
         //if the displaying month is the one the user is living at the moment:
         else if(displayingMonth.getId() == todayMonthId){ 
-            if(i < today.getUTCDate() - 1){
+            if(i < today.getDate() - 1){
                 button.style.fontWeight  = "700"
                 button.style.color = numberColorTransparent
             }
-            else if(i == today.getUTCDate() - 1){
+            else if(i == today.getDate() - 1){
                 button.style.fontWeight  = "700"
             }   
         }
