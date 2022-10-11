@@ -129,12 +129,24 @@ button:hover{
     opacity: 0.3;
 }
 
-
-
-
 #calendar-footer{/* trash can and dark mode bttns */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 1.25rem;
+}
+
+#credits{
+    font-family: 'Poppins', sans-serif;
+    opacity: 0.6;
+    position: fixed;
+    bottom: 0.2rem;
+    left:0.2rem
+}
+
+#credits a{
+    color: #a144ff;
+}
+#credits:hover{
+    opacity: 1;
 }
