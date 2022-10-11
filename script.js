@@ -158,7 +158,7 @@ function updateSelectedMonthDisplay(){
                 button.style.color = numberColorTransparent
             }
             else if(i == today.getDate() - 1){
-                button.style.fontWeight  = "700"
+                button.style.fontWeight  = "900"
             }   
         }
     }
