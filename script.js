@@ -1,6 +1,9 @@
 
 var currentlyDisplayingMonth// type: Month
 
+const todayDate = new Date()
+const todayMonthId = String( todayDate.getFullYear()+ '-' + String(todayDate.getMonth() + 1).padStart(2, '0'));
+
 // COLORS:
 var successColor
 var failureColor
@@ -32,6 +35,7 @@ dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         switchDayState(button)
         updateCalendarDisplay()
+        // calculateStreak()
     })
 });
 
@@ -74,8 +78,7 @@ bttnMonthSwitcherNext.addEventListener("click", ()=>{
 
 
 // makes sure that, the default displaying month when the page is loaded, it's the one the user is living on at the moment.
-const today = new Date()
-const todayMonthId = String( today.getFullYear()+ '-' + String(today.getMonth() + 1).padStart(2, '0'));
+
 changeCurrentlyDisplayingMonth(todayMonthId)
 
 // switch to dark theme if it was the theme the user was using before.
@@ -190,11 +193,11 @@ function updateDayButtonsDisplay(){
 
         //if the displaying month is the one the user is living at the moment:
         else if(currentlyDisplayingMonth.getId() == todayMonthId){ 
-            if(i < today.getDate() - 1){
+            if(i < todayDate.getDate() - 1){
                 button.style.fontWeight  = "700"
                 button.style.color = numberColorTransparent
             }
-            else if(i == today.getDate() - 1){
+            else if(i == todayDate.getDate() - 1){
                 button.style.fontWeight  = "900"
             }   
         }
@@ -254,4 +257,44 @@ function switchDayState(dayButton){
         localStorage.setItem(currentlyDisplayingMonth.getId(), currentlyDisplayingMonth.getJson());   
     } 
     else return
+}
+
+
+const todayDay = todayDate.getDate()
+streak = calculateMonthStreak(todayMonthId, todayDay)
+console.log('streak: ', streak)
+
+function calculateMonthStreak(monthId, pivotDay){
+    let monthStreak = 0
+    
+    const month = getMonth(monthId)
+    if(month == false) return
+
+    for (let i = pivotDay - 1; i >= 0; i--) {
+        const element = month.getDaysArray()[i]
+        if(element == 1){
+            monthStreak++
+        }else{
+            if(i == pivotDay - 1){
+                return monthStreak
+            }else if(i != pivotDay - 1){
+                return monthStreak
+            }  
+        }
+    }
+
+    let previousMonthId
+    if(month.getNumber() - 1 > 0){
+        previousMonthId = month.getYear() + '-' + String(month.getNumber() - 1).padStart(2, '0')   
+    } 
+    else {
+        previousMonthId = month.getYear() - 1 + '-12'
+    }
+
+    const auxDate = new Date(previousMonthId + '-1')
+    const lastDayOfPreviousMonth = new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
+    
+    streak = monthStreak
+    streak += calculateMonthStreak(previousMonthId, lastDayOfPreviousMonth)
+    return streak
 }
