@@ -149,7 +149,7 @@ function updateCalendarDisplay() {
 // subfunction of 'updateCalendarDisplay()'.
 function updateStreakDisplay(){
     streak = calculateMonthStreak(todayMonthId, todayDay)
-    if(streak == 0){
+    if(streak <= 1){
         txtStreak.innerText = ''
     }else{
         txtStreak.innerText = String(streak) + ' days Streak'
