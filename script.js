@@ -2,6 +2,7 @@
 var currentlyDisplayingMonth// type: Month
 
 const todayDate = new Date()
+const todayDay = todayDate.getDate()
 const todayMonthId = String( todayDate.getFullYear()+ '-' + String(todayDate.getMonth() + 1).padStart(2, '0'));
 
 // COLORS:
@@ -26,7 +27,8 @@ const bttnMonthSwitcherNext     = document.getElementById('month-switcher-right'
 const bttnTrashCan              = document.getElementById('trash-bttn')
 const bttnDarkModeToggle        = document.getElementById('dark-mode-toggle');
 
-
+// TEXT ELEMENTS:
+const txtStreak = document.getElementById('streak')
 
 
 // _____EVENT LISTENERS:
@@ -35,7 +37,6 @@ dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         switchDayState(button)
         updateCalendarDisplay()
-        // calculateStreak()
     })
 });
 
@@ -125,6 +126,8 @@ function getMonth(id){// returns false if not found it
 function updateCalendarDisplay() {
     updateSuccessPercentageDisplay()
     updateDayButtonsDisplay()
+    updateStreakDisplay()
+
     document.getElementById('day-1').style.gridColumnStart = currentlyDisplayingMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
     document.getElementById('month-name').innerText = currentlyDisplayingMonth.getName() + ' ' + currentlyDisplayingMonth.getYear()
     
@@ -137,9 +140,21 @@ function updateCalendarDisplay() {
         document.querySelectorAll('.bttn-svg').forEach(button =>{
             button.style.filter = "invert(100%)";
         })
-    } 
+    }
+
+    
+
 }
 
+// subfunction of 'updateCalendarDisplay()'.
+function updateStreakDisplay(){
+    streak = calculateMonthStreak(todayMonthId, todayDay)
+    if(streak == 0){
+        txtStreak.innerText = ''
+    }else{
+        txtStreak.innerText = String(streak) + ' days Streak'
+    }
+}
 
 // subfunction of 'updateCalendarDisplay()'.
 function updateSuccessPercentageDisplay(){
@@ -260,9 +275,8 @@ function switchDayState(dayButton){
 }
 
 
-const todayDay = todayDate.getDate()
-streak = calculateMonthStreak(todayMonthId, todayDay)
-console.log('streak: ', streak)
+
+
 
 function calculateMonthStreak(monthId, pivotDay){
     let monthStreak = 0

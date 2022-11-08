@@ -122,11 +122,17 @@ button:hover{
     opacity: 0.3;
 }
 
-#calendar-footer{/* trash can and dark mode bttns */
+#calendar-footer{/* trash can bttn; streak count display; dark mode bttn */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding: 1.25rem;
+}
+
+#streak{
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
 }
 
 #credits{
