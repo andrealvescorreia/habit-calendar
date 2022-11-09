@@ -5,19 +5,30 @@
 // switch to dark theme if it was the theme the user was using before.
 if(window.localStorage.getItem("theme") === "dark"){
     document.body.classList.toggle("dark");
-    updateCalendarDisplay(currentlyDisplayingMonth)
+    updateColorsValues()
 }
 
 
-function updateCalendarDisplay(displayMonth) {
+function themeSwitch(){
+    document.body.classList.toggle("dark");
+    if ( window.localStorage.getItem("theme") === "dark" ) 
+        window.localStorage.setItem("theme", "light");
+    else 
+        window.localStorage.setItem("theme", "dark");
+}
+
+// most important function of this script.
+function updateDisplay(displayMonth) {
     updateColorsValues()
+    updateSvgBttns()
+    updateStreakDisplay()
     updateSuccessPercentageDisplay(displayMonth)
     updateDayButtonsDisplay(displayMonth)
-    updateStreakDisplay()
+    updateMonthNameDisplay(displayMonth)
+}
 
-    document.getElementById('day-1').style.gridColumnStart = displayMonth.getFirstDay()+1;/* 1(Sunday), ... , 7(Saturday) */
-    document.getElementById('month-name').innerText = displayMonth.getName() + ' ' + displayMonth.getYear()
-    
+
+function updateSvgBttns(){
     const currentTheme = window.localStorage.getItem("theme")
     if(currentTheme === "light"){
         document.querySelectorAll('.bttn-svg').forEach(button =>{
@@ -31,12 +42,24 @@ function updateCalendarDisplay(displayMonth) {
 }
 
 
+function updateStreakDisplay(){
+    streak = calculateStreak(getTodayMonthId(), getTodayDay())
+    if(streak <= 1){
+        txtStreak.innerText = ''
+    }else{
+        txtStreak.innerText = String(streak) + ' days Streak'
+    }
+}
 
-// subfunction of 'updateCalendarDisplay()'.
+
+function updateMonthNameDisplay(displayMonth){
+    txtMonthName.innerText = displayMonth.getName() + ' ' + displayMonth.getYear()
+}
+
+
 function updateSuccessPercentageDisplay(displayMonth){
     // 'countOccurrences' works as a function.
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-
     
     const auxDaysArray = displayMonth.getDaysArray()
     const numOfSuccesfulDays = countOccurrences(auxDaysArray, 1)
@@ -45,7 +68,6 @@ function updateSuccessPercentageDisplay(displayMonth){
 }
 
 
-// subfunction of 'updateCalendarDisplay()'.
 function updateDayButtonsDisplay(displayMonth){
 
     // reseting the values of all 'day' buttons to default:
@@ -61,6 +83,8 @@ function updateDayButtonsDisplay(displayMonth){
         button.style.opacity = "1"
         button.style.color = numberColor  
     })
+
+    dayButtons[0].style.gridColumnStart = displayMonth.getFirstDay() + 1; /* 1(Sunday), ... , 7(Saturday) */
 
     // updating colors of all the 'day' buttons:
     const aux = displayMonth.getDaysArray()
@@ -84,11 +108,11 @@ function updateDayButtonsDisplay(displayMonth){
 
         //if the displaying month is the one the user is living at the moment:
         else if(displayMonth.getId() == getTodayMonthId()){ 
-            if(i < getTodayDate().getDate() - 1){
+            if(i < getTodayDay() - 1){
                 button.style.fontWeight  = "700"
                 button.style.color = numberColorTransparent
             }
-            else if(i == getTodayDate().getDate() - 1){
+            else if(i == getTodayDay() - 1){
                 button.style.fontWeight  = "900"
             }   
         }
@@ -103,17 +127,3 @@ function updateDayButtonsDisplay(displayMonth){
         button.disabled = true;  
     }
 }
-
-
-
-// subfunction of 'updateCalendarDisplay()'.
-// TO DO: FIX bug
-function updateStreakDisplay(){
-    streak = calculateStreak(getTodayMonthId(), getTodayDay())
-    if(streak <= 1){
-        txtStreak.innerText = ''
-    }else{
-        txtStreak.innerText = String(streak) + ' days Streak'
-    }
-}
-

@@ -2,11 +2,13 @@ function getTodayDate(){
     return new Date()
 }
 function getTodayDay(){
-    getTodayDate().getDate()
+    return getTodayDate().getDate()
 }
 function getTodayMonthId(){
     return String(getTodayDate().getFullYear()+ '-' + String(getTodayDate().getMonth() + 1).padStart(2, '0'));
 }
+
+
 function saveMonthIntoLocalStorage(month){
     localStorage.setItem(month.getId(), month.getJson());
 }
@@ -19,13 +21,6 @@ function getMonthFromLocalStorage(id){// returns false if not found it
     return foundMonth;
 }
 
-function themeSwitcher(){
-    document.body.classList.toggle("dark");
-    if ( window.localStorage.getItem("theme") === "dark" ) 
-        window.localStorage.setItem("theme", "light");
-    else 
-        window.localStorage.setItem("theme", "dark");
-}
 
 function calculateStreak(monthId, pivotDay){
     let monthStreak = 0

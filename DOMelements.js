@@ -13,8 +13,10 @@ var numberColorTransparent
 updateColorsValues()
 
 // TEXT ELEMENTS:
-const txtStreak = document.getElementById('streak')
 const txtSuccessPercentage  = document.getElementById('success-percentage-number')
+const txtMonthName = document.getElementById('month-name')
+const txtStreak = document.getElementById('streak')
+
 
 function updateColorsValues(){
     successColor = String(getComputedStyle(document.body).getPropertyValue('--success-color'));

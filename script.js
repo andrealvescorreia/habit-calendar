@@ -1,12 +1,11 @@
 // this is the script that represents the user inputs and logic of the application.
 
-
 var currentlyDisplayingMonth// type: Month
 
 
 // makes sure that, the default displaying month when the page is loaded, it's the one the user is living on at the moment.
 changeCurrentlyDisplayingMonth(getTodayMonthId())
-updateCalendarDisplay(currentlyDisplayingMonth)
+updateDisplay(currentlyDisplayingMonth)
 
 
 // _____EVENT LISTENERS:
@@ -14,18 +13,18 @@ updateCalendarDisplay(currentlyDisplayingMonth)
 dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         switchDayState(button)
-        updateCalendarDisplay(currentlyDisplayingMonth)
+        updateDisplay(currentlyDisplayingMonth)
     })
 });
 
 bttnDarkModeToggle.addEventListener("click", () => {
-    themeSwitcher()
-    updateCalendarDisplay(currentlyDisplayingMonth)
+    themeSwitch()
+    updateDisplay(currentlyDisplayingMonth)
 });
 
 bttnTrashCan.addEventListener("click", ()=>{
     clearDataFromCurrentlyDisplayingMonth()
-    updateCalendarDisplay(currentlyDisplayingMonth)
+    updateDisplay(currentlyDisplayingMonth)
 });
 
 bttnMonthSwitcherPrevious.addEventListener("click", ()=>{
@@ -37,6 +36,7 @@ bttnMonthSwitcherPrevious.addEventListener("click", ()=>{
         previousMonthId = currentlyDisplayingMonth.getYear() - 1 + '-12'
     }
     changeCurrentlyDisplayingMonth(previousMonthId)
+    updateDisplay(currentlyDisplayingMonth) 
 })
 
 bttnMonthSwitcherNext.addEventListener("click", ()=>{
@@ -48,10 +48,8 @@ bttnMonthSwitcherNext.addEventListener("click", ()=>{
         nextMonthId = currentlyDisplayingMonth.getYear() + 1 + '-01'
     }
     changeCurrentlyDisplayingMonth(nextMonthId)
+    updateDisplay(currentlyDisplayingMonth)
 })
-
-
-
 
 
 
@@ -69,15 +67,14 @@ function changeCurrentlyDisplayingMonth(monthId){
         currentlyDisplayingMonth = newMonth
         saveMonthIntoLocalStorage(currentlyDisplayingMonth)
     }
-    updateCalendarDisplay(currentlyDisplayingMonth)
 }
 
 
 // trash-can functionality
 function clearDataFromCurrentlyDisplayingMonth(){
     const cleanMonth = new Month(currentlyDisplayingMonth.getId())
-    localStorage.removeItem(currentlyDisplayingMonth.getId())
     currentlyDisplayingMonth = cleanMonth
+    saveMonthIntoLocalStorage(currentlyDisplayingMonth)
 }
 
 // when the user clicks on a day of the calendar.
@@ -101,5 +98,4 @@ function switchDayState(dayButton){
         currentlyDisplayingMonth.changeDaysArray(dayNumber-1, 0)
         saveMonthIntoLocalStorage(currentlyDisplayingMonth)     
     }
-    updateCalendarDisplay(currentlyDisplayingMonth)
 }
