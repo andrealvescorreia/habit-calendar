@@ -14,10 +14,11 @@ function saveMonthIntoLocalStorage(month){
 }
 
 
-function getMonthFromLocalStorage(id){// returns false if not found it
+function getMonthFromLocalStorage(id){// returns null if not found it
     let simpleMonth = JSON.parse(localStorage.getItem(id))
-    if(simpleMonth == null) return false
-    let foundMonth = new Month(simpleMonth.id, simpleMonth.daysArray)
+    //let foundMonth = new Month(simpleMonth.id, simpleMonth.daysArray)
+    if(simpleMonth == null) return null
+    let foundMonth = Month.createMonth(simpleMonth.id, simpleMonth.daysArray)
     return foundMonth;
 }
 
@@ -26,7 +27,8 @@ function calculateStreak(monthId, pivotDay){
     let monthStreak = 0
     
     const month = getMonthFromLocalStorage(monthId)
-    if(month == false) return
+
+    if(month == null) return 0
 
     for (let i = pivotDay - 1; i >= 0; i--) {
         const element = month.getDaysArray()[i]
