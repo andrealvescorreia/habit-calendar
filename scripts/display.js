@@ -21,7 +21,7 @@ function themeSwitch(){
 function updateDisplay(displayMonth) {
     updateColorsValues()
     updateSvgBttns()
-    updateStreakDisplay()
+    updateStreakDisplay(displayMonth)
     updateSuccessPercentageDisplay(displayMonth)
     updateDayButtonsDisplay(displayMonth)
     updateMonthNameDisplay(displayMonth)
@@ -42,8 +42,13 @@ function updateSvgBttns(){
 }
 
 
-function updateStreakDisplay(){
-    streak = calculateStreak(getTodayMonthId(), getTodayDay())
+function updateStreakDisplay(displayMonth){
+    if(displayMonth.getDaysArray()[getTodayDay() - 1] == 0){ 
+        streak = calculateStreak(getTodayMonthId(), getTodayDay() - 1)
+    }else{
+        streak = calculateStreak(getTodayMonthId(), getTodayDay())
+    }
+
     if(streak <= 1){
         txtStreak.innerText = ''
     }else{
