@@ -72,9 +72,11 @@ function changeCurrentlyDisplayingMonth(monthId){
 
 // trash-can functionality
 function clearDataFromCurrentlyDisplayingMonth(){
-    const cleanMonth = Month.createMonth(currentlyDisplayingMonth.getId())
-    currentlyDisplayingMonth = cleanMonth
-    saveMonthIntoLocalStorage(currentlyDisplayingMonth)
+    if (confirm("You sure? This action can't be undone!")) {
+        const cleanMonth = Month.createMonth(currentlyDisplayingMonth.getId())
+        currentlyDisplayingMonth = cleanMonth
+        saveMonthIntoLocalStorage(currentlyDisplayingMonth)
+    }
 }
 
 // when the user clicks on a day of the calendar.
