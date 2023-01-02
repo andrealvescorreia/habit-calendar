@@ -1,4 +1,20 @@
 // this script is responsible for the visual part of the application.
+// __________________________________________________________________
+
+import {updateColorsValues, 
+        txtStreak, 
+        txtHabitMonthName, 
+        txtSuccessPercentage, 
+        dayButtons, 
+        numberColor, 
+        numberColorTransparent, 
+        successColor, 
+        failureColor} from './DOMelements.js';
+
+import {getTodayDay, 
+        calculateStreak, 
+        getTodayHabitMonthId} from './usefullFunctions.js';
+
 
 
 
@@ -9,7 +25,7 @@ if(window.localStorage.getItem("theme") === "dark"){
 }
 
 
-function themeSwitch(){
+export function themeSwitch(){
     document.body.classList.toggle("dark");
     if ( window.localStorage.getItem("theme") === "dark" ) 
         window.localStorage.setItem("theme", "light");
@@ -17,18 +33,20 @@ function themeSwitch(){
         window.localStorage.setItem("theme", "dark");
 }
 
+
 // most important function of this script.
-function updateDisplay(displayMonth) {
+export function updateDisplay(displayHabitMonth) {
     updateColorsValues()
-    updateSvgBttns()
-    updateStreakDisplay(displayMonth)
-    updateSuccessPercentageDisplay(displayMonth)
-    updateDayButtonsDisplay(displayMonth)
-    updateMonthNameDisplay(displayMonth)
+    updateBttnsTheme()
+    updateStreakDisplay(displayHabitMonth)
+    updateSuccessPercentageDisplay(displayHabitMonth)
+    updateDayButtonsDisplay(displayHabitMonth)
+    updateHabitMonthNameDisplay(displayHabitMonth)
 }
 
 
-function updateSvgBttns(){
+
+function updateBttnsTheme(){
     const currentTheme = window.localStorage.getItem("theme")
     if(currentTheme === "light"){
         document.querySelectorAll('.bttn-svg').forEach(button =>{
@@ -42,11 +60,12 @@ function updateSvgBttns(){
 }
 
 
-function updateStreakDisplay(displayMonth){
-    if(displayMonth.getDaysArray()[getTodayDay() - 1] == 0){ 
-        streak = calculateStreak(getTodayMonthId(), getTodayDay() - 1)
+function updateStreakDisplay(displayHabitMonth){
+    let streak
+    if(displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0){ 
+        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay() - 1)
     }else{
-        streak = calculateStreak(getTodayMonthId(), getTodayDay())
+        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay())
     }
 
     if(streak <= 1){
@@ -57,23 +76,23 @@ function updateStreakDisplay(displayMonth){
 }
 
 
-function updateMonthNameDisplay(displayMonth){
-    txtMonthName.innerText = displayMonth.getName() + ' ' + displayMonth.getYear()
+function updateHabitMonthNameDisplay(displayHabitMonth){
+    txtHabitMonthName.innerText = displayHabitMonth.getName() + ' ' + displayHabitMonth.getYear()
 }
 
 
-function updateSuccessPercentageDisplay(displayMonth){
+function updateSuccessPercentageDisplay(displayHabitMonth){
     // 'countOccurrences' works as a function.
-    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+    const countOccurrences = (value, array) => array.reduce((a, v) => (v === value ? a + 1 : a), 0);
     
-    const auxDaysArray = displayMonth.getDaysArray()
-    const numOfSuccesfulDays = countOccurrences(auxDaysArray, 1)
+    const auxDaysArray = displayHabitMonth.getDaysArray()
+    const numOfSuccesfulDays = countOccurrences(1, auxDaysArray)
     let succesPercentage = (numOfSuccesfulDays * 100) / auxDaysArray.length
     txtSuccessPercentage.innerText = String(parseInt(succesPercentage))
 }
 
 
-function updateDayButtonsDisplay(displayMonth){
+function updateDayButtonsDisplay(displayHabitMonth){
 
     // reseting the values of all 'day' buttons to default:
     let dayCount = 0
@@ -89,10 +108,10 @@ function updateDayButtonsDisplay(displayMonth){
         button.style.color = numberColor  
     })
 
-    dayButtons[0].style.gridColumnStart = displayMonth.getFirstDay() + 1; /* 1(Sunday), ... , 7(Saturday) */
+    dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDay() + 1; /* 1(Sunday), ... , 7(Saturday) */
 
     // updating colors of all the 'day' buttons:
-    const aux = displayMonth.getDaysArray()
+    const aux = displayHabitMonth.getDaysArray()
     for(let i = 0; i < aux.length; i++){
         const button = dayButtons[i]
         button.style.borderStyle = "solid"
@@ -105,14 +124,14 @@ function updateDayButtonsDisplay(displayMonth){
             button.style.borderStyle = "none"
         }
         
-        //if the displaying month has already passed for the user (chronologically):
-        if((new Date(getTodayMonthId()+'-1')).getTime() > (new Date(displayMonth.getId()+'-1')).getTime() ){
+        //if the displaying HabitMonth has already passed for the user (chronologically):
+        if((new Date(getTodayHabitMonthId()+'-1')).getTime() > (new Date(displayHabitMonth.getId()+'-1')).getTime() ){
             button.style.fontWeight  = "700"
             button.style.color = numberColorTransparent
         }
 
-        //if the displaying month is the one the user is living at the moment:
-        else if(displayMonth.getId() == getTodayMonthId()){ 
+        //if the displaying HabitMonth is the one the user is living at the moment:
+        else if(displayHabitMonth.getId() == getTodayHabitMonthId()){ 
             if(i < getTodayDay() - 1){
                 button.style.fontWeight  = "700"
                 button.style.color = numberColorTransparent
@@ -123,8 +142,8 @@ function updateDayButtonsDisplay(displayMonth){
         }
     }
 
-    // hide the 'day' bttns that are not in the month (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
-    for (let i = 31; i > displayMonth.getNumOfDays(); i--) {
+    // hide the 'day' bttns that are not in the HabitMonth (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
+    for (let i = 31; i > displayHabitMonth.getNumOfDays(); i--) {
         const button = dayButtons[i - 1];
         button.innerHTML = ''
         button.style.position = "absolute"

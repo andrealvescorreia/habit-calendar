@@ -1,60 +1,62 @@
-function getTodayDate(){
+import {HabitMonth} from './HabitMonth.js'
+
+export function getTodayDate(){
     return new Date()
 }
-function getTodayDay(){
+export function getTodayDay(){
     return getTodayDate().getDate()
 }
-function getTodayMonthId(){
+export function getTodayHabitMonthId(){
     return String(getTodayDate().getFullYear()+ '-' + String(getTodayDate().getMonth() + 1).padStart(2, '0'));
 }
 
 
-function saveMonthIntoLocalStorage(month){
-    localStorage.setItem(month.getId(), month.getJson());
+export function saveHabitMonthIntoLocalStorage(HabitMonth){
+    localStorage.setItem(HabitMonth.getId(), HabitMonth.getJson());
 }
 
 
-function getMonthFromLocalStorage(id){// returns null if not found it
-    let simpleMonth = JSON.parse(localStorage.getItem(id))
-    //let foundMonth = new Month(simpleMonth.id, simpleMonth.daysArray)
-    if(simpleMonth == null) return null
-    let foundMonth = Month.createMonth(simpleMonth.id, simpleMonth.daysArray)
-    return foundMonth;
+export function getHabitMonthFromLocalStorage(id){// returns null if not found it
+    let simpleHabitMonth = JSON.parse(localStorage.getItem(id))
+    //let foundHabitMonth = new HabitMonth(simpleHabitMonth.id, simpleHabitMonth.daysArray)
+    if(simpleHabitMonth == null) return null
+    let foundHabitMonth = HabitMonth.createHabitMonth(simpleHabitMonth.id, simpleHabitMonth.daysArray)
+    return foundHabitMonth;
 }
 
 
-function calculateStreak(monthId, pivotDay){
-    let monthStreak = 0
+export function calculateStreak(habitMonthId, pivotDay){
+    let habitMonthStreak = 0
     
-    const month = getMonthFromLocalStorage(monthId)
+    const habitMonth = getHabitMonthFromLocalStorage(habitMonthId)
 
-    if(month == null) return 0
+    if(habitMonth == null) return 0
 
     for (let i = pivotDay - 1; i >= 0; i--) {
-        const element = month.getDaysArray()[i]
+        const element = habitMonth.getDaysArray()[i]
         if(element == 1){
-            monthStreak++
+            habitMonthStreak++
         }else{
             if(i == pivotDay - 1){
-                return monthStreak
+                return habitMonthStreak
             }else if(i != pivotDay - 1){
-                return monthStreak
+                return habitMonthStreak
             }  
         }
     }
 
-    let previousMonthId
-    if(month.getNumber() - 1 > 0){
-        previousMonthId = month.getYear() + '-' + String(month.getNumber() - 1).padStart(2, '0')   
+    let previousHabitMonthId
+    if(habitMonth.getNumber() - 1 > 0){
+        previousHabitMonthId = habitMonth.getYear() + '-' + String(habitMonth.getNumber() - 1).padStart(2, '0')   
     } 
     else {
-        previousMonthId = month.getYear() - 1 + '-12'
+        previousHabitMonthId = habitMonth.getYear() - 1 + '-12'
     }
 
-    const auxDate = new Date(previousMonthId + '-1')
-    const lastDayOfPreviousMonth = new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
+    const auxDate = new Date(previousHabitMonthId + '-1')
+    const lastDayOfPreviousHabitMonth = new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
     
-    streak = monthStreak
-    streak += calculateStreak(previousMonthId, lastDayOfPreviousMonth)
+    let streak = habitMonthStreak
+    streak += calculateStreak(previousHabitMonthId, lastDayOfPreviousHabitMonth)
     return streak
 }

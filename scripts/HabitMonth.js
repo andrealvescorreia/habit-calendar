@@ -1,5 +1,5 @@
 
-class Month {
+export class HabitMonth {
     #id 
     #daysArray = []
     // the 'daysArray' stores the succeses (1) and failures (-1) of the habit. 
@@ -13,7 +13,7 @@ class Month {
     }
     
     #createDaysArray(id){ // aux function for the constructor.
-        return Array(parseInt(Month.countDaysInMonth(id))).fill(0)
+        return Array(parseInt(HabitMonth.countDaysInMonth(id))).fill(0)
     }
 
     static countDaysInMonth(id){// aux function for the constructor and daysArray validator
@@ -59,8 +59,8 @@ class Month {
             console.log('not an array')
             return false
         }
-        if(monthDaysArray.length != Month.countDaysInMonth(monthId)){ 
-            console.log('wrong array size (should be',Month.countDaysInMonth(monthId),', but received ', monthDaysArray.length,')')
+        if(monthDaysArray.length != HabitMonth.countDaysInMonth(monthId)){ 
+            console.log('wrong array size (should be',HabitMonth.countDaysInMonth(monthId),', but received ', monthDaysArray.length,')')
             return false
         }
         
@@ -76,14 +76,14 @@ class Month {
 
 
     // static factory method
-    static createMonth(id, daysArray){
+    static createHabitMonth(id, daysArray){
         if(!this.validateId(id)){
             return null
         }
         if(daysArray != null && !this.validateDaysArray(daysArray, id)){
             return null
         }
-        return new Month(id, daysArray)
+        return new HabitMonth(id, daysArray)
     }
 
     

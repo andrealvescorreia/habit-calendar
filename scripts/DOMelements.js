@@ -1,24 +1,24 @@
 // BUTTONS:
-const dayButtons                = document.querySelectorAll('.day-button');
-const bttnMonthSwitcherPrevious = document.getElementById('month-switcher-left');
-const bttnMonthSwitcherNext     = document.getElementById('month-switcher-right');
-const bttnTrashCan              = document.getElementById('trash-bttn')
-const bttnDarkModeToggle        = document.getElementById('dark-mode-toggle');
+export const dayButtons                = document.querySelectorAll('.day-button');
+export const bttnHabitMonthSwitcherPrevious = document.getElementById('month-switcher-left');
+export const bttnHabitMonthSwitcherNext     = document.getElementById('month-switcher-right');
+export const bttnTrashCan              = document.getElementById('trash-bttn')
+export const bttnDarkModeToggle        = document.getElementById('dark-mode-toggle');
 
 // COLORS:
-var successColor
-var failureColor
-var numberColor
-var numberColorTransparent
+export var successColor
+export var failureColor
+export var numberColor
+export var numberColorTransparent
 updateColorsValues()
 
 // TEXT ELEMENTS:
-const txtSuccessPercentage  = document.getElementById('success-percentage-number')
-const txtMonthName = document.getElementById('month-name')
-const txtStreak = document.getElementById('streak')
+export const txtSuccessPercentage  = document.getElementById('success-percentage-number')
+export const txtHabitMonthName = document.getElementById('month-name')
+export const txtStreak = document.getElementById('streak')
 
 
-function updateColorsValues(){
+export function updateColorsValues(){
     successColor = String(getComputedStyle(document.body).getPropertyValue('--success-color'));
     failureColor = String(getComputedStyle(document.body).getPropertyValue('--failure-color'));
     numberColor  = String(getComputedStyle(document.body).getPropertyValue('--number-color'));
