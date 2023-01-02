@@ -1,3 +1,5 @@
+// this is the script that handles user input and the main logic.
+
 import {HabitMonth} from './HabitMonth.js';
 
 import {dayButtons, 
@@ -8,13 +10,12 @@ import {dayButtons,
 
 import {getTodayHabitMonthId, 
         getHabitMonthFromLocalStorage, 
-        saveHabitMonthIntoLocalStorage} from './usefullFunctions.js';
+        saveHabitMonthIntoLocalStorage} from './utils.js';
 
 
 import {updateDisplay, 
         themeSwitch} from './display.js';
 
-// this is the script that represents the user inputs and logic of the application.
 
 
 let currentlyDisplayingHabitMonth
@@ -79,7 +80,7 @@ function changeCurrentlyDisplayingHabitMonth(HabitMonthId){
         currentlyDisplayingHabitMonth = existingHabitMonth
     } 
     else {
-        newHabitMonth = HabitMonth.createHabitMonth(HabitMonthId)
+        let newHabitMonth = HabitMonth.createHabitMonth(HabitMonthId)
         currentlyDisplayingHabitMonth = newHabitMonth
         saveHabitMonthIntoLocalStorage(currentlyDisplayingHabitMonth)
     }

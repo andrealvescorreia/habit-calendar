@@ -13,16 +13,12 @@ import {updateColorsValues,
 
 import {getTodayDay, 
         calculateStreak, 
-        getTodayHabitMonthId} from './usefullFunctions.js';
+        getTodayHabitMonthId} from './utils.js';
 
 
 
 
-// switch to dark theme if it was the theme the user was using before.
-if(window.localStorage.getItem("theme") === "dark"){
-    document.body.classList.toggle("dark");
-    updateColorsValues()
-}
+
 
 
 export function themeSwitch(){
@@ -31,20 +27,26 @@ export function themeSwitch(){
         window.localStorage.setItem("theme", "light");
     else 
         window.localStorage.setItem("theme", "dark");
+    updateTheme()
 }
 
 
 // most important function of this script.
 export function updateDisplay(displayHabitMonth) {
-    updateColorsValues()
-    updateBttnsTheme()
+    updateTheme()
     updateStreakDisplay(displayHabitMonth)
     updateSuccessPercentageDisplay(displayHabitMonth)
     updateDayButtonsDisplay(displayHabitMonth)
     updateHabitMonthNameDisplay(displayHabitMonth)
 }
 
-
+function updateTheme(){
+    if(window.localStorage.getItem("theme") === "dark"){
+        document.body.classList.toggle("dark", true);
+    }
+    updateColorsValues()
+    updateBttnsTheme()
+}
 
 function updateBttnsTheme(){
     const currentTheme = window.localStorage.getItem("theme")
@@ -94,6 +96,8 @@ function updateSuccessPercentageDisplay(displayHabitMonth){
 
 function updateDayButtonsDisplay(displayHabitMonth){
 
+    dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDayNumber() + 1; /* 1(Sunday), ... , 7(Saturday) */
+
     // reseting the values of all 'day' buttons to default:
     let dayCount = 0
     dayButtons.forEach( button =>{
@@ -108,8 +112,7 @@ function updateDayButtonsDisplay(displayHabitMonth){
         button.style.color = numberColor  
     })
 
-    dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDay() + 1; /* 1(Sunday), ... , 7(Saturday) */
-
+    
     // updating colors of all the 'day' buttons:
     const aux = displayHabitMonth.getDaysArray()
     for(let i = 0; i < aux.length; i++){
@@ -143,7 +146,7 @@ function updateDayButtonsDisplay(displayHabitMonth){
     }
 
     // hide the 'day' bttns that are not in the HabitMonth (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
-    for (let i = 31; i > displayHabitMonth.getNumOfDays(); i--) {
+    for (let i = 31; i > displayHabitMonth.getNumberOfDays(); i--) {
         const button = dayButtons[i - 1];
         button.innerHTML = ''
         button.style.position = "absolute"
