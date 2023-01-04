@@ -63,6 +63,10 @@ function updateBttnsTheme(){
 
 
 function updateStreakDisplay(displayHabitMonth){
+    if(displayHabitMonth.getId() != getTodayHabitMonthId()) {
+        txtStreak.innerText = ''
+        return
+    }
     let streak
     if(displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0){ 
         streak = calculateStreak(getTodayHabitMonthId(), getTodayDay() - 1)

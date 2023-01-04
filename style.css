@@ -33,7 +33,7 @@ body{
     flex-direction: column;
     
     margin-top:    10vh;
-    margin-bottom: 10vh; 
+    margin-bottom: 5vh; 
 }
 
 #success-percentage{
@@ -137,6 +137,7 @@ button:hover{
 
 #credits{
     font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
     opacity: 0.6;
     position: fixed;
     bottom: 0.2rem;
