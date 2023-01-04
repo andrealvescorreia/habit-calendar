@@ -100,61 +100,85 @@ function updateSuccessPercentageDisplay(displayHabitMonth){
 
 function updateDayButtonsDisplay(displayHabitMonth){
 
-    dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDayNumber() + 1; /* 1(Sunday), ... , 7(Saturday) */
+    updateGridStart();
+    resetDayBttnsToDefaultValue();
+    hideDaysNotInTheMonth();
+    updateDayBttnsColors();
 
-    // reseting the values of all 'day' buttons to default:
-    let dayCount = 0
-    dayButtons.forEach( button =>{
-        dayCount++;
-        button.innerText= dayCount;
-        button.disabled = false
-        button.style.position = "static"
-        button.style.zIndex = "auto"
-        button.style.borderColor = "transparent"
-        button.style.fontWeight = "normal"  
-        button.style.opacity = "1"
-        button.style.color = numberColor  
-    })
+
+    function updateGridStart(){
+        dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDayNumber() + 1; /* 1(Sunday), ... , 7(Saturday) */
+    }
+
+    function resetDayBttnsToDefaultValue() {
+        let dayCount = 0;
+        dayButtons.forEach(button => {
+            dayCount++;
+            button.innerText = dayCount;
+            button.disabled = false;
+            button.style.position = "static";
+            button.style.zIndex = "auto";
+            button.style.borderColor = "transparent";
+            button.style.fontWeight = "normal";
+            button.style.opacity = "1";
+            button.style.color = numberColor;
+        });
+    }
+
+    function hideDaysNotInTheMonth() {
+        // ex: february only has 28 days. So day 29, 30 and 31 should not display
+        for (let i = 31; i > displayHabitMonth.getNumberOfDays(); i--) {
+            const button = dayButtons[i - 1];
+            button.innerHTML = '';
+            button.style.position = "absolute";
+            button.style.zIndex = "-1";
+            button.disabled = true;
+        }
+    }
+
+    function updateDayBttnsColors() {
+        const aux = displayHabitMonth.getDaysArray();
+        for (let i = 0; i < aux.length; i++) {
+            
+            const button = dayButtons[i];
+            updateDisplayBttnState(button)
+            updateDayBttnFontWeight(button);
+
+
+            function updateDisplayBttnState(dayButton){
+                dayButton.style.borderStyle = "solid";
+                if ((aux[i] == 1)) {
+                    dayButton.style.borderColor = successColor;
+                } else if (aux[i] == -1) {
+                    dayButton.style.borderColor = failureColor;
+                }
+                else {
+                    dayButton.style.borderStyle = "none";
+                }
+            }
+
+            function updateDayBttnFontWeight(button) {
+                let dayNumberFromTheBttn = button.innerText
+                //if the displaying HabitMonth has already passed for the user (chronologically):
+                if ((new Date(getTodayHabitMonthId() + '-1')).getTime() > (new Date(displayHabitMonth.getId() + '-1')).getTime()) {
+                    button.style.fontWeight = "700";
+                    button.style.color = numberColorTransparent;
+                }
+                //else, if the displaying HabitMonth is the one the user is living at the moment:
+                else if (displayHabitMonth.getId() == getTodayHabitMonthId()) {
+                    if (dayNumberFromTheBttn < getTodayDay()) {
+                        button.style.fontWeight = "700";
+                        button.style.color = numberColorTransparent;
+                    }
+                    else if (dayNumberFromTheBttn == getTodayDay()) {
+                        button.style.fontWeight = "900";
+                    }
+                }
+            }
+        }
+
+        
+    }
 
     
-    // updating colors of all the 'day' buttons:
-    const aux = displayHabitMonth.getDaysArray()
-    for(let i = 0; i < aux.length; i++){
-        const button = dayButtons[i]
-        button.style.borderStyle = "solid"
-        if((aux[i] == 1)){    
-            button.style.borderColor = successColor
-        } else if(aux[i] == -1){
-            button.style.borderColor = failureColor
-        }
-        else{
-            button.style.borderStyle = "none"
-        }
-        
-        //if the displaying HabitMonth has already passed for the user (chronologically):
-        if((new Date(getTodayHabitMonthId()+'-1')).getTime() > (new Date(displayHabitMonth.getId()+'-1')).getTime() ){
-            button.style.fontWeight  = "700"
-            button.style.color = numberColorTransparent
-        }
-
-        //if the displaying HabitMonth is the one the user is living at the moment:
-        else if(displayHabitMonth.getId() == getTodayHabitMonthId()){ 
-            if(i < getTodayDay() - 1){
-                button.style.fontWeight  = "700"
-                button.style.color = numberColorTransparent
-            }
-            else if(i == getTodayDay() - 1){
-                button.style.fontWeight  = "900"
-            }   
-        }
-    }
-
-    // hide the 'day' bttns that are not in the HabitMonth (ex: february only has 28 days, so day 29, 30 and 31 should be deactivated)
-    for (let i = 31; i > displayHabitMonth.getNumberOfDays(); i--) {
-        const button = dayButtons[i - 1];
-        button.innerHTML = ''
-        button.style.position = "absolute"
-        button.style.zIndex = "-1";
-        button.disabled = true;  
-    }
 }
