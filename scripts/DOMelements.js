@@ -5,8 +5,6 @@ export const bttnHabitMonthSwitcherNext     = document.getElementById('month-swi
 export const bttnTrashCan              = document.getElementById('trash-bttn')
 export const bttnDarkModeToggle        = document.getElementById('dark-mode-toggle');
 
-export const allBttnsWIthSvg = document.querySelectorAll('.bttn-svg');
-
 
 // TEXT ELEMENTS:
 export const txtSuccessPercentage  = document.getElementById('success-percentage-number')

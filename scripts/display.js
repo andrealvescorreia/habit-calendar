@@ -5,12 +5,12 @@ import {
         txtStreak, 
         txtHabitMonthName, 
         txtSuccessPercentage, 
-        dayButtons,
-        allBttnsWIthSvg} from './DOMelements.js';
+        dayButtons} from './DOMelements.js';
 
 import {getTodayDay, 
         calculateStreak, 
-        getTodayHabitMonthId} from './utils.js';
+        getTodayHabitMonthId, 
+        updateTheme} from './utils.js';
 
 
 
@@ -30,10 +30,7 @@ export function updateDisplay(displayHabitMonth) {
     updateHabitMonthNameDisplay(displayHabitMonth)
 }
 
-export function updateTheme(){
-    if(window.localStorage.getItem("theme") === "dark")
-        document.body.classList.toggle("dark", true)   
-}
+
 
 
 function updateStreakDisplay(displayHabitMonth){

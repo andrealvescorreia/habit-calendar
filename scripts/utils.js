@@ -21,10 +21,15 @@ export function themeSwitch(){
         window.localStorage.setItem("theme", "light");
     else 
         window.localStorage.setItem("theme", "dark");
+    updateTheme()
 }
 
 
 
+export function updateTheme(){
+    if(window.localStorage.getItem("theme") === "dark")
+        document.body.classList.toggle("dark", true)   
+}
 
 export function calculateStreak(habitMonthId, pivotDay){
     let habitMonthStreak = 0
