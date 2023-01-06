@@ -8,20 +8,12 @@ import {dayButtons,
 
 import {themeSwitch} from './utils.js';
 import {updateTheme} from './display.js';
-import { createHabitMonthView } from './habitMonthView.js';
+import { createHabitMonthView } from './HabitMonthView.js';
 
 const habitMonthView = createHabitMonthView()
 
 
-bttnDarkModeToggle.addEventListener("click", () => {
-    themeSwitch()
-    updateTheme()
-})
 
-bttnTrashCan.addEventListener("click", ()=>{
-    if (confirm("You sure? This action can't be undone!"))
-        habitMonthView.clearAllDataFromCurrentlyDisplayingHabitMonth()  
-})
 
 bttnHabitMonthSwitcherPrevious.addEventListener("click", ()=>{
     habitMonthView.changeToPreviousMonth()
@@ -37,4 +29,14 @@ dayButtons.forEach( button =>{
         const dayIndex = parseInt(button.innerText) - 1
         habitMonthView.switchDayStateOfCurrentlyDisplayingHabitMonth(dayIndex)
     })
+})
+
+bttnTrashCan.addEventListener("click", ()=>{
+    if (confirm("You sure? This action can't be undone!"))
+        habitMonthView.clearAllDataFromCurrentlyDisplayingHabitMonth()  
+})
+
+bttnDarkModeToggle.addEventListener("click", () => {
+    themeSwitch()
+    updateTheme()
 })
