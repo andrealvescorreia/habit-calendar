@@ -5,22 +5,22 @@ export class HabitMonth {
 
     // static factory method
     static createHabitMonth(id, daysArray){
-        if(this.isIdValid(id) == false){
+        if(this.isIdValid(id) == false)
             return null
-        }
-        if(daysArray != null && this.isDaysArrayValid(daysArray, id) == false){
+        
+        if(daysArray != null && this.isDaysArrayValid(daysArray, id) == false)
             return null
-        }
+        
         return new HabitMonth(id, daysArray)
     }
 
 
-    constructor(id, daysArray = this.#createDaysArray(id)) {
+    constructor(id, daysArray = this.#defaultDaysArray(id)) {
         this.#id = id;
         this.#daysArray = daysArray;
     }
     
-    #createDaysArray(id){ // aux function for the constructor.
+    #defaultDaysArray(id){ // aux function for the constructor.
         return Array(parseInt(HabitMonth.expectedNumberOfDaysInMonth(id))).fill(0)
     }
 
@@ -111,34 +111,19 @@ export class HabitMonth {
 
     static isIdValid(monthId){
         // exemples of valid ids:
-        // '2020-01'
+        // '0001-01'
         // '2022-10'
         // '2029-12'
-            
-        if (!(typeof monthId === 'string' || monthId instanceof String)) {
+        const idRegex = "^[0-9]{4}-(0?[1-9]|1[012])$"
+
+        function isString(value){
+            return (typeof value === 'string' || value instanceof String)
+        }
+        if (isString(monthId) == false) {
             console.log('not a string')
             return false
         }
-        if(monthId.length != 7){
-            console.log('wrong lenght')
-            return false
-        }
-        if(monthId.charAt(4) != '-') {
-            console.log('missing "-"')
-            return false
-        }
-        const yearPart = monthId.slice(0, 4)
-        const monthPart = monthId.slice(5)
-        if( !(yearPart.match("^[0-9]{4}")) ){
-            console.log('invalid year')
-            return false
-        }
-        if( !(parseInt(monthPart) > 0 && parseInt(monthPart) < 13) ){ 
-            console.log('invalid month')
-            return false
-        }
-        
-        return true
+        return (monthId.match(idRegex))
     }
 
     static isDaysArrayValid(monthDaysArray, monthId){
