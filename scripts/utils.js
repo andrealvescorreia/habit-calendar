@@ -1,5 +1,8 @@
 import {HabitMonth} from './HabitMonth.js'
 
+import { createHabitMonthController } from './HabitMonthController.js';
+const habitMonthController = createHabitMonthController()
+
 export function getTodayDate(){
     return new Date()
 }
@@ -11,24 +14,22 @@ export function getTodayHabitMonthId(){
 }
 
 
-export function saveHabitMonthIntoLocalStorage(HabitMonth){
-    localStorage.setItem(HabitMonth.getId(), HabitMonth.getJson());
+
+export function themeSwitch(){
+    document.body.classList.toggle("dark");
+    if ( window.localStorage.getItem("theme") === "dark" ) 
+        window.localStorage.setItem("theme", "light");
+    else 
+        window.localStorage.setItem("theme", "dark");
 }
 
 
-export function getHabitMonthFromLocalStorage(id){// returns null if not found it
-    let simpleHabitMonth = JSON.parse(localStorage.getItem(id))
-    //let foundHabitMonth = new HabitMonth(simpleHabitMonth.id, simpleHabitMonth.daysArray)
-    if(simpleHabitMonth == null) return null
-    let foundHabitMonth = HabitMonth.createHabitMonth(simpleHabitMonth.id, simpleHabitMonth.daysArray)
-    return foundHabitMonth;
-}
 
 
 export function calculateStreak(habitMonthId, pivotDay){
     let habitMonthStreak = 0
     
-    const habitMonth = getHabitMonthFromLocalStorage(habitMonthId)
+    const habitMonth = habitMonthController.getFromLocalStorage(habitMonthId)
 
     if(habitMonth == null) return 0
 
@@ -56,7 +57,7 @@ export function calculateStreak(habitMonthId, pivotDay){
     const auxDate = new Date(previousHabitMonthId + '-1')
     const lastDayOfPreviousHabitMonth = new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
     
-    let streak = habitMonthStreak
-    streak += calculateStreak(previousHabitMonthId, lastDayOfPreviousHabitMonth)
-    return streak
+    
+    let totalStreak = habitMonthStreak + calculateStreak(previousHabitMonthId, lastDayOfPreviousHabitMonth)
+    return totalStreak
 }

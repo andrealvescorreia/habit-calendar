@@ -1,15 +1,12 @@
 // this script is responsible for the visual part of the application.
 // __________________________________________________________________
 
-import {updateColorsValues, 
+import { 
         txtStreak, 
         txtHabitMonthName, 
         txtSuccessPercentage, 
-        dayButtons, 
-        numberColor, 
-        numberColorTransparent, 
-        successColor, 
-        failureColor} from './DOMelements.js';
+        dayButtons,
+        allBttnsWIthSvg} from './DOMelements.js';
 
 import {getTodayDay, 
         calculateStreak, 
@@ -21,14 +18,7 @@ import {getTodayDay,
 
 
 
-export function themeSwitch(){
-    document.body.classList.toggle("dark");
-    if ( window.localStorage.getItem("theme") === "dark" ) 
-        window.localStorage.setItem("theme", "light");
-    else 
-        window.localStorage.setItem("theme", "dark");
-    updateTheme()
-}
+
 
 
 // most important function of this script.
@@ -40,25 +30,23 @@ export function updateDisplay(displayHabitMonth) {
     updateHabitMonthNameDisplay(displayHabitMonth)
 }
 
-function updateTheme(){
+export function updateTheme(){
     if(window.localStorage.getItem("theme") === "dark"){
         document.body.classList.toggle("dark", true);
     }
-    updateColorsValues()
-    updateBttnsTheme()
+    updateSvgBttnsTheme()
+
 }
 
-function updateBttnsTheme(){
+function updateSvgBttnsTheme(){
     const currentTheme = window.localStorage.getItem("theme")
-    if(currentTheme === "light"){
-        document.querySelectorAll('.bttn-svg').forEach(button =>{
+
+    allBttnsWIthSvg.forEach(button =>{
+        if(currentTheme === "light")
             button.style.filter = "none";
-        })
-    }else if(currentTheme === "dark"){
-        document.querySelectorAll('.bttn-svg').forEach(button =>{
-            button.style.filter = "invert(100%)";
-        })
-    }
+        else
+        button.style.filter = "invert(100%)"
+    })
 }
 
 
@@ -67,18 +55,17 @@ function updateStreakDisplay(displayHabitMonth){
         txtStreak.innerText = ''
         return
     }
-    let streak
-    if(displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0){ 
-        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay() - 1)
-    }else{
-        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay())
-    }
 
-    if(streak <= 1){
+    let streak
+    if(displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0)
+        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay() - 1)
+    else
+        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay())
+
+    if(streak <= 1)
         txtStreak.innerText = ''
-    }else{
+    else
         txtStreak.innerText = String(streak) + ' days Streak'
-    }
 }
 
 
@@ -101,7 +88,7 @@ function updateSuccessPercentageDisplay(displayHabitMonth){
 function updateDayButtonsDisplay(displayHabitMonth){
 
     updateGridStart();
-    resetDayBttnsToDefaultValue();
+    resetDayBttnsToDefault();
     hideDaysNotInTheMonth();
     updateDayBttnsColors();
 
@@ -110,28 +97,17 @@ function updateDayButtonsDisplay(displayHabitMonth){
         dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDayNumber() + 1; /* 1(Sunday), ... , 7(Saturday) */
     }
 
-    function resetDayBttnsToDefaultValue() {
-        let dayCount = 0;
+    function resetDayBttnsToDefault() {
         dayButtons.forEach(button => {
-            dayCount++;
-            button.innerText = dayCount;
+            button.className = "day-button"
             button.disabled = false;
-            button.style.position = "static";
-            button.style.zIndex = "auto";
-            button.style.borderColor = "transparent";
-            button.style.fontWeight = "normal";
-            button.style.opacity = "1";
-            button.style.color = numberColor;
         });
     }
 
     function hideDaysNotInTheMonth() {
-        // ex: february only has 28 days. So day 29, 30 and 31 should not display
+        // ex: february only has 28 days. So day 29, 30 and 31 should not display.
         for (let i = 31; i > displayHabitMonth.getNumberOfDays(); i--) {
             const button = dayButtons[i - 1];
-            button.innerHTML = '';
-            button.style.position = "absolute";
-            button.style.zIndex = "-1";
             button.disabled = true;
         }
     }
@@ -140,45 +116,35 @@ function updateDayButtonsDisplay(displayHabitMonth){
         const aux = displayHabitMonth.getDaysArray();
         for (let i = 0; i < aux.length; i++) {
             
-            const button = dayButtons[i];
+            const button = dayButtons[i]
+            updateDayBttnFontWeight(button)
             updateDisplayBttnState(button)
-            updateDayBttnFontWeight(button);
-
-
-            function updateDisplayBttnState(dayButton){
-                dayButton.style.borderStyle = "solid";
-                if ((aux[i] == 1)) {
-                    dayButton.style.borderColor = successColor;
-                } else if (aux[i] == -1) {
-                    dayButton.style.borderColor = failureColor;
-                }
-                else {
-                    dayButton.style.borderStyle = "none";
-                }
-            }
+         
 
             function updateDayBttnFontWeight(button) {
-                let dayNumberFromTheBttn = button.innerText
+                
                 //if the displaying HabitMonth has already passed for the user (chronologically):
                 if ((new Date(getTodayHabitMonthId() + '-1')).getTime() > (new Date(displayHabitMonth.getId() + '-1')).getTime()) {
-                    button.style.fontWeight = "700";
-                    button.style.color = numberColorTransparent;
+                    button.className = "day-button day-button-bold-transparent-number";
                 }
                 //else, if the displaying HabitMonth is the one the user is living at the moment:
                 else if (displayHabitMonth.getId() == getTodayHabitMonthId()) {
+                    let dayNumberFromTheBttn = button.innerText
                     if (dayNumberFromTheBttn < getTodayDay()) {
-                        button.style.fontWeight = "700";
-                        button.style.color = numberColorTransparent;
+                        button.className = "day-button day-button-bold-transparent-number";
                     }
                     else if (dayNumberFromTheBttn == getTodayDay()) {
-                        button.style.fontWeight = "900";
+                        button.className = "day-button day-button-bolder-number";
                     }
                 }
             }
+
+            function updateDisplayBttnState(dayButton){
+                if ((aux[i] == 1))
+                    dayButton.classList.add('day-button-success-state');
+                else if (aux[i] == -1) 
+                    dayButton.classList.add('day-button-failure-state');
+            }
         }
-
-        
     }
-
-    
 }

@@ -109,9 +109,36 @@ button:hover{
     border-radius: 100%;
     padding: 0.645rem;
     
+    color: var(--number-color);
+    font-weight: normal;
+    border-color: transparent;
+
+    position: static;
+    z-index: auto;
 }
 
+.day-button-bolder-number{
+    color: var(--number-color);
+    font-weight: bolder;
+}
+.day-button-bold-transparent-number{
+    color: var(--number-color-transparent);
+    font-weight: bold;
+}
 
+.day-button-success-state{
+    border-style: solid;
+    border-color: var(--success-color);
+}
+.day-button-failure-state{
+    border-style: solid;
+    border-color: var(--failure-color);
+}
+
+.day-button:disabled {
+    position: absolute;
+    z-index: -1;
+}
 
 .day-of-week{/* Su Mo Tu We Th Fr Sa*/
     font-family: 'Poppins', sans-serif;
