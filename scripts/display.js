@@ -31,22 +31,8 @@ export function updateDisplay(displayHabitMonth) {
 }
 
 export function updateTheme(){
-    if(window.localStorage.getItem("theme") === "dark"){
-        document.body.classList.toggle("dark", true);
-    }
-    updateSvgBttnsTheme()
-
-}
-
-function updateSvgBttnsTheme(){
-    const currentTheme = window.localStorage.getItem("theme")
-
-    allBttnsWIthSvg.forEach(button =>{
-        if(currentTheme === "light")
-            button.style.filter = "none";
-        else
-        button.style.filter = "invert(100%)"
-    })
+    if(window.localStorage.getItem("theme") === "dark")
+        document.body.classList.toggle("dark", true)   
 }
 
 
@@ -86,7 +72,6 @@ function updateSuccessPercentageDisplay(displayHabitMonth){
 
 
 function updateDayButtonsDisplay(displayHabitMonth){
-
     updateGridStart();
     resetDayBttnsToDefault();
     hideDaysNotInTheMonth();

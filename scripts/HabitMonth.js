@@ -112,8 +112,8 @@ export class HabitMonth {
     static isIdValid(monthId){
         // exemples of valid ids:
         // '0001-01'
-        // '2022-10'
-        // '2029-12'
+        // '2022-09'
+        // '9999-12'
         const idRegex = "^[0-9]{4}-(0?[1-9]|1[012])$"
 
         function isString(value){

@@ -1,3 +1,6 @@
+// this script is responsible for the interection between the user and the application.
+// __________________________________________________________________
+
 import {getTodayHabitMonthId} from './utils.js';
 import {HabitMonth} from './HabitMonth.js';
 import {createHabitMonthController} from './HabitMonthController.js'
@@ -6,7 +9,7 @@ import {updateDisplay} from './display.js';
 export function createHabitMonthView(){
     const habitMonthController = createHabitMonthController()
     let currentlyDisplayingHabitMonth
-    // makes sure that, the default displaying month when the page is loaded, it's the one the user is living on at the moment.
+    // makes sure that, the default displaying month when the page is loaded, it's the current month
     changeCurrentlyDisplayingHabitMonth(getTodayHabitMonthId())
     updateDisplay(currentlyDisplayingHabitMonth)
 
@@ -25,7 +28,7 @@ export function createHabitMonthView(){
         updateDisplay(currentlyDisplayingHabitMonth)
     }
 
-    function getCurrentlyDisplayingHabitMonth() {return currentlyDisplayingHabitMonth}
+    
     
     function changeToPreviousMonth(){
         let previousHabitMonthId
@@ -64,12 +67,9 @@ export function createHabitMonthView(){
     }
 
     return{
-        getCurrentlyDisplayingHabitMonth,
         changeToPreviousMonth,
         changeToNextMonth,
         clearAllDataFromCurrentlyDisplayingHabitMonth,
         switchDayStateOfCurrentlyDisplayingHabitMonth
     }
-
-    
 }

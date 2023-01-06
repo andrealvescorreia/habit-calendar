@@ -15,6 +15,7 @@
     --calendar-bg-color: white;
     --number-color: rgb(47, 54, 46);
     --number-color-transparent: rgb(47, 54, 46, 0.5);
+    --svg-filter: none;
 }
 
 .dark{
@@ -22,6 +23,7 @@
     --calendar-bg-color: #2C3330;
     --number-color: rgb(242, 255, 240);
     --number-color-transparent: rgb(242, 255, 240, 0.5);
+    --svg-filter: invert(100%);
 }
 
 body{
@@ -66,7 +68,7 @@ button:hover{
     background-color: rgba(0, 0, 0, 0.15);
 }
 .bttn-svg{
-    
+    filter: var(--svg-filter);
     width: 1.625rem; 
     opacity: 0.8;
 }
