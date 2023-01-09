@@ -10,7 +10,7 @@ The main goal is for you to always reach a new *'high score'*, symbolizing your 
 ***
 ### Try it now on [GitHub Pages](https://andrealvescorreia.github.io/habit-calendar/)!
 ***
-Here are some habits indications for you to pick one and try to reach it at 100%:
+Here are some habits indications for you to pick one and try to reach the 100% mark:
 * Physical exercise;
 * Meditation;
 * Reading;
