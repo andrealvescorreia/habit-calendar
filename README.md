@@ -8,7 +8,7 @@ The main goal is for you to always reach a new *'high score'*, symbolizing your 
 #### *"We are what we repeatedly do. Excellence, then, is not an act, but a habit."* - Will Durant
 
 
-## [Try it](https://andrealvescorreia.github.io/habit-calendar/) now!
+## [Try it out](https://andrealvescorreia.github.io/habit-calendar/) now!
 
 Here are some habits indications for you to pick one and try to reach the 100% mark:
 * Physical exercise;
