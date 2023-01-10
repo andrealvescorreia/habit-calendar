@@ -7,16 +7,9 @@ import {
         txtSuccessPercentage, 
         dayButtons} from './DOMelements.js';
 
-import {getTodayDay, 
-        calculateStreak, 
+import {getTodayDay,  
         getTodayHabitMonthId, 
         updateTheme} from './utils.js';
-
-
-
-
-
-
 
 
 
@@ -39,7 +32,7 @@ function updateStreakDisplay(displayHabitMonth){
         return
     }
 
-    let streak
+    let streak = 0
     if(todayIsInNeutralState())
         streak = calculateStreakFromYesterday()
     else
@@ -51,18 +44,20 @@ function updateStreakDisplay(displayHabitMonth){
         txtStreak.innerText = String(streak) + ' days Streak'
     
 
-
+    
     function isNotCurrentMonth(){
         return displayHabitMonth.getId() != getTodayHabitMonthId()
     }
     function todayIsInNeutralState(){
         return displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0
     }
+    
     function calculateStreakFromToday(){
-        return calculateStreak(getTodayHabitMonthId(), getTodayDay())
+        return displayHabitMonth.streak(getTodayDay())
     }
     function calculateStreakFromYesterday(){
-        return calculateStreak(getTodayHabitMonthId(), getTodayDay() - 1)
+        return displayHabitMonth.streak(getTodayDay() - 1)
+        
     }
 }
 

@@ -1,6 +1,7 @@
-import { HabitMonth } from './HabitMonth.js';
 import { createHabitMonthController } from './HabitMonthController.js';
 const habitMonthController = createHabitMonthController()
+
+import {getTheme, setTheme} from './themeController.js';
 
 export function getTodayDate(){
     return new Date()
@@ -30,43 +31,11 @@ export function updateTheme(){
 }
 
 function themeIsDark(){
-    return window.localStorage.getItem("theme") === "dark"
-}
-function setTheme(theme){
-    window.localStorage.setItem("theme", theme);
+    return getTheme() === "dark"
 }
 
 
 
-export function calculateStreak(habitMonthId, pivotDay){
-    let habitMonthStreak = 0
-    const habitMonth = habitMonthController.getFromLocalStorage(habitMonthId)
-
-    if(habitMonth == null) return 0
-
-    for (let dayIndex = pivotDay - 1; dayIndex >= 0; dayIndex--) {
-        if(isSuccessfulDay(dayIndex))
-            habitMonthStreak++
-        else 
-            return habitMonthStreak
-    }
-
-    const previousHabitMonthId = generatePreviousHabitMonthId(habitMonth)
-    const lastDayOfPreviousMonth = getLastDayOfMonth(previousHabitMonthId)
-    
-    return habitMonthStreak + calculateStreak(previousHabitMonthId, lastDayOfPreviousMonth)
-
-
-    // bellow are aux functions:
-    function isSuccessfulDay(dayIndex){
-        return habitMonth.getDaysArray()[dayIndex] == 1
-    }
-    
-    function getLastDayOfMonth(habitMonthId){
-        const auxDate = new Date(habitMonthId + '-1')
-        return new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
-    }
-}
 
 export function generatePreviousHabitMonthId(habitMonth){
     if(habitMonthIsJanuary())

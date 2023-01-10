@@ -1,3 +1,4 @@
+import { createHabitMonthController } from "./HabitMonthController.js"
 
 export class HabitMonth {
     #id 
@@ -5,10 +6,10 @@ export class HabitMonth {
 
     // static factory method
     static createHabitMonth(id, daysArray){
-        if(this.isIdValid(id) == false)
+        if(this.#isIdValid(id) == false)
             return null
         
-        if(daysArray != null && this.isDaysArrayValid(daysArray, id) == false)
+        if(daysArray != null && this.#isDaysArrayValid(daysArray, id) == false)
             return null
         
         return new HabitMonth(id, daysArray)
@@ -109,7 +110,7 @@ export class HabitMonth {
 
 
 
-    static isIdValid(monthId){
+    static #isIdValid(monthId){
         // exemples of valid ids:
         // '0001-01'
         // '2022-09'
@@ -126,7 +127,7 @@ export class HabitMonth {
         return (monthId.match(idRegex))
     }
 
-    static isDaysArrayValid(monthDaysArray, monthId){
+    static #isDaysArrayValid(monthDaysArray, monthId){
         if(!Array.isArray(monthDaysArray)) {
             console.log('not an array')
             return false
@@ -153,6 +154,10 @@ export class HabitMonth {
                 'numOfDays(): '+this.getNumberOfDays()+'\n'+
                 '#daysArray: '+this.getDaysArray()
         return info;
+    }
+
+    streak(pivotDay){
+        return createHabitMonthController().getStreak(this.getId(), pivotDay)
     }
 }
 
