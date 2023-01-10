@@ -1,7 +1,10 @@
 // this script is responsible for the interection between the user and the application.
 // __________________________________________________________________
 
-import {getTodayHabitMonthId} from './utils.js';
+import {getTodayHabitMonthId, 
+        generatePreviousHabitMonthId, 
+        generateNextHabitMonthId} from './utils.js';
+
 import {HabitMonth} from './HabitMonth.js';
 import {createHabitMonthController} from './HabitMonthController.js'
 import {updateDisplay} from './display.js';
@@ -10,11 +13,11 @@ export function createHabitMonthView(){
     const habitMonthController = createHabitMonthController()
     let currentlyDisplayingHabitMonth
     // makes sure that, the default displaying month when the page is loaded, it's the current month
-    changeCurrentlyDisplayingHabitMonth(getTodayHabitMonthId())
+    changeDisplayingHabitMonth(getTodayHabitMonthId())
     updateDisplay(currentlyDisplayingHabitMonth)
 
 
-    function changeCurrentlyDisplayingHabitMonth(habitMonthId){
+    function changeDisplayingHabitMonth(habitMonthId){
         const existingHabitMonth = habitMonthController.getFromLocalStorage(habitMonthId)
         if(existingHabitMonth != null){
             currentlyDisplayingHabitMonth = existingHabitMonth
@@ -31,26 +34,14 @@ export function createHabitMonthView(){
     
     
     function changeToPreviousMonth(){
-        let previousHabitMonthId
-        if(currentlyDisplayingHabitMonth.getNumber() - 1 > 0){
-            previousHabitMonthId = currentlyDisplayingHabitMonth.getYear() + '-' + String(currentlyDisplayingHabitMonth.getNumber() - 1).padStart(2, '0')   
-        } 
-        else {
-            previousHabitMonthId = currentlyDisplayingHabitMonth.getYear() - 1 + '-12'
-        }
-        changeCurrentlyDisplayingHabitMonth(previousHabitMonthId)
+        let previousHabitMonthId = generatePreviousHabitMonthId(currentlyDisplayingHabitMonth)
+        changeDisplayingHabitMonth(previousHabitMonthId)
     }
 
 
     function changeToNextMonth() {
-        let nextHabitMonthId;
-        if (currentlyDisplayingHabitMonth.getNumber() + 1 <= 12) {
-            nextHabitMonthId = currentlyDisplayingHabitMonth.getYear() + '-' + String(currentlyDisplayingHabitMonth.getNumber() + 1).padStart(2, '0');
-        }
-        else {
-            nextHabitMonthId = currentlyDisplayingHabitMonth.getYear() + 1 + '-01';
-        }
-        changeCurrentlyDisplayingHabitMonth(nextHabitMonthId);
+        let nextHabitMonthId = generateNextHabitMonthId(currentlyDisplayingHabitMonth)
+        changeDisplayingHabitMonth(nextHabitMonthId);
     }
 
     function clearAllDataFromCurrentlyDisplayingHabitMonth(){

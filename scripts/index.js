@@ -6,7 +6,7 @@ import {dayButtons,
         bttnTrashCan, 
         bttnDarkModeToggle} from './DOMelements.js';
 
-import {themeSwitch} from './utils.js';
+import {switchTheme} from './utils.js';
 import { createHabitMonthView } from './HabitMonthView.js';
 
 const habitMonthView = createHabitMonthView()
@@ -36,5 +36,5 @@ bttnTrashCan.addEventListener("click", ()=>{
 })
 
 bttnDarkModeToggle.addEventListener("click", () => {
-    themeSwitch()
+    switchTheme()
 })

@@ -14,22 +14,27 @@ export function getTodayHabitMonthId(){
 
 
 
-export function themeSwitch(){
+export function switchTheme(){
     document.body.classList.toggle("dark");
-    if ( window.localStorage.getItem("theme") === "dark" ) 
-        window.localStorage.setItem("theme", "light");
+    if (themeIsDark()) 
+        setTheme("light")
     else 
-        window.localStorage.setItem("theme", "dark");
+        setTheme("dark")
+
     updateTheme()
 }
 
 export function updateTheme(){
-    if(window.localStorage.getItem("theme") === "dark")
-        document.body.classList.toggle("dark", true)   
+    if(themeIsDark())
+        document.body.classList.toggle("dark", true) 
 }
 
-
-
+function themeIsDark(){
+    return window.localStorage.getItem("theme") === "dark"
+}
+function setTheme(theme){
+    window.localStorage.setItem("theme", theme);
+}
 
 
 
@@ -56,18 +61,29 @@ export function calculateStreak(habitMonthId, pivotDay){
     function isSuccessfulDay(dayIndex){
         return habitMonth.getDaysArray()[dayIndex] == 1
     }
-    function generatePreviousHabitMonthId(habitMonth){
-        if(habitMonthIsJanuary()){
-            return habitMonth.getYear() - 1 + '-12'
-        }
-        return habitMonth.getYear() + '-' + String(habitMonth.getNumber() - 1).padStart(2, '0')
-
-        function habitMonthIsJanuary(){
-            return habitMonth.getNumber() == 1
-        }
-    }
+    
     function getLastDayOfMonth(habitMonthId){
         const auxDate = new Date(habitMonthId + '-1')
         return new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
+    }
+}
+
+export function generatePreviousHabitMonthId(habitMonth){
+    if(habitMonthIsJanuary())
+        return habitMonth.getYear() - 1 + '-12'
+    return habitMonth.getYear() + '-' + String(habitMonth.getNumber() - 1).padStart(2, '0')
+
+    function habitMonthIsJanuary(){
+        return habitMonth.getNumber() == 1
+    }
+}
+
+export function generateNextHabitMonthId(habitMonth){
+    if(habitMonthIsDecember())
+        return habitMonth.getYear() + 1 + '-01';
+    return habitMonth.getYear() + '-' + String(habitMonth.getNumber() + 1).padStart(2, '0');
+    
+    function habitMonthIsDecember(){
+        return habitMonth.getNumber() == 12
     }
 }
