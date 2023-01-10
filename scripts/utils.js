@@ -1,5 +1,4 @@
-import {HabitMonth} from './HabitMonth.js'
-
+import { HabitMonth } from './HabitMonth.js';
 import { createHabitMonthController } from './HabitMonthController.js';
 const habitMonthController = createHabitMonthController()
 
@@ -24,45 +23,51 @@ export function themeSwitch(){
     updateTheme()
 }
 
-
-
 export function updateTheme(){
     if(window.localStorage.getItem("theme") === "dark")
         document.body.classList.toggle("dark", true)   
 }
 
+
+
+
+
+
 export function calculateStreak(habitMonthId, pivotDay){
     let habitMonthStreak = 0
-    
     const habitMonth = habitMonthController.getFromLocalStorage(habitMonthId)
 
     if(habitMonth == null) return 0
 
-    for (let i = pivotDay - 1; i >= 0; i--) {
-        const element = habitMonth.getDaysArray()[i]
-        if(element == 1){
+    for (let dayIndex = pivotDay - 1; dayIndex >= 0; dayIndex--) {
+        if(isSuccessfulDay(dayIndex))
             habitMonthStreak++
-        }else{
-            if(i == pivotDay - 1){
-                return habitMonthStreak
-            }else if(i != pivotDay - 1){
-                return habitMonthStreak
-            }  
+        else 
+            return habitMonthStreak
+    }
+
+    const previousHabitMonthId = generatePreviousHabitMonthId(habitMonth)
+    const lastDayOfPreviousMonth = getLastDayOfMonth(previousHabitMonthId)
+    
+    return habitMonthStreak + calculateStreak(previousHabitMonthId, lastDayOfPreviousMonth)
+
+
+    // bellow are aux functions:
+    function isSuccessfulDay(dayIndex){
+        return habitMonth.getDaysArray()[dayIndex] == 1
+    }
+    function generatePreviousHabitMonthId(habitMonth){
+        if(habitMonthIsJanuary()){
+            return habitMonth.getYear() - 1 + '-12'
+        }
+        return habitMonth.getYear() + '-' + String(habitMonth.getNumber() - 1).padStart(2, '0')
+
+        function habitMonthIsJanuary(){
+            return habitMonth.getNumber() == 1
         }
     }
-
-    let previousHabitMonthId
-    if(habitMonth.getNumber() - 1 > 0){
-        previousHabitMonthId = habitMonth.getYear() + '-' + String(habitMonth.getNumber() - 1).padStart(2, '0')   
-    } 
-    else {
-        previousHabitMonthId = habitMonth.getYear() - 1 + '-12'
+    function getLastDayOfMonth(habitMonthId){
+        const auxDate = new Date(habitMonthId + '-1')
+        return new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
     }
-
-    const auxDate = new Date(previousHabitMonthId + '-1')
-    const lastDayOfPreviousHabitMonth = new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
-    
-    
-    let totalStreak = habitMonthStreak + calculateStreak(previousHabitMonthId, lastDayOfPreviousHabitMonth)
-    return totalStreak
 }

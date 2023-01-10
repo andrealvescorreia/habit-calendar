@@ -34,21 +34,36 @@ export function updateDisplay(displayHabitMonth) {
 
 
 function updateStreakDisplay(displayHabitMonth){
-    if(displayHabitMonth.getId() != getTodayHabitMonthId()) {
+    if(isNotCurrentMonth()) {
         txtStreak.innerText = ''
         return
     }
 
     let streak
-    if(displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0)
-        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay() - 1)
+    if(todayIsInNeutralState())
+        streak = calculateStreakFromYesterday()
     else
-        streak = calculateStreak(getTodayHabitMonthId(), getTodayDay())
+        streak = calculateStreakFromToday()
 
     if(streak <= 1)
         txtStreak.innerText = ''
     else
         txtStreak.innerText = String(streak) + ' days Streak'
+    
+
+
+    function isNotCurrentMonth(){
+        return displayHabitMonth.getId() != getTodayHabitMonthId()
+    }
+    function todayIsInNeutralState(){
+        return displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0
+    }
+    function calculateStreakFromToday(){
+        return calculateStreak(getTodayHabitMonthId(), getTodayDay())
+    }
+    function calculateStreakFromYesterday(){
+        return calculateStreak(getTodayHabitMonthId(), getTodayDay() - 1)
+    }
 }
 
 
@@ -63,8 +78,8 @@ function updateSuccessPercentageDisplay(displayHabitMonth){
     
     const auxDaysArray = displayHabitMonth.getDaysArray()
     const numOfSuccesfulDays = countOccurrences(1, auxDaysArray)
-    let succesPercentage = (numOfSuccesfulDays * 100) / auxDaysArray.length
-    txtSuccessPercentage.innerText = String(parseInt(succesPercentage))
+    let intSuccesPercentage = parseInt((numOfSuccesfulDays * 100) / auxDaysArray.length)
+    txtSuccessPercentage.innerText = String(intSuccesPercentage)
 }
 
 
@@ -72,7 +87,7 @@ function updateDayButtonsDisplay(displayHabitMonth){
     updateGridStart();
     resetDayBttnsToDefault();
     hideDaysNotInTheMonth();
-    updateDayBttnsColors();
+    updateDayBttnsStyle();
 
 
     function updateGridStart(){
@@ -94,7 +109,7 @@ function updateDayButtonsDisplay(displayHabitMonth){
         }
     }
 
-    function updateDayBttnsColors() {
+    function updateDayBttnsStyle() {
         const aux = displayHabitMonth.getDaysArray();
         for (let i = 0; i < aux.length; i++) {
             
@@ -105,12 +120,10 @@ function updateDayButtonsDisplay(displayHabitMonth){
 
             function updateDayBttnFontWeight(button) {
                 
-                //if the displaying HabitMonth has already passed for the user (chronologically):
-                if ((new Date(getTodayHabitMonthId() + '-1')).getTime() > (new Date(displayHabitMonth.getId() + '-1')).getTime()) {
+                if(monthAlreadyPassed()) {
                     button.className = "day-button day-button-bold-transparent-number";
                 }
-                //else, if the displaying HabitMonth is the one the user is living at the moment:
-                else if (displayHabitMonth.getId() == getTodayHabitMonthId()) {
+                else if (isCurrentMonth()) {
                     let dayNumberFromTheBttn = button.innerText
                     if (dayNumberFromTheBttn < getTodayDay()) {
                         button.className = "day-button day-button-bold-transparent-number";
@@ -119,6 +132,14 @@ function updateDayButtonsDisplay(displayHabitMonth){
                         button.className = "day-button day-button-bolder-number";
                     }
                 }
+
+                function monthAlreadyPassed(){
+                    return (new Date(getTodayHabitMonthId() + '-1')).getTime() > (new Date(displayHabitMonth.getId() + '-1')).getTime()
+                }
+                function isCurrentMonth(){
+                    return displayHabitMonth.getId() == getTodayHabitMonthId()
+                }
+
             }
 
             function updateDisplayBttnState(dayButton){
