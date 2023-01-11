@@ -91,9 +91,9 @@ export function createHabitMonthRenderer(){
         
                     function updateDisplayBttnState(dayButton){
                         if ((aux[i] == 1))
-                            dayButton.classList.add('day-button-success-state');
+                            dayButton.classList.toggle('success-state');
                         else if (aux[i] == -1) 
-                            dayButton.classList.add('day-button-failure-state');
+                            dayButton.classList.toggle('failure-state');
                     }
                 }
             }

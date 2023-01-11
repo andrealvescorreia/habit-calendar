@@ -130,11 +130,11 @@ button:hover{
     font-weight: bold;
 }
 
-.day-button-success-state{
+.day-button.success-state{
     border-style: solid;
     border-color: var(--success-color);
 }
-.day-button-failure-state{
+.day-button.failure-state{
     border-style: solid;
     border-color: var(--failure-color);
 }
