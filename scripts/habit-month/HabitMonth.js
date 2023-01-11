@@ -1,10 +1,7 @@
-//import { createHabitMonthController } from "./HabitMonthController.js"
-
 export class HabitMonth {
     #id 
     #daysArray = []
 
-    // static factory method
     static createHabitMonth(id, daysArray){
         if(this.#isIdValid(id) == false)
             return null
@@ -34,10 +31,6 @@ export class HabitMonth {
 
 
     
-    
-    
-
-
     getNumberOfDays(){
         return this.#daysArray.length
     }

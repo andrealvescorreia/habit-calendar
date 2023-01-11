@@ -1,14 +1,15 @@
+
 import {dayButtons, 
         bttnHabitMonthSwitcherPrevious, 
         bttnHabitMonthSwitcherNext, 
         bttnTrashCan, 
-        bttnDarkModeToggle} from './DOMelements.js';
+        bttnDarkModeToggle} from './utils/DOMelements.js';
 
-import { switchTheme, updateTheme } from './themeView.js';
-import { createHabitMonthView } from './HabitMonthView.js';
-import { createHabitMonthController } from './HabitMonthController.js';
-import { createHabitMonthRenderer } from './HabitMonthRenderer.js';
-import { createHabitMonthStreakRenderer } from './HabitMonthStreakRenderer.js';
+import { switchTheme, updateTheme } from './theme/themeView.js';
+import { createHabitMonthView } from './habit-month/HabitMonthView.js';
+import { createHabitMonthController } from './habit-month/HabitMonthController.js';
+import { createHabitMonthRenderer } from './habit-month/HabitMonthRenderer.js';
+import { createHabitMonthStreakRenderer } from './habit-month/HabitMonthStreakRenderer.js';
 
 
 

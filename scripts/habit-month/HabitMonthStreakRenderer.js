@@ -1,7 +1,7 @@
-import {txtStreak} from './DOMelements.js';
+import {txtStreak} from '../utils/DOMelements.js';
 
 import {getTodayDay,  
-    getTodayHabitMonthId} from './utils.js';
+    getTodayHabitMonthId} from '../utils/utils.js';
 
 import { createHabitMonthController } from './HabitMonthController.js';
 

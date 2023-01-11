@@ -1,11 +1,12 @@
 
+
 import {txtStreak, 
         txtHabitMonthName, 
         txtSuccessPercentage, 
-        dayButtons} from './DOMelements.js';
+        dayButtons} from '../utils/DOMelements.js';
 
 import {getTodayDay,  
-        getTodayHabitMonthId} from './utils.js';
+        getTodayHabitMonthId} from '../utils/utils.js';
 
 
 export function createHabitMonthRenderer(){

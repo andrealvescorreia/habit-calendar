@@ -1,7 +1,7 @@
 // this script is responsible for the interection between the user and the habit calendar.
 // __________________________________________________________________
 
-import {getTodayHabitMonthId} from './utils.js';
+import {getTodayHabitMonthId} from '../utils/utils.js';
 
 import {HabitMonth} from './HabitMonth.js';
 import {createHabitMonthController} from './HabitMonthController.js'
