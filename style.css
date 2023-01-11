@@ -137,42 +137,14 @@ button:hover{
     border: 0.08rem;
     border-style: solid;
     border-color: var(--success-color);
-    transition:all 0.3s ease;
 }
 .day-button.failure-state{
     border: 0.08rem;
     border-style: solid;
     border-color: var(--failure-color);
-    transition:all 0.3s ease;
 }
 
 
-.day-button.failure-state:after {/*transition to succes state*/
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 4em;
-    left: 0;
-    top:0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: all 0.4s;
-    box-shadow: 0 0 10px 10px var(--success-color);
-}
-  
-.day-button.failure-state:active:after {/*transition to succes state*/
-    box-shadow: 0 0 0 0 var(--success-color);
-    /*position: absolute;*/
-    border-radius: 2em;
-  
-    opacity: 1;
-    transition: 0s;
-}
-.day-button.failure-state:active {/*transition to succes state*/
-    width: 2rem;
-    height: 2rem;
-}
   
 
 .day-button:disabled {
