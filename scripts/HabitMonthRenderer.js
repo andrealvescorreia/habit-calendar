@@ -146,6 +146,6 @@ export function createHabitMonthRenderer(){
     
 
     return {
-        updateHabitMonthDisplay: update
+        update
     }
 }

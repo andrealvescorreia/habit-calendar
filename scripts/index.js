@@ -8,18 +8,26 @@ import {dayButtons,
 
 import {switchTheme, updateTheme} from './utils.js';
 import { createHabitMonthView } from './HabitMonthView.js';
-
-const habitMonthView = createHabitMonthView()
-
+import { createHabitMonthController } from './HabitMonthController.js';
+import { createHabitMonthRenderer } from './HabitMonthRenderer.js';
 
 updateTheme()
 
+
+const habitMonthController = createHabitMonthController()
+const habitMonthRenderer = createHabitMonthRenderer()
+const habitMonthView = createHabitMonthView()
+
+habitMonthView.subscribe(habitMonthController.putIntoLocalStorage)
+habitMonthView.subscribe(habitMonthRenderer.update)
+habitMonthView.defaultMonth()
+
 bttnHabitMonthSwitcherPrevious.addEventListener("click", ()=>{
-    habitMonthView.changeToPreviousMonth()
+    habitMonthView.changeToPrevious()
 })
 
 bttnHabitMonthSwitcherNext.addEventListener("click", ()=>{
-    habitMonthView.changeToNextMonth()
+    habitMonthView.changeToNext()
 })
 
 

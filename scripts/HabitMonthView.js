@@ -7,17 +7,32 @@ import {getTodayHabitMonthId,
 
 import {HabitMonth} from './HabitMonth.js';
 import {createHabitMonthController} from './HabitMonthController.js'
-import {createHabitMonthRenderer} from './HabitMonthRenderer.js';
 
 export function createHabitMonthView(){
     const habitMonthController = createHabitMonthController()
-    const habitMonthRenderer = createHabitMonthRenderer()
+    var currentlyDisplayingHabitMonth
 
+    const state = {
+        observers: []
+    }
 
-    let currentlyDisplayingHabitMonth
-    // makes sure that, the default displaying month when the page is loaded, it's the current month
-    changeDisplayingHabitMonth(getTodayHabitMonthId())
-    habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
+    function subscribe(observerFunction){
+        state.observers.push(observerFunction)
+    }
+
+    function notifyAll(habitMonth){
+        for (const observerFunction of state.observers){
+            observerFunction(habitMonth)
+        }
+    }
+
+    
+    function defaultMonth(){
+
+        // makes sure that, the default displaying month when the page is loaded, it's the current month
+        changeDisplayingHabitMonth(getTodayHabitMonthId())
+    }
+    
 
     
     function changeDisplayingHabitMonth(habitMonthId){
@@ -28,21 +43,19 @@ export function createHabitMonthView(){
         else {
             let newHabitMonth = HabitMonth.createHabitMonth(habitMonthId)
             currentlyDisplayingHabitMonth = newHabitMonth
-            habitMonthController.putIntoLocalStorage(currentlyDisplayingHabitMonth)
-            
         }
-        habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
+        notifyAll(currentlyDisplayingHabitMonth)
     }
 
     
     
-    function changeToPreviousMonth(){
+    function changeToPrevious(){
         let previousHabitMonthId = generatePreviousHabitMonthId(currentlyDisplayingHabitMonth)
         changeDisplayingHabitMonth(previousHabitMonthId)
     }
 
 
-    function changeToNextMonth() {
+    function changeToNext() {
         let nextHabitMonthId = generateNextHabitMonthId(currentlyDisplayingHabitMonth)
         changeDisplayingHabitMonth(nextHabitMonthId);
     }
@@ -50,20 +63,20 @@ export function createHabitMonthView(){
     function clearAllDataFromCurrentlyDisplayingHabitMonth(){
         const cleanHabitMonth = HabitMonth.createHabitMonth(currentlyDisplayingHabitMonth.getId())
         currentlyDisplayingHabitMonth = cleanHabitMonth
-        habitMonthController.putIntoLocalStorage(currentlyDisplayingHabitMonth)
-        habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
+        notifyAll(currentlyDisplayingHabitMonth)
     }
 
     function switchDayStateOfCurrentlyDisplayingHabitMonth(dayIndex){
         currentlyDisplayingHabitMonth.switchDayState(dayIndex)
-        habitMonthController.putIntoLocalStorage(currentlyDisplayingHabitMonth)
-        habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
+        notifyAll(currentlyDisplayingHabitMonth)
     }
 
     return{
-        changeToPreviousMonth,
-        changeToNextMonth,
+        changeToPrevious,
+        changeToNext,
         clearAllDataFromCurrentlyDisplayingHabitMonth,
-        switchDayStateOfCurrentlyDisplayingHabitMonth
+        switchDayStateOfCurrentlyDisplayingHabitMonth,
+        subscribe,
+        defaultMonth
     }
 }
