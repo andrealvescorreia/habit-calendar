@@ -2,6 +2,20 @@ import {HabitMonth} from './HabitMonth.js';
 import { generatePreviousHabitMonthId } from './utils.js';
 export function createHabitMonthController(){
     
+    const state = {
+        observers: []
+    }
+
+    function subscribe(observerFunction){
+        state.observers.push(observerFunction)
+    }
+
+    function notifyAll(habitMonth){
+        for (const observerFunction of state.observers){
+            observerFunction(habitMonth)
+        }
+    }
+
     function getFromLocalStorage(id){// returns null if not found it
         let simpleHabitMonth = JSON.parse(localStorage.getItem(id))
         if(simpleHabitMonth == null) return null
@@ -11,6 +25,7 @@ export function createHabitMonthController(){
 
     function putIntoLocalStorage(habitMonth){
         localStorage.setItem(habitMonth.getId(), habitMonth.getJson())
+        notifyAll(habitMonth)
     }
     
     function getStreak(habitMonthId, pivotDay){
@@ -46,7 +61,8 @@ export function createHabitMonthController(){
     return{
         getFromLocalStorage, 
         putIntoLocalStorage,
-        getStreak        
+        getStreak,
+        subscribe     
     }
 }
 

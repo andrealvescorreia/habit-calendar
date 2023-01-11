@@ -1,4 +1,4 @@
-import { createHabitMonthController } from "./HabitMonthController.js"
+//import { createHabitMonthController } from "./HabitMonthController.js"
 
 export class HabitMonth {
     #id 
@@ -154,10 +154,6 @@ export class HabitMonth {
                 'numOfDays(): '+this.getNumberOfDays()+'\n'+
                 '#daysArray: '+this.getDaysArray()
         return info;
-    }
-
-    streak(pivotDay){
-        return createHabitMonthController().getStreak(this.getId(), pivotDay)
     }
 }
 

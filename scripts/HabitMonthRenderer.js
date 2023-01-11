@@ -11,7 +11,7 @@ import {getTodayDay,
 export function createHabitMonthRenderer(){
 
     function update(displayHabitMonth) {
-        updateStreakDisplay()
+        //updateStreakDisplay()
         updateSuccessPercentageDisplay()
         updateDayButtonsDisplay()
         updateHabitMonthNameDisplay()
