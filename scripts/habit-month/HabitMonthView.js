@@ -1,13 +1,13 @@
 // this script is responsible for the interection between the user and the habit calendar.
 // __________________________________________________________________
 
-import {getTodayHabitMonthId} from '../utils/utils.js';
+import {getTodayHabitMonthId} from '../utils/dateUtils.js';
 
 import {HabitMonth} from './HabitMonth.js';
 import {createHabitMonthController} from './HabitMonthController.js'
 
 export function createHabitMonthView(){
-    const habitMonthController = createHabitMonthController()
+    
     var currentlyDisplayingHabitMonth
 
     const state = {
@@ -33,7 +33,7 @@ export function createHabitMonthView(){
 
     
     function changeDisplayingHabitMonth(habitMonthId){
-        const existingHabitMonth = habitMonthController.getFromLocalStorage(habitMonthId)
+        const existingHabitMonth = createHabitMonthController().getFromLocalStorage(habitMonthId)
         if(existingHabitMonth != null){
             currentlyDisplayingHabitMonth = existingHabitMonth
         } 

@@ -6,7 +6,7 @@ import {txtStreak,
         dayButtons} from '../utils/DOMelements.js';
 
 import {getTodayDay,  
-        getTodayHabitMonthId} from '../utils/utils.js';
+        getTodayHabitMonthId} from '../utils/dateUtils.js';
 
 
 export function createHabitMonthRenderer(){
