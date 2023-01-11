@@ -4,6 +4,7 @@ import {txtHabitMonthName,
 
 import {getTodayDay,  
         getTodayHabitMonthId} from '../utils/dateUtils.js';
+import { HabitMonth } from './HabitMonth.js';
 
 
 export function createHabitMonthRenderer(){
@@ -90,9 +91,9 @@ export function createHabitMonthRenderer(){
                     }
         
                     function updateDisplayBttnState(dayButton){
-                        if ((aux[i] == 1))
+                        if ((aux[i] == HabitMonth.DAY_STATES.SUCCESS))
                             dayButton.classList.toggle('success-state');
-                        else if (aux[i] == -1) 
+                        else if (aux[i] == HabitMonth.DAY_STATES.FAILURE) 
                             dayButton.classList.toggle('failure-state');
                     }
                 }

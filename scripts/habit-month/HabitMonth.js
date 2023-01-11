@@ -2,6 +2,12 @@ export class HabitMonth {
     #id 
     #daysArray = []
 
+    static DAY_STATES = {
+        SUCCESS: 1,
+        FAILURE: -1,
+        NEUTRAL: 0
+    }
+
     static createHabitMonth(id, daysArray){
         if(this.#isIdValid(id) == false)
             return null
@@ -66,13 +72,13 @@ export class HabitMonth {
 
         const currentState = this.getDaysArray()[dayIndex]
         switch(currentState){
-            case 0:
+            case HabitMonth.DAY_STATES.NEUTRAL:
                 this.changeDayToFailureState(dayIndex)
                 break
-            case -1:
+            case HabitMonth.DAY_STATES.FAILURE:
                 this.changeDayToSuccessState(dayIndex)
                 break
-            case 1:
+            case HabitMonth.DAY_STATES.SUCCESS:
                 this.changeDayToNeutralState(dayIndex) 
                 break
         }
@@ -80,15 +86,15 @@ export class HabitMonth {
 
     changeDayToSuccessState(dayIndex){
         if(dayIndex >= this.#daysArray.lenght || dayIndex < 0) return
-        this.#daysArray[dayIndex] = 1;  
+        this.#daysArray[dayIndex] = HabitMonth.DAY_STATES.SUCCESS;  
     }
     changeDayToFailureState(dayIndex){
         if(dayIndex >= this.#daysArray.lenght || dayIndex < 0) return
-        this.#daysArray[dayIndex] = -1;  
+        this.#daysArray[dayIndex] = HabitMonth.DAY_STATES.FAILURE;  
     }
     changeDayToNeutralState(dayIndex){
         if(dayIndex >= this.#daysArray.lenght || dayIndex < 0) return
-        this.#daysArray[dayIndex] = 0;  
+        this.#daysArray[dayIndex] = HabitMonth.DAY_STATES.NEUTRAL;  
     }
 
 
@@ -131,7 +137,7 @@ export class HabitMonth {
         }   
         for (let i = 0; i < monthDaysArray.length; i++) {
             const element = monthDaysArray[i];
-            if(element != 0 && element != 1 && element != -1) {
+            if(!(Object.values(this.DAY_STATES).includes(element))) {
                 console.log('invalid value at [',i,']')
                 return false
             }
