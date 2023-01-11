@@ -63,6 +63,7 @@ body{
 button{
     background-color: transparent;
     border-color: transparent;
+    cursor: pointer;
 }
 button:hover{
     background-color: rgba(0, 0, 0, 0.15);
