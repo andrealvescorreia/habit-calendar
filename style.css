@@ -64,6 +64,7 @@ button{
     background-color: transparent;
     border-color: transparent;
     cursor: pointer;
+    user-select: none;
 }
 button:hover{
     background-color: rgba(0, 0, 0, 0.15);
@@ -116,7 +117,7 @@ button:hover{
     font-weight: normal;
     border-color: transparent;
 
-    position: static;
+    position: relative;
     z-index: auto;
 }
 
