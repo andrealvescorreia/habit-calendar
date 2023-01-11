@@ -1,7 +1,4 @@
-
-
-import {txtStreak, 
-        txtHabitMonthName, 
+import {txtHabitMonthName, 
         txtSuccessPercentage, 
         dayButtons} from '../utils/DOMelements.js';
 
@@ -12,48 +9,10 @@ import {getTodayDay,
 export function createHabitMonthRenderer(){
 
     function update(displayHabitMonth) {
-        //updateStreakDisplay()
         updateSuccessPercentageDisplay()
         updateDayButtonsDisplay()
         updateHabitMonthNameDisplay()
 
-
-        
-        function updateStreakDisplay(){
-            if(isNotCurrentMonth()) {
-                txtStreak.innerText = ''
-                return
-            }
-        
-            let streak = 0
-            if(todayIsInNeutralState())
-                streak = calculateStreakFromYesterday()
-            else
-                streak = calculateStreakFromToday()
-        
-            if(streak <= 1)
-                txtStreak.innerText = ''
-            else
-                txtStreak.innerText = String(streak) + ' days Streak'
-            
-        
-            
-            function isNotCurrentMonth(){
-                return displayHabitMonth.getId() != getTodayHabitMonthId()
-            }
-            function todayIsInNeutralState(){
-                return displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0
-            }
-            
-            function calculateStreakFromToday(){
-                return displayHabitMonth.streak(getTodayDay())
-            }
-            function calculateStreakFromYesterday(){
-                return displayHabitMonth.streak(getTodayDay() - 1)
-                
-            }
-        }
-        
         
         function updateHabitMonthNameDisplay(){
             txtHabitMonthName.innerText = displayHabitMonth.getName() + ' ' + displayHabitMonth.getYear()
