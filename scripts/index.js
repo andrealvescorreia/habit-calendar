@@ -6,13 +6,13 @@ import {dayButtons,
         bttnTrashCan, 
         bttnDarkModeToggle} from './DOMelements.js';
 
-import {switchTheme} from './utils.js';
+import {switchTheme, updateTheme} from './utils.js';
 import { createHabitMonthView } from './HabitMonthView.js';
 
 const habitMonthView = createHabitMonthView()
 
 
-
+updateTheme()
 
 bttnHabitMonthSwitcherPrevious.addEventListener("click", ()=>{
     habitMonthView.changeToPreviousMonth()

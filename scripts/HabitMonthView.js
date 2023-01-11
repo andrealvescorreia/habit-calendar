@@ -7,16 +7,19 @@ import {getTodayHabitMonthId,
 
 import {HabitMonth} from './HabitMonth.js';
 import {createHabitMonthController} from './HabitMonthController.js'
-import {updateDisplay} from './display.js';
+import {createHabitMonthRenderer} from './HabitMonthRenderer.js';
 
 export function createHabitMonthView(){
     const habitMonthController = createHabitMonthController()
+    const habitMonthRenderer = createHabitMonthRenderer()
+
+
     let currentlyDisplayingHabitMonth
     // makes sure that, the default displaying month when the page is loaded, it's the current month
     changeDisplayingHabitMonth(getTodayHabitMonthId())
-    updateDisplay(currentlyDisplayingHabitMonth)
+    habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
 
-
+    
     function changeDisplayingHabitMonth(habitMonthId){
         const existingHabitMonth = habitMonthController.getFromLocalStorage(habitMonthId)
         if(existingHabitMonth != null){
@@ -28,7 +31,7 @@ export function createHabitMonthView(){
             habitMonthController.putIntoLocalStorage(currentlyDisplayingHabitMonth)
             
         }
-        updateDisplay(currentlyDisplayingHabitMonth)
+        habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
     }
 
     
@@ -48,13 +51,13 @@ export function createHabitMonthView(){
         const cleanHabitMonth = HabitMonth.createHabitMonth(currentlyDisplayingHabitMonth.getId())
         currentlyDisplayingHabitMonth = cleanHabitMonth
         habitMonthController.putIntoLocalStorage(currentlyDisplayingHabitMonth)
-        updateDisplay(currentlyDisplayingHabitMonth)
+        habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
     }
 
     function switchDayStateOfCurrentlyDisplayingHabitMonth(dayIndex){
         currentlyDisplayingHabitMonth.switchDayState(dayIndex)
         habitMonthController.putIntoLocalStorage(currentlyDisplayingHabitMonth)
-        updateDisplay(currentlyDisplayingHabitMonth)
+        habitMonthRenderer.updateHabitMonthDisplay(currentlyDisplayingHabitMonth)
     }
 
     return{
