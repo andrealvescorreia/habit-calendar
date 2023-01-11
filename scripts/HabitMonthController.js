@@ -1,5 +1,5 @@
 import {HabitMonth} from './HabitMonth.js';
-import { generatePreviousHabitMonthId } from './utils.js';
+
 export function createHabitMonthController(){
     
     const state = {
@@ -41,7 +41,7 @@ export function createHabitMonthController(){
                 return habitMonthStreak
         }
     
-        const previousHabitMonthId = generatePreviousHabitMonthId(habitMonth)
+        const previousHabitMonthId = habitMonth.generatePreviousHabitMonthId()
         const lastDayOfPreviousMonth = getLastDayOfMonth(previousHabitMonthId)
         
         return habitMonthStreak + getStreak(previousHabitMonthId, lastDayOfPreviousMonth)

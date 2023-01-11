@@ -1,9 +1,7 @@
-// this script is responsible for the interection between the user and the application.
+// this script is responsible for the interection between the user and the habit calendar.
 // __________________________________________________________________
 
-import {getTodayHabitMonthId, 
-        generatePreviousHabitMonthId, 
-        generateNextHabitMonthId} from './utils.js';
+import {getTodayHabitMonthId} from './utils.js';
 
 import {HabitMonth} from './HabitMonth.js';
 import {createHabitMonthController} from './HabitMonthController.js'
@@ -28,7 +26,6 @@ export function createHabitMonthView(){
 
     
     function defaultMonth(){
-
         // makes sure that, the default displaying month when the page is loaded, it's the current month
         changeDisplayingHabitMonth(getTodayHabitMonthId())
     }
@@ -50,13 +47,13 @@ export function createHabitMonthView(){
     
     
     function changeToPrevious(){
-        let previousHabitMonthId = generatePreviousHabitMonthId(currentlyDisplayingHabitMonth)
+        let previousHabitMonthId = currentlyDisplayingHabitMonth.generatePreviousHabitMonthId()
         changeDisplayingHabitMonth(previousHabitMonthId)
     }
 
 
     function changeToNext() {
-        let nextHabitMonthId = generateNextHabitMonthId(currentlyDisplayingHabitMonth)
+        let nextHabitMonthId = currentlyDisplayingHabitMonth.generateNextHabitMonthId()
         changeDisplayingHabitMonth(nextHabitMonthId);
     }
 

@@ -155,5 +155,25 @@ export class HabitMonth {
                 '#daysArray: '+this.getDaysArray()
         return info;
     }
+
+    generatePreviousHabitMonthId(){
+        if(habitMonthIsJanuary(this))
+            return this.getYear() - 1 + '-12'
+        return this.getYear() + '-' + String(this.getNumber() - 1).padStart(2, '0')
+    
+        function habitMonthIsJanuary(m){
+            return m.getNumber() == 1
+        }
+    }
+    
+    generateNextHabitMonthId(){
+        if(habitMonthIsDecember(this))
+            return this.getYear() + 1 + '-01'
+        return this.getYear() + '-' + String(this.getNumber() + 1).padStart(2, '0')
+        
+        function habitMonthIsDecember(m){
+            return m.getNumber() == 12
+        }
+    }
 }
 
