@@ -123,7 +123,7 @@ button{
     border: 0.08rem;
     border-color: transparent;
   
-    border-radius: 100%;
+    border-radius: 25%;
     padding: 0.645rem;
     
     color: var(--number-color);
