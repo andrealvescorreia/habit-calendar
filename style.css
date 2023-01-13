@@ -93,9 +93,12 @@ button:hover{
 
 .calendar {
     display: grid;
+    
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.187rem;
+    grid-gap: 0.187rem;
     margin: 0 2.75rem;
+    justify-items: center;
+    align-items: center; 
 }
 
 
@@ -120,7 +123,6 @@ button:hover{
 
     position: relative;
     z-index: auto;
-  
     /*transition:  0.6s linear;*/
 }
 
@@ -134,7 +136,6 @@ button:hover{
 }
 
 .day-button.success-state{
-    border: 0.08rem;
     border-style: solid;
     border-color: var(--success-color);
 }
@@ -145,7 +146,29 @@ button:hover{
 }
 
 
-  
+
+.pulse{
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse{
+0%{
+    width: 2.375rem;
+    height: 2.375rem;
+    outline: 0px solid var(--success-color);
+}
+50%{
+    width: 1.375rem;
+    height: 1.375rem;
+    outline: 10px solid var(--success-color);
+}
+100%{
+    width: 2.375rem;
+    height: 2.375rem;
+    outline: 0px solid var(--success-color);
+}
+
+}
 
 .day-button:disabled {
     position: absolute;
