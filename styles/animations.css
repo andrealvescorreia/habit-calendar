@@ -30,31 +30,27 @@
 
 
 .success-pulse-today{
-    animation: success-pulse-today 0.3s ease-out;
+    animation: success-pulse-today 0.2s ease-out;
 }
 
 @keyframes success-pulse-today{
     0%{
-        border: 0.2rem solid var(--success-color);
-        width: 2.375rem;
-        height: 2.375rem;
+        box-shadow: 0 0 0rem var(--success-color);
+       border: 0.2rem solid var(--success-color);
+        outline: 0 var(--success-color) solid;
     }
-    10%{
-        width: 2.3rem;
-        height: 2.3rem;
+    25%{
+        box-shadow: 0 0 3rem var(--success-color);
     }
-    15%{
-        box-shadow: 0 0 2rem var(--success-color);
-    }
-    20%{
+    50%{
+        
+        outline: 0.3rem var(--success-color) solid;
         border: 0.3rem solid var(--success-color);
-        width: 2.375rem;
-        height: 2.375rem;
     }
-    70%{
-        box-shadow: 0 0 1rem var(--success-color);
-    }
+   
     100%{
+        box-shadow: 0 0 1rem var(--success-color);
+        outline: 0.12rem var(--success-color) solid;
         border: 0.2rem solid var(--success-color);
     }
 }

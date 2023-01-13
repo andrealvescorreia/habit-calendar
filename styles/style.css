@@ -132,8 +132,6 @@ button{
 
     position: relative;
     z-index: auto;
-    /*transition:  0.6s linear;*/
-    
 }
 
 .day-button-today {
