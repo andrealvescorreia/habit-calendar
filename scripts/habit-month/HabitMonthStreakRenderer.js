@@ -6,10 +6,14 @@ import {getTodayDay,
 import { createHabitMonthController } from './HabitMonthController.js';
 
 export function createHabitMonthStreakRenderer(){
+    
     const habitMonthController = createHabitMonthController();
     function update(displayHabitMonth){
+
+
+     
         if(isNotCurrentMonth()) {
-            txtStreak.innerText = ''
+            txtStreak.classList.add('invisible')
             return
         }
     
@@ -19,11 +23,13 @@ export function createHabitMonthStreakRenderer(){
         else
             streak = calculateStreakFromToday()
     
-        if(streak <= 1)
-            txtStreak.innerText = ''
-        else
-            txtStreak.innerText = String(streak) + ' days Streak'
-        
+        if(streak <= 1){
+            txtStreak.classList.add('invisible')
+        }
+        else{
+            txtStreak.classList.remove('invisible')
+            txtStreak.innerText =  String(streak) + ' days Streak'
+        }
     
         
         function isNotCurrentMonth(){
