@@ -135,7 +135,7 @@ button{
 }
 
 .day-button-today {
-    border: var(--number-color-transparent) solid 0.2rem;
+    border: var(--number-color-transparent) solid 0.12rem;
     color: var(--number-color);
     font-weight: bolder;
 }
@@ -143,7 +143,7 @@ button{
 .day-button-today.success-state {
     outline: 0.12rem var(--success-color) solid;
     box-shadow: 0 0 1rem var(--success-color);
-    border: var(--success-color) solid 0.2rem;
+    border: var(--success-color) solid 0.12rem;
     font-weight: bolder;
 }
 
