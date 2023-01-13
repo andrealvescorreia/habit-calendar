@@ -5,6 +5,8 @@ import {dayButtons,
         bttnTrashCan, 
         bttnDarkModeToggle} from './utils/DOMelements.js';
 
+import { getTodayDay } from './utils/dateUtils.js';
+
 import { switchTheme, updateTheme } from './theme/themeView.js';
 import { createHabitMonthView } from './habit-month/HabitMonthView.js';
 import { createHabitMonthController } from './habit-month/HabitMonthController.js';
@@ -53,22 +55,34 @@ function playAnimation(button){
 
     function removeThings(){
         button.classList.remove('success-pulse')
-        button.classList.remove('success-pulse')
         button.classList.remove('transition-to-failure')
+        button.classList.remove('transition-to-neutral')
+        button.classList.remove('transition-to-neutral-today')
+        button.classList.remove('success-pulse-today')
     }
     removeThings()
 
+
+
+
     if(button.classList.contains('success-state')){
-        button.classList.remove('transition-to-failure')
-        button.classList.toggle('success-pulse')
+        if(button.innerText == getTodayDay()){
+            button.classList.toggle('success-pulse-today')
+        }
+        else{
+            button.classList.toggle('success-pulse')
+        }   
+        
     } 
     else if(button.classList.contains('failure-state')){
-        button.classList.remove('success-pulse')
         button.classList.toggle('transition-to-failure')
     }
     else {
-        button.classList.remove('transition-to-failure')
-        button.classList.remove('success-pulse')
-        button.classList.toggle('transition-to-neutral')
+        if(button.innerText == getTodayDay()){
+            button.classList.toggle('transition-to-neutral-today')
+        }else{
+            button.classList.toggle('transition-to-neutral')
+        }
+        
     }
 }

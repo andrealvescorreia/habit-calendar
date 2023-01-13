@@ -69,15 +69,15 @@ export function createHabitMonthRenderer(){
                     function updateDayBttnFontWeight(button) {
                         
                         if(monthAlreadyPassed()) {
-                            button.className = "day-button day-button-bold-transparent-number";
+                            button.className = "day-button day-button-past";
                         }
                         else if (isCurrentMonth()) {
                             let dayNumberFromTheBttn = button.innerText
                             if (dayNumberFromTheBttn < getTodayDay()) {
-                                button.className = "day-button day-button-bold-transparent-number";
+                                button.className = "day-button day-button-past";
                             }
                             else if (dayNumberFromTheBttn == getTodayDay()) {
-                                button.className = "day-button day-button-bolder-number";
+                                button.className = "day-button day-button-today";
                             }
                         }
         
@@ -91,17 +91,18 @@ export function createHabitMonthRenderer(){
                     }
         
                     function updateDisplayBttnState(dayButton){
+                        function removeStates(){
+                            dayButton.classList.remove('failure-state');
+                            dayButton.classList.remove('success-state');
+                        }
+                        removeStates()
                         if ((aux[i] == HabitMonth.DAY_STATES.SUCCESS)){
-                            dayButton.classList.remove('failure-state');
                             dayButton.classList.add('success-state');
+                            return
                         }
-                        else if (aux[i] == HabitMonth.DAY_STATES.FAILURE) {
-                            dayButton.classList.remove('success-state');
+                        if (aux[i] == HabitMonth.DAY_STATES.FAILURE) {
                             dayButton.classList.add('failure-state');
-                        }
-                        else{
-                            dayButton.classList.remove('success-state');
-                            dayButton.classList.remove('failure-state');
+                            return
                         }
                     }
                 }

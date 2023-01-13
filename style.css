@@ -121,13 +121,14 @@ button{
     height: 2.375rem;
     background-color: transparent;
     border: 0.08rem;
+    border-color: transparent;
   
     border-radius: 100%;
     padding: 0.645rem;
     
     color: var(--number-color);
     font-weight: normal;
-    border-color: transparent;
+    
 
     position: relative;
     z-index: auto;
@@ -135,11 +136,20 @@ button{
     
 }
 
-.day-button-bolder-number{
+.day-button-today {
+    border: var(--number-color) solid 0.2rem;
     color: var(--number-color);
     font-weight: bolder;
 }
-.day-button-bold-transparent-number{
+
+.day-button-today.success-state {
+    outline: 0.12rem var(--success-color) solid;
+    box-shadow: 0 0 1rem var(--success-color);
+    border: var(--success-color) solid 0.2rem;
+    font-weight: bolder;
+}
+
+.day-button-past {
     color: var(--number-color-transparent);
     font-weight: bold;
 }
@@ -184,6 +194,35 @@ button{
     }
 }
 
+
+.success-pulse-today{
+    animation: success-pulse-today 0.3s ease-out;
+}
+
+@keyframes success-pulse-today{
+    0%{
+        border: 0.2rem solid var(--success-color);
+        width: 2.375rem;
+        height: 2.375rem;
+    }
+    10%{
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+    15%{
+        box-shadow: 0 0 0 var(--success-color);
+    }
+    20%{
+        border: 0.4rem solid var(--success-color);
+        width: 2.375rem;
+        height: 2.375rem;
+        box-shadow: 0 0 1rem var(--success-color);
+    }
+    100%{
+        border: 0.2rem solid var(--success-color);
+    }
+}
+
 .transition-to-failure{
     animation: transition-to-failure 0.2s ease-out;
 }
@@ -198,7 +237,7 @@ button{
 
 
 .transition-to-neutral{
-    animation: transition-to-neutral 1s ease-out;
+    animation: transition-to-neutral 0.8s ease-out;
 }
 @keyframes transition-to-neutral{
     0%{
@@ -207,6 +246,19 @@ button{
     }
     100%{
         border-color: transparent;
+    }
+}
+
+.transition-to-neutral-today{
+    animation: transition-to-neutral-today 1s ease-out;
+}
+@keyframes transition-to-neutral-today{
+    0%{
+        border: solid 0.1rem;
+        border-color: var(--failure-color);
+    }
+    100%{
+        border-color: var(--number-color);
     }
 }
 
