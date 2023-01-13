@@ -30,21 +30,21 @@
 
 
 .success-pulse-today{
-    animation: success-pulse-today 0.2s ease-out;
+    animation: success-pulse-today 0.3s ease-out;
 }
 
 @keyframes success-pulse-today{
     0%{
         box-shadow: 0 0 0rem var(--success-color);
-       border: 0.2rem solid var(--success-color);
+        border: 0.2rem solid var(--number-color-transparent);
         outline: 0 var(--success-color) solid;
     }
     25%{
-        box-shadow: 0 0 3rem var(--success-color);
+        outline: 0.3rem var(--success-color) solid;
     }
     50%{
+        box-shadow: 0 0 2.5rem var(--success-color);
         
-        outline: 0.3rem var(--success-color) solid;
         border: 0.3rem solid var(--success-color);
     }
    
