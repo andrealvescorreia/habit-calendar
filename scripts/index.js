@@ -37,6 +37,7 @@ dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         const dayIndex = parseInt(button.innerText) - 1
         habitMonthView.switchDayStateOfCurrentlyDisplayingHabitMonth(dayIndex)
+        playAnimation(button)
     })
 })
 
@@ -47,3 +48,27 @@ bttnTrashCan.addEventListener("click", ()=>{
 bttnDarkModeToggle.addEventListener("click", () => {
     switchTheme()
 })
+
+function playAnimation(button){
+
+    function removeThings(){
+        button.classList.remove('success-pulse')
+        button.classList.remove('success-pulse')
+        button.classList.remove('transition-to-failure')
+    }
+    removeThings()
+
+    if(button.classList.contains('success-state')){
+        button.classList.remove('transition-to-failure')
+        button.classList.toggle('success-pulse')
+    } 
+    else if(button.classList.contains('failure-state')){
+        button.classList.remove('success-pulse')
+        button.classList.toggle('transition-to-failure')
+    }
+    else {
+        button.classList.remove('transition-to-failure')
+        button.classList.remove('success-pulse')
+        button.classList.toggle('transition-to-neutral')
+    }
+}

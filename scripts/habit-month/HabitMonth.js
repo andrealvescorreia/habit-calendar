@@ -73,13 +73,13 @@ export class HabitMonth {
         const currentState = this.getDaysArray()[dayIndex]
         switch(currentState){
             case HabitMonth.DAY_STATES.NEUTRAL:
-                this.changeDayToFailureState(dayIndex)
-                break
-            case HabitMonth.DAY_STATES.FAILURE:
                 this.changeDayToSuccessState(dayIndex)
                 break
+            case HabitMonth.DAY_STATES.FAILURE:
+                this.changeDayToNeutralState(dayIndex)
+                break
             case HabitMonth.DAY_STATES.SUCCESS:
-                this.changeDayToNeutralState(dayIndex) 
+                this.changeDayToFailureState(dayIndex)
                 break
         }
     }

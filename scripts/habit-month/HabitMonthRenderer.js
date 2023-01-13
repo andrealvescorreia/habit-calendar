@@ -91,10 +91,18 @@ export function createHabitMonthRenderer(){
                     }
         
                     function updateDisplayBttnState(dayButton){
-                        if ((aux[i] == HabitMonth.DAY_STATES.SUCCESS))
-                            dayButton.classList.toggle('success-state');
-                        else if (aux[i] == HabitMonth.DAY_STATES.FAILURE) 
-                            dayButton.classList.toggle('failure-state');
+                        if ((aux[i] == HabitMonth.DAY_STATES.SUCCESS)){
+                            dayButton.classList.remove('failure-state');
+                            dayButton.classList.add('success-state');
+                        }
+                        else if (aux[i] == HabitMonth.DAY_STATES.FAILURE) {
+                            dayButton.classList.remove('success-state');
+                            dayButton.classList.add('failure-state');
+                        }
+                        else{
+                            dayButton.classList.remove('success-state');
+                            dayButton.classList.remove('failure-state');
+                        }
                     }
                 }
             }
