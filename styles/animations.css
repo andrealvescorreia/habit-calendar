@@ -30,7 +30,7 @@
 
 
 .success-pulse-today{
-    animation: success-pulse-today 0.3s ease-out;
+    animation: success-pulse-today 0.25s ease-out;
 }
 
 @keyframes success-pulse-today{
@@ -40,7 +40,7 @@
         outline: 0 var(--success-color) solid;
     }
     25%{
-        outline: 0.25rem var(--success-color) solid;
+        outline: 0.3rem var(--success-color) solid;
     }
     50%{
         box-shadow: 0 0 2.5rem var(--success-color);
