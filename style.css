@@ -123,7 +123,7 @@ button{
     border: 0.08rem;
     border-color: transparent;
   
-    border-radius: 25%;
+    border-radius: 35%;
     padding: 0.645rem;
     
     color: var(--number-color);
@@ -137,7 +137,7 @@ button{
 }
 
 .day-button-today {
-    border: var(--number-color) solid 0.2rem;
+    border: var(--number-color-transparent) solid 0.2rem;
     color: var(--number-color);
     font-weight: bolder;
 }
@@ -206,16 +206,18 @@ button{
         height: 2.375rem;
     }
     10%{
-        width: 2.2rem;
-        height: 2.2rem;
+        width: 2.3rem;
+        height: 2.3rem;
     }
     15%{
-        box-shadow: 0 0 0 var(--success-color);
+        box-shadow: 0 0 2rem var(--success-color);
     }
     20%{
-        border: 0.4rem solid var(--success-color);
+        border: 0.3rem solid var(--success-color);
         width: 2.375rem;
         height: 2.375rem;
+    }
+    70%{
         box-shadow: 0 0 1rem var(--success-color);
     }
     100%{
@@ -258,7 +260,7 @@ button{
         border-color: var(--failure-color);
     }
     100%{
-        border-color: var(--number-color);
+        border-color: var(--number-color-transparent);
     }
 }
 
