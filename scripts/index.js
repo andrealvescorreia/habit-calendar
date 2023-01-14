@@ -5,7 +5,7 @@ import {dayButtons,
         bttnTrashCan, 
         bttnDarkModeToggle} from './utils/DOMelements.js';
 
-import { getTodayDay } from './utils/dateUtils.js';
+import { isToday } from './utils/dateUtils.js';
 
 import { switchTheme, updateTheme } from './theme/themeView.js';
 import { createHabitMonthView } from './habit-month/HabitMonthView.js';
@@ -13,19 +13,19 @@ import { createHabitMonthController } from './habit-month/HabitMonthController.j
 import { createHabitMonthRenderer } from './habit-month/HabitMonthRenderer.js';
 import { createHabitMonthStreakRenderer } from './habit-month/HabitMonthStreakRenderer.js';
 
+updateTheme()
 
 
 const habitMonthController = createHabitMonthController()
 const habitMonthRenderer = createHabitMonthRenderer()
-const habitMonthView = createHabitMonthView()
 const habitMonthStreakRenderer = createHabitMonthStreakRenderer()
+const habitMonthView = createHabitMonthView()
 
 habitMonthController.subscribe(habitMonthStreakRenderer.update)
 habitMonthView.subscribe(habitMonthController.putIntoLocalStorage)
 habitMonthView.subscribe(habitMonthRenderer.update)
 
 habitMonthView.defaultMonth()
-updateTheme()
 
 bttnHabitMonthSwitcherPrevious.addEventListener("click", ()=>{
     habitMonthView.changeToPrevious()
@@ -39,7 +39,7 @@ dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         const dayIndex = parseInt(button.innerText) - 1
         habitMonthView.switchDayStateOfCurrentMonth(dayIndex)
-        playAnimation(button)
+        playStateAnimation(button)
     })
 })
 
@@ -51,22 +51,13 @@ bttnDarkModeToggle.addEventListener("click", () => {
     switchTheme()
 })
 
-function playAnimation(button){
-
-    function removeThings(){
-        button.classList.remove('success-pulse')
-        button.classList.remove('transition-to-failure')
-        button.classList.remove('transition-to-neutral')
-        button.classList.remove('transition-to-neutral-today')
-        button.classList.remove('success-pulse-today')
-    }
-    removeThings()
-
-
-
+function playStateAnimation(button){
+    const dayOfTheButton = button.innerText
+    removeAnyAnimationClass(button)
 
     if(button.classList.contains('success-state')){
-        if(button.innerText == getTodayDay()){
+        
+        if(isToday(dayOfTheButton)){
             button.classList.toggle('success-pulse-today')
         }
         else{
@@ -78,11 +69,18 @@ function playAnimation(button){
         button.classList.toggle('transition-to-failure')
     }
     else {
-        if(button.innerText == getTodayDay()){
+        if(isToday(dayOfTheButton)){
             button.classList.toggle('transition-to-neutral-today')
         }else{
             button.classList.toggle('transition-to-neutral')
-        }
-        
+        }   
+    }
+
+    function removeAnyAnimationClass(button){
+        button.classList.remove('success-pulse')
+        button.classList.remove('transition-to-failure')
+        button.classList.remove('transition-to-neutral')
+        button.classList.remove('transition-to-neutral-today')
+        button.classList.remove('success-pulse-today')
     }
 }
