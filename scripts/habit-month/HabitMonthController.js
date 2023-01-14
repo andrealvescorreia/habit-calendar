@@ -49,7 +49,7 @@ export function createHabitMonthController(){
     
         // bellow are aux functions:
         function isSuccessfulDay(dayIndex){
-            return habitMonth.getDayAt(dayIndex)
+            return habitMonth.getDayAt(dayIndex) == HabitMonth.DAY_STATES.SUCCESS
         }
         
         function getLastDayOfMonth(habitMonthId){
