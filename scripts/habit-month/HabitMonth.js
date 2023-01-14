@@ -188,5 +188,15 @@ export class HabitMonth {
             return m.getNumber() == 12
         }
     }
+
+
+    alreadyPassed(){
+        let todayHabitMonth = HabitMonth.createHabitMonth();
+        return (new Date(todayHabitMonth.getId() + '-1')).getTime() > (new Date(this.getId() + '-1')).getTime()
+    }
+    isCurrentMonth(){
+        let todayHabitMonth = HabitMonth.createHabitMonth()
+        return this.getId() == todayHabitMonth.getId()
+    }
 }
 

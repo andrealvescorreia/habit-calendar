@@ -2,7 +2,7 @@ import {txtHabitMonthName,
         txtSuccessPercentage, 
         dayButtons} from '../utils/DOMelements.js';
 
-import {getTodayDay} from '../utils/dateUtils.js';
+import { dayHasPassed, isToday} from '../utils/dateUtils.js';
 import { HabitMonth } from './HabitMonth.js';
 
 
@@ -87,11 +87,11 @@ export function createHabitMonthRenderer(){
             }
         }
         function updateDayBttnFontWeight(dayButton) {
-            if(monthAlreadyPassed(displayHabitMonth)) {
+            if(displayHabitMonth.alreadyPassed()) {
                 dayButton.className = "day-button day-button-past";
                 return
             }
-            if(isCurrentMonth(displayHabitMonth)) {
+            if(displayHabitMonth.isCurrentMonth()) {
                 let buttonDay = parseInt(dayButton.innerText)
                 if (dayHasPassed(buttonDay)) {
                     dayButton.className = "day-button day-button-past";
@@ -115,26 +115,11 @@ export function createHabitMonthRenderer(){
                 return
             }
         }
-
-        function monthAlreadyPassed(habitMonth){
-            let todayHabitMonth = HabitMonth.createHabitMonth();
-
-            return (new Date(todayHabitMonth.getId() + '-1')).getTime() > (new Date(habitMonth.getId() + '-1')).getTime()
-        }
-        function isCurrentMonth(habitMonth){
-            let todayHabitMonth = HabitMonth.createHabitMonth()
-            return habitMonth.getId() == todayHabitMonth.getId()
-        }
-        function dayHasPassed(day){
-            return day < getTodayDay()
-        }
-        function isToday(day){
-            return day == getTodayDay()
-        }
+       
+        
         function removeAnyStateStyle(dayButton){
             dayButton.classList.remove('failure-state');
             dayButton.classList.remove('success-state');
         }
     }
-
 }

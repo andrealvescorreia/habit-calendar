@@ -7,3 +7,6 @@ export function getTodayDay(){
 export function isToday(day){
     return (day == getTodayDay())
 }
+export function dayHasPassed(day){
+    return day < getTodayDay()
+}
