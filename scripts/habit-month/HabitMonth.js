@@ -33,7 +33,11 @@ export class HabitMonth {
         return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate(); 
     }
 
-    
+    getSuccessPercentage(){
+        const countOccurrences = (value, array) => array.reduce((a, v) => (v === value ? a + 1 : a), 0);
+        const numOfSuccesfulDays = countOccurrences(1, this.#daysArray)
+        return parseInt((numOfSuccesfulDays * 100) / this.#daysArray.length)
+    }
 
 
     

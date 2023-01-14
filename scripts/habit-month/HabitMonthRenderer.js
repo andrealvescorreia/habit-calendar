@@ -21,14 +21,13 @@ export function createHabitMonthRenderer(){
         
         
         function updateSuccessPercentageDisplay(){
-            // 'countOccurrences' works as a function.
-            const countOccurrences = (value, array) => array.reduce((a, v) => (v === value ? a + 1 : a), 0);
+            let previousPercentage = parseInt(txtSuccessPercentage.innerText)
+            if(isNaN(previousPercentage)){
+                animateValue(txtSuccessPercentage, 0, displayHabitMonth.getSuccessPercentage(), 1)
+                return
+            }
+            animateValue(txtSuccessPercentage, previousPercentage, displayHabitMonth.getSuccessPercentage(), 600)
             
-            const auxDaysArray = displayHabitMonth.getDaysArray()
-            const numOfSuccesfulDays = countOccurrences(1, auxDaysArray)
-            let intSuccesPercentage = parseInt((numOfSuccesfulDays * 100) / auxDaysArray.length)
-            //txtSuccessPercentage.innerText = String(intSuccesPercentage)
-
             function animateValue(obj, start, end, duration) {
                 let startTimestamp = null;
                 const step = (timestamp) => {
@@ -36,20 +35,12 @@ export function createHabitMonthRenderer(){
                     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                     obj.innerText = Math.floor(progress * (end - start) + start);
                     if (progress < 1) {
-                    window.requestAnimationFrame(step);
+                        window.requestAnimationFrame(step);
                     }
                 };
                 window.requestAnimationFrame(step);
             }
             
-            if(txtSuccessPercentage.innerText == '.'){
-                animateValue(txtSuccessPercentage, 0, intSuccesPercentage, 1)
-            }else{
-
-                animateValue(txtSuccessPercentage, parseInt(txtSuccessPercentage.innerText), intSuccesPercentage, 600)
-            }
-            
-
         }
         
         
