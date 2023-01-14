@@ -27,7 +27,29 @@ export function createHabitMonthRenderer(){
             const auxDaysArray = displayHabitMonth.getDaysArray()
             const numOfSuccesfulDays = countOccurrences(1, auxDaysArray)
             let intSuccesPercentage = parseInt((numOfSuccesfulDays * 100) / auxDaysArray.length)
-            txtSuccessPercentage.innerText = String(intSuccesPercentage)
+            //txtSuccessPercentage.innerText = String(intSuccesPercentage)
+
+            function animateValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerText = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+            
+            if(txtSuccessPercentage.innerText == '.'){
+                animateValue(txtSuccessPercentage, 0, intSuccesPercentage, 1)
+            }else{
+
+                animateValue(txtSuccessPercentage, parseInt(txtSuccessPercentage.innerText), intSuccesPercentage, 600)
+            }
+            
+
         }
         
         
