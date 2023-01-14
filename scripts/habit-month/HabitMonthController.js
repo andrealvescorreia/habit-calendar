@@ -35,7 +35,7 @@ export function createHabitMonthController(){
         if(habitMonth == null) return 0
     
         for (let dayIndex = pivotDay - 1; dayIndex >= 0; dayIndex--) {
-            if(isSuccessfulDay(dayIndex))
+            if(habitMonth.isSuccessful(dayIndex))
                 habitMonthStreak++
             else 
                 return habitMonthStreak
@@ -47,11 +47,7 @@ export function createHabitMonthController(){
         return habitMonthStreak + getStreak(previousHabitMonthId, lastDayOfPreviousMonth)
     
     
-        // bellow are aux functions:
-        function isSuccessfulDay(dayIndex){
-            return habitMonth.getDayAt(dayIndex) == HabitMonth.DAY_STATES.SUCCESS
-        }
-        
+        // bellow are aux functions:        
         function getLastDayOfMonth(habitMonthId){
             const auxDate = new Date(habitMonthId + '-1')
             return new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()

@@ -198,5 +198,15 @@ export class HabitMonth {
         let todayHabitMonth = HabitMonth.createHabitMonth()
         return this.getId() == todayHabitMonth.getId()
     }
+
+    isSuccessful(dayIndex){
+        return this.#daysArray[dayIndex] == HabitMonth.DAY_STATES.SUCCESS
+    }
+    isFailure(dayIndex){
+        return this.#daysArray[dayIndex] == HabitMonth.DAY_STATES.FAILURE
+    }
+    isNeutral(dayIndex){
+        return this.#daysArray[dayIndex] == HabitMonth.DAY_STATES.NEUTRAL
+    }
 }
 
