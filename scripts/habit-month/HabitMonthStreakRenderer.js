@@ -1,16 +1,17 @@
 import {txtStreak} from '../utils/DOMelements.js';
 
-import {getTodayDay,  
-    getTodayHabitMonthId} from '../utils/dateUtils.js';
+import {getTodayDay} from '../utils/dateUtils.js';
 
 import { createHabitMonthController } from './HabitMonthController.js';
+import { HabitMonth } from './HabitMonth.js';
 
 export function createHabitMonthStreakRenderer(){
-    
+    var displayHabitMonth;
     const habitMonthController = createHabitMonthController();
-    function update(displayHabitMonth){
 
+    function update(habitMonth){
 
+        displayHabitMonth = habitMonth
      
         if(isNotCurrentMonth()) {
             txtStreak.classList.add('invisible')
@@ -33,10 +34,11 @@ export function createHabitMonthStreakRenderer(){
     
         
         function isNotCurrentMonth(){
-            return displayHabitMonth.getId() != getTodayHabitMonthId()
+            let todayHabitMonth = HabitMonth.createHabitMonth()
+            return displayHabitMonth.getId() != todayHabitMonth.getId()
         }
         function todayIsInNeutralState(){
-            return displayHabitMonth.getDaysArray()[getTodayDay() - 1] == 0
+            return displayHabitMonth.getDayAt(getTodayDay() - 1) == 0
         }
         
         function calculateStreakFromToday(){

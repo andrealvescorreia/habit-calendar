@@ -2,8 +2,7 @@ import {txtHabitMonthName,
         txtSuccessPercentage, 
         dayButtons} from '../utils/DOMelements.js';
 
-import {getTodayDay,  
-        getTodayHabitMonthId} from '../utils/dateUtils.js';
+import {getTodayDay} from '../utils/dateUtils.js';
 import { HabitMonth } from './HabitMonth.js';
 
 
@@ -24,7 +23,7 @@ export function createHabitMonthRenderer(){
 
 
     function updateHabitMonthNameDisplay(){
-        txtHabitMonthName.innerText = displayHabitMonth.getName() + ' ' + displayHabitMonth.getYear()
+        txtHabitMonthName.innerText = displayHabitMonth.getMonthName() + ' ' + displayHabitMonth.getYear()
     }
     
     
@@ -72,17 +71,17 @@ export function createHabitMonthRenderer(){
         function hideDaysNotInTheMonth() {
             // ex: february only has 28 days. So day 29, 30 and 31 should NOT display.
 
-            for (let i = dayButtons.length; i > displayHabitMonth.getNumberOfDays(); i--) {
+            for (let i = dayButtons.length; i > displayHabitMonth.getQuantityOfDays(); i--) {
                 const button = dayButtons[i - 1];
                 button.disabled = true;
             }
         }
     
         function updateDayBttnsStyle() {
-            const days = displayHabitMonth.getDaysArray();
-            for (let i = 0; i < days.length; i++) {
+            
+            for (let i = 0; i < displayHabitMonth.getQuantityOfDays(); i++) {
                 const button = dayButtons[i]
-                const dayState = days[i]
+                const dayState = displayHabitMonth.getDayAt(i)
                 updateDayBttnFontWeight(button)
                 changeDayButtonStateStyle(button, dayState)
             }
@@ -118,10 +117,13 @@ export function createHabitMonthRenderer(){
         }
 
         function monthAlreadyPassed(habitMonth){
-            return (new Date(getTodayHabitMonthId() + '-1')).getTime() > (new Date(habitMonth.getId() + '-1')).getTime()
+            let todayHabitMonth = HabitMonth.createHabitMonth();
+
+            return (new Date(todayHabitMonth.getId() + '-1')).getTime() > (new Date(habitMonth.getId() + '-1')).getTime()
         }
         function isCurrentMonth(habitMonth){
-            return habitMonth.getId() == getTodayHabitMonthId()
+            let todayHabitMonth = HabitMonth.createHabitMonth()
+            return habitMonth.getId() == todayHabitMonth.getId()
         }
         function dayHasPassed(day){
             return day < getTodayDay()

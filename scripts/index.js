@@ -38,14 +38,14 @@ bttnHabitMonthSwitcherNext.addEventListener("click", ()=>{
 dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         const dayIndex = parseInt(button.innerText) - 1
-        habitMonthView.switchDayStateOfCurrentlyDisplayingHabitMonth(dayIndex)
+        habitMonthView.switchDayStateOfCurrentMonth(dayIndex)
         playAnimation(button)
     })
 })
 
 bttnTrashCan.addEventListener("click", ()=>{
     if (confirm("You sure? This action can't be undone!"))
-        habitMonthView.clearAllDataFromCurrentlyDisplayingHabitMonth()  
+        habitMonthView.clearAllDataFromCurrentMonth()  
 })
 bttnDarkModeToggle.addEventListener("click", () => {
     switchTheme()

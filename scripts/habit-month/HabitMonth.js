@@ -1,5 +1,5 @@
 export class HabitMonth {
-    #id 
+    #id = ''
     #daysArray = []
 
     static DAY_STATES = {
@@ -9,7 +9,7 @@ export class HabitMonth {
     }
 
     static createHabitMonth(id, daysArray){
-        if(this.#isIdValid(id) == false)
+        if(id != null && this.#isIdValid(id) == false)
             return null
         
         if(daysArray != null && this.#isDaysArrayValid(daysArray, id) == false)
@@ -18,20 +18,46 @@ export class HabitMonth {
         return new HabitMonth(id, daysArray)
     }
 
+    stringify(){// use this for debugging only.
+        let info = ''
+        info += '#id: ' + this.getId() +'\n'+
+                'name(): '+ this.getMonthName()+'\n'+
+                'firstDay(): '+this.getFirstDayNumber()+'\n'+
+                'numOfDays(): '+this.getQuantityOfDays()+'\n'+
+                '#daysArray: '+this.#daysArray
+        return info;
+    }
 
-    constructor(id, daysArray = this.#defaultDaysArray(id)) {
+    constructor(id = this.#defaultId(), daysArray = this.#defaultDaysArray(id)) {
         this.#id = id;
         this.#daysArray = daysArray;
     }
     
-    #defaultDaysArray(id){ // aux function for the constructor.
-        return Array(parseInt(HabitMonth.expectedNumberOfDaysInMonth(id))).fill(0)
+    #defaultId(){
+        const todayDate = new Date()
+        return String(todayDate.getFullYear()+ '-' + String(todayDate.getMonth() + 1).padStart(2, '0'));
     }
 
-    static expectedNumberOfDaysInMonth(id){// aux function for the constructor and daysArray validator
+    #defaultDaysArray(id){ // aux function for the constructor.
+        return Array(parseInt(HabitMonth.#expectedNumberOfDaysInMonth(id))).fill(0)
+    }
+
+    static #expectedNumberOfDaysInMonth(id){// aux function for the constructor and daysArray validator
         const date = new Date(id + '-1')
         return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate(); 
     }
+
+
+
+    getJson(){
+        const simpleMonth = {
+            id: this.#id,
+            daysArray: this.#daysArray
+        }
+        const jsonData = JSON.stringify(simpleMonth);
+        return jsonData
+    }
+
 
     getSuccessPercentage(){
         const countOccurrences = (value, array) => array.reduce((a, v) => (v === value ? a + 1 : a), 0);
@@ -41,18 +67,19 @@ export class HabitMonth {
 
 
     
-    getNumberOfDays(){
+    getQuantityOfDays(){
         return this.#daysArray.length
     }
     getId(){
         return this.#id
     }
-    getDaysArray(){
-        return this.#daysArray
+    
+    getDayAt(index){
+        return this.#daysArray[index]
     }
 
 
-    getName(){
+    getMonthName(){
         const date = new Date(this.#id + '-1')
         let monthName = date.toLocaleString('default', { month: 'long' })
         monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
@@ -72,9 +99,9 @@ export class HabitMonth {
     }
 
     switchDayState(dayIndex){
-        if(dayIndex >= this.getNumberOfDays() || dayIndex < 0) return
+        if(dayIndex >= this.getQuantityOfDays() || dayIndex < 0) return
 
-        const currentState = this.getDaysArray()[dayIndex]
+        const currentState = this.getDayAt(dayIndex)
         switch(currentState){
             case HabitMonth.DAY_STATES.NEUTRAL:
                 this.changeDayToSuccessState(dayIndex)
@@ -102,14 +129,7 @@ export class HabitMonth {
     }
 
 
-    getJson(){
-        const simpleMonth = {
-            id: this.#id,
-            daysArray: this.#daysArray
-        }
-        const jsonData = JSON.stringify(simpleMonth);
-        return jsonData
-    }
+    
 
 
 
@@ -135,8 +155,8 @@ export class HabitMonth {
             console.log('not an array')
             return false
         }
-        if(monthDaysArray.length != HabitMonth.expectedNumberOfDaysInMonth(monthId)){ 
-            console.log('wrong array size (should be',HabitMonth.expectedNumberOfDaysInMonth(monthId),', but received ', monthDaysArray.length,')')
+        if(monthDaysArray.length != HabitMonth.#expectedNumberOfDaysInMonth(monthId)){ 
+            console.log('wrong array size (should be',HabitMonth.#expectedNumberOfDaysInMonth(monthId),', but received ', monthDaysArray.length,')')
             return false
         }   
         for (let i = 0; i < monthDaysArray.length; i++) {
@@ -147,16 +167,6 @@ export class HabitMonth {
             }
         }
         return true
-    }
-
-    stringify(){// use this for debugging only.
-        let info = ''
-        info += '#id: ' + this.getId() +'\n'+
-                'name(): '+ this.getName()+'\n'+
-                'firstDay(): '+this.getFirstDayNumber()+'\n'+
-                'numOfDays(): '+this.getNumberOfDays()+'\n'+
-                '#daysArray: '+this.getDaysArray()
-        return info;
     }
 
     generatePreviousHabitMonthId(){
