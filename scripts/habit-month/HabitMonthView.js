@@ -25,8 +25,8 @@ export function createHabitMonthView(){
 
     
     function defaultMonth(){
-        currentlyDisplayingHabitMonth = HabitMonth.createHabitMonth()
-        notifyAll(currentlyDisplayingHabitMonth)
+        let defaultId = HabitMonth.createHabitMonth().getId()
+        changeDisplayingHabitMonth(defaultId)
     }
     
 
