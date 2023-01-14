@@ -1,6 +1,14 @@
-export function getTheme(){
-    return window.localStorage.getItem("theme")
+export function createThemeController(){
+    
+    function getTheme(){
+        return window.localStorage.getItem("theme")
+    }
+    function setTheme(theme){
+        window.localStorage.setItem("theme", theme)
+    }
+    return{
+        getTheme,
+        setTheme
+    }
 }
-export function setTheme(theme){
-    window.localStorage.setItem("theme", theme)
-}
+
