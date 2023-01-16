@@ -19,12 +19,13 @@ const habitMonthRenderer       = createHabitMonthRenderer()
 const habitMonthStreakRenderer = createHabitMonthStreakRenderer()
 const habitMonthView           = createHabitMonthView()
 
+habitMonthView.subscribe(habitMonthController.putIntoLocalStorage)
 habitMonthView.subscribe(habitMonthRenderer.update)
 habitMonthController.subscribe(habitMonthStreakRenderer.update)
-habitMonthView.subscribe(habitMonthController.putIntoLocalStorage)
+
+
 
 habitMonthView.changeToDefault()
-
 
 // EVENT LISTENERS:
 

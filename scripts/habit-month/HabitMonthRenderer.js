@@ -1,3 +1,7 @@
+// this script is responsible for showing the habit calendar on the web page.
+// __________________________________________________________________
+
+
 import {txtHabitMonthName, 
         txtSuccessPercentage, 
         dayButtons} from '../utils/DOMelements.js';
