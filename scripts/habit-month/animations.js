@@ -1,4 +1,4 @@
-import { isToday } from "./utils/dateUtils.js"
+import { isToday } from "../utils/dateUtils.js"
 
 export function playDayStateAnimation(button){
     removeAnyAnimationClass(button)

@@ -4,7 +4,7 @@ import { dayButtons,
          bttnTrashCan, 
          bttnDarkModeToggle }             from './utils/DOMelements.js';
 
-import { playDayStateAnimation }          from './animations.js';
+
 import { createThemeView }                from './theme/themeView.js';
 import { createHabitMonthView }           from './habit-month/HabitMonthView.js';
 import { createHabitMonthController }     from './habit-month/HabitMonthController.js';
@@ -39,7 +39,6 @@ dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         const dayIndex = parseInt(button.innerText) - 1
         habitMonthView.switchDayStateOfCurrentMonth(dayIndex)
-        playDayStateAnimation(button)
     })
 })
 

@@ -4,23 +4,98 @@ import {txtHabitMonthName,
 
 import { dayHasPassed, isToday} from '../utils/dateUtils.js';
 import { HabitMonth } from './HabitMonth.js';
-
+import { playDayStateAnimation } from './animations.js';
 
 export function createHabitMonthRenderer(){
-    
+    var previousDisplayHabitMonth
     var displayHabitMonth
 
     function update(habitMonth) {
-        displayHabitMonth = habitMonth
+        displayHabitMonth = habitMonth.clone()
 
-        updateHabitMonthNameDisplay()
-        updateSuccessPercentageDisplay()
-        updateDayButtonsDisplay()
+        if(previousDisplayHabitMonth == undefined || displayHabitMonth.getId() != previousDisplayHabitMonth.getId()){
+            updateEverything()
+        }
+        else {
+            detectDaysChanged().forEach((dayIndex)=>{
+                updateDayButton(dayButtons[dayIndex])
+                playDayStateAnimation(dayButtons[dayIndex])
+            })
+            updateSuccessPercentageDisplay()
+        }
+
+        
+        
+        previousDisplayHabitMonth = habitMonth.clone()        
     }
     return {
         update
     }
 
+
+    function removeAnyStateStyle(dayButton){
+        dayButton.classList.remove('failure-state');
+        dayButton.classList.remove('success-state');
+    }
+
+    function updateDayBttnFontWeight(dayButton) {
+        if(displayHabitMonth.alreadyPassed()) {
+            dayButton.className = "day-button day-button-past";
+            return
+        }
+        if(displayHabitMonth.isCurrentMonth()) {
+            let buttonDay = parseInt(dayButton.innerText)
+            if (dayHasPassed(buttonDay)) {
+                dayButton.className = "day-button day-button-past";
+                return
+            }
+            if (isToday(buttonDay)) {
+                dayButton.className = "day-button day-button-today";
+                return
+            }
+        }
+    }
+
+    function changeDayButtonStateStyle(dayButton, dayState){
+        removeAnyStateStyle(dayButton)
+        if (dayState == HabitMonth.DAY_STATES.SUCCESS) {
+            dayButton.classList.add('success-state');
+            return
+        }
+        if (dayState == HabitMonth.DAY_STATES.FAILURE) {
+            dayButton.classList.add('failure-state');
+            return
+        }
+    }
+
+    function updateDayButton(dayButton){
+        dayButton.className = "day-button"
+        const dayState = displayHabitMonth.getDayAt(parseInt(dayButton.innerText)-1)
+        updateDayBttnFontWeight(dayButton)
+        changeDayButtonStateStyle(dayButton, dayState)
+    }
+
+    function updateEverything(){
+        updateHabitMonthNameDisplay()
+        updateSuccessPercentageDisplay()
+        updateDayButtonsDisplay()
+    }
+
+    
+
+    function detectDaysChanged(){
+        let daysChanged = []
+        if(displayHabitMonth.getId() != previousDisplayHabitMonth.getId()){
+            console.log('detectDayChange: são meses diferentes!')
+            return
+        }
+        for (let i = 0; i < displayHabitMonth.getQuantityOfDays(); i++) {
+            if(displayHabitMonth.getDayAt(i) !== previousDisplayHabitMonth.getDayAt(i)){
+                daysChanged.push(i);
+            }
+        }
+        return daysChanged
+    }
 
     function updateHabitMonthNameDisplay(){
         txtHabitMonthName.innerText = displayHabitMonth.getMonthName() + ' ' + displayHabitMonth.getYear()
@@ -67,7 +142,9 @@ export function createHabitMonthRenderer(){
                 button.disabled = false;
             });
         }
-    
+        
+        
+
         function hideDaysNotInTheMonth() {
             // ex: february only has 28 days. So day 29, 30 and 31 should NOT display.
 
@@ -80,46 +157,8 @@ export function createHabitMonthRenderer(){
         function updateDayBttnsStyle() {
             
             for (let i = 0; i < displayHabitMonth.getQuantityOfDays(); i++) {
-                const button = dayButtons[i]
-                const dayState = displayHabitMonth.getDayAt(i)
-                updateDayBttnFontWeight(button)
-                changeDayButtonStateStyle(button, dayState)
+                updateDayButton(dayButtons[i])
             }
-        }
-        function updateDayBttnFontWeight(dayButton) {
-            if(displayHabitMonth.alreadyPassed()) {
-                dayButton.className = "day-button day-button-past";
-                return
-            }
-            if(displayHabitMonth.isCurrentMonth()) {
-                let buttonDay = parseInt(dayButton.innerText)
-                if (dayHasPassed(buttonDay)) {
-                    dayButton.className = "day-button day-button-past";
-                    return
-                }
-                if (isToday(buttonDay)) {
-                    dayButton.className = "day-button day-button-today";
-                    return
-                }
-            }
-        }
-
-        function changeDayButtonStateStyle(dayButton, dayState){
-            removeAnyStateStyle(dayButton)
-            if (dayState == HabitMonth.DAY_STATES.SUCCESS) {
-                dayButton.classList.add('success-state');
-                return
-            }
-            if (dayState == HabitMonth.DAY_STATES.FAILURE) {
-                dayButton.classList.add('failure-state');
-                return
-            }
-        }
-       
-        
-        function removeAnyStateStyle(dayButton){
-            dayButton.classList.remove('failure-state');
-            dayButton.classList.remove('success-state');
         }
     }
 }

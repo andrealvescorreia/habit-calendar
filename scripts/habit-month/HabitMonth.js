@@ -58,7 +58,10 @@ export class HabitMonth {
         return jsonData
     }
 
-
+    clone(){
+        let simpleHabitMonth = JSON.parse(this.getJson())
+        return HabitMonth.createHabitMonth(simpleHabitMonth.id, simpleHabitMonth.daysArray)
+    }
     getSuccessPercentage(){
         const countOccurrences = (value, array) => array.reduce((a, v) => (v === value ? a + 1 : a), 0);
         const numOfSuccesfulDays = countOccurrences(1, this.#daysArray)
