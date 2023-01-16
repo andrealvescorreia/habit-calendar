@@ -7,19 +7,17 @@ import {createHabitMonthController} from './HabitMonthController.js'
 
 export function createHabitMonthView(){
     
-    var currentlyDisplayingHabitMonth
+    var currentlyViewingHabitMonth
 
     const state = {
         observers: []
     }
-
     function subscribe(observerFunction){
         state.observers.push(observerFunction)
     }
-
     function notifyAll(habitMonth){
         for (const observerFunction of state.observers){
-            observerFunction(habitMonth)
+            observerFunction(habitMonth.clone())
         }
     }
 
@@ -32,42 +30,42 @@ export function createHabitMonthView(){
     function changeDisplayingHabitMonth(habitMonthId){
         const existingHabitMonth = createHabitMonthController().getFromLocalStorage(habitMonthId)
         if(existingHabitMonth != null){
-            currentlyDisplayingHabitMonth = existingHabitMonth
+            currentlyViewingHabitMonth = existingHabitMonth
         } 
         else {
             let newHabitMonth = HabitMonth.createHabitMonth(habitMonthId)
-            currentlyDisplayingHabitMonth = newHabitMonth
+            currentlyViewingHabitMonth = newHabitMonth
         }
-        notifyAll(currentlyDisplayingHabitMonth)
+        notifyAll(currentlyViewingHabitMonth)
     }
     
     function changeToPrevious(){
-        let previousHabitMonthId = currentlyDisplayingHabitMonth.generatePreviousHabitMonthId()
+        let previousHabitMonthId = currentlyViewingHabitMonth.generatePreviousHabitMonthId()
         changeDisplayingHabitMonth(previousHabitMonthId)
     }
 
 
     function changeToNext() {
-        let nextHabitMonthId = currentlyDisplayingHabitMonth.generateNextHabitMonthId()
+        let nextHabitMonthId = currentlyViewingHabitMonth.generateNextHabitMonthId()
         changeDisplayingHabitMonth(nextHabitMonthId);
     }
 
-    function clearAllDataFromCurrentMonth(){
-        const cleanHabitMonth = HabitMonth.createHabitMonth(currentlyDisplayingHabitMonth.getId())
-        currentlyDisplayingHabitMonth = cleanHabitMonth
-        notifyAll(currentlyDisplayingHabitMonth)
+    function clearAllDataFromCurrentlyViewingMonth(){
+        const cleanHabitMonth = HabitMonth.createHabitMonth(currentlyViewingHabitMonth.getId())
+        currentlyViewingHabitMonth = cleanHabitMonth
+        notifyAll(currentlyViewingHabitMonth)
     }
 
-    function switchDayStateOfCurrentMonth(dayIndex){
-        currentlyDisplayingHabitMonth.switchDayState(dayIndex)
-        notifyAll(currentlyDisplayingHabitMonth)
+    function switchDayState(dayIndex){
+        currentlyViewingHabitMonth.switchDayState(dayIndex)
+        notifyAll(currentlyViewingHabitMonth)
     }
 
     return{
         changeToPrevious,
         changeToNext,
-        clearAllDataFromCurrentMonth,
-        switchDayStateOfCurrentMonth,
+        clearAllDataFromCurrentlyViewingMonth,
+        switchDayState,
         subscribe,
         changeToDefault
     }
