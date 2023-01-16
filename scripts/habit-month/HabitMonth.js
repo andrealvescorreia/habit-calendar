@@ -18,16 +18,6 @@ export class HabitMonth {
         return new HabitMonth(id, daysArray)
     }
 
-    stringify(){// use this for debugging only.
-        let info = ''
-        info += '#id: ' + this.getId() +'\n'+
-                'name(): '+ this.getMonthName()+'\n'+
-                'firstDay(): '+this.getFirstDayNumber()+'\n'+
-                'numOfDays(): '+this.getQuantityOfDays()+'\n'+
-                '#daysArray: '+this.#daysArray
-        return info;
-    }
-
     constructor(id = this.#defaultId(), daysArray = this.#defaultDaysArray(id)) {
         this.#id = id;
         this.#daysArray = daysArray;

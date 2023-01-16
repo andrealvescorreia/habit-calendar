@@ -24,12 +24,10 @@ export function createHabitMonthView(){
     }
 
     
-    function defaultMonth(){
-        let defaultId = HabitMonth.createHabitMonth().getId()
+    function changeToDefault(){
+        const defaultId = HabitMonth.createHabitMonth().getId()
         changeDisplayingHabitMonth(defaultId)
     }
-    
-
     
     function changeDisplayingHabitMonth(habitMonthId){
         const existingHabitMonth = createHabitMonthController().getFromLocalStorage(habitMonthId)
@@ -42,8 +40,6 @@ export function createHabitMonthView(){
         }
         notifyAll(currentlyDisplayingHabitMonth)
     }
-
-    
     
     function changeToPrevious(){
         let previousHabitMonthId = currentlyDisplayingHabitMonth.generatePreviousHabitMonthId()
@@ -73,6 +69,6 @@ export function createHabitMonthView(){
         clearAllDataFromCurrentMonth,
         switchDayStateOfCurrentMonth,
         subscribe,
-        defaultMonth
+        changeToDefault
     }
 }

@@ -14,16 +14,16 @@ import { createHabitMonthStreakRenderer } from './habit-month/HabitMonthStreakRe
 
 const themeView = createThemeView()
 
-const habitMonthController = createHabitMonthController()
-const habitMonthRenderer = createHabitMonthRenderer()
+const habitMonthController     = createHabitMonthController()
+const habitMonthRenderer       = createHabitMonthRenderer()
 const habitMonthStreakRenderer = createHabitMonthStreakRenderer()
-const habitMonthView = createHabitMonthView()
+const habitMonthView           = createHabitMonthView()
 
+habitMonthView.subscribe(habitMonthRenderer.update)
 habitMonthController.subscribe(habitMonthStreakRenderer.update)
 habitMonthView.subscribe(habitMonthController.putIntoLocalStorage)
-habitMonthView.subscribe(habitMonthRenderer.update)
 
-habitMonthView.defaultMonth()
+habitMonthView.changeToDefault()
 
 
 // EVENT LISTENERS:

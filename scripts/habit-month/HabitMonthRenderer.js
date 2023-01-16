@@ -2,7 +2,7 @@ import {txtHabitMonthName,
         txtSuccessPercentage, 
         dayButtons} from '../utils/DOMelements.js';
 
-import { dayHasPassed, isToday} from '../utils/dateUtils.js';
+import { dayHasPassed, isToday } from '../utils/dateUtils.js';
 import { HabitMonth } from './HabitMonth.js';
 import { playDayStateAnimation } from './animations.js';
 
@@ -13,25 +13,25 @@ export function createHabitMonthRenderer(){
     function update(habitMonth) {
         displayHabitMonth = habitMonth.clone()
 
-        if(previousDisplayHabitMonth == undefined || displayHabitMonth.getId() != previousDisplayHabitMonth.getId()){
+        if(previousDisplayHabitMonth == undefined || previousAndCurrentAreDifferent()){
             updateEverything()
         }
         else {
-            detectDaysChanged().forEach((dayIndex)=>{
-                updateDayButton(dayButtons[dayIndex])
+            detectDaysChangedInSameHabitMonth().forEach((dayIndex)=>{
+                changeDayButtonStateStyle(dayButtons[dayIndex], habitMonth.getDayAt(dayIndex))
                 playDayStateAnimation(dayButtons[dayIndex])
             })
-            updateSuccessPercentageDisplay()
         }
-
-        
-        
-        previousDisplayHabitMonth = habitMonth.clone()        
+        updateSuccessPercentageDisplay()
+        previousDisplayHabitMonth = habitMonth.clone()
     }
     return {
         update
     }
 
+    function previousAndCurrentAreDifferent(){
+        return displayHabitMonth.getId() != previousDisplayHabitMonth.getId()
+    }
 
     function removeAnyStateStyle(dayButton){
         dayButton.classList.remove('failure-state');
@@ -69,7 +69,6 @@ export function createHabitMonthRenderer(){
     }
 
     function updateDayButton(dayButton){
-        dayButton.className = "day-button"
         const dayState = displayHabitMonth.getDayAt(parseInt(dayButton.innerText)-1)
         updateDayBttnFontWeight(dayButton)
         changeDayButtonStateStyle(dayButton, dayState)
@@ -83,11 +82,10 @@ export function createHabitMonthRenderer(){
 
     
 
-    function detectDaysChanged(){
+    function detectDaysChangedInSameHabitMonth(){
         let daysChanged = []
-        if(displayHabitMonth.getId() != previousDisplayHabitMonth.getId()){
-            console.log('detectDayChange: são meses diferentes!')
-            return
+        if(previousAndCurrentAreDifferent()){
+            return daysChanged
         }
         for (let i = 0; i < displayHabitMonth.getQuantityOfDays(); i++) {
             if(displayHabitMonth.getDayAt(i) !== previousDisplayHabitMonth.getDayAt(i)){
@@ -135,27 +133,20 @@ export function createHabitMonthRenderer(){
         function updateGridStart(){
             dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDayNumber() + 1; /* 1(Sunday), ... , 7(Saturday) */
         }
-    
         function resetDayBttnsToDefault() {
             dayButtons.forEach(button => {
                 button.className = "day-button"
                 button.disabled = false;
             });
         }
-        
-        
-
         function hideDaysNotInTheMonth() {
             // ex: february only has 28 days. So day 29, 30 and 31 should NOT display.
-
             for (let i = dayButtons.length; i > displayHabitMonth.getQuantityOfDays(); i--) {
                 const button = dayButtons[i - 1];
                 button.disabled = true;
             }
         }
-    
         function updateDayBttnsStyle() {
-            
             for (let i = 0; i < displayHabitMonth.getQuantityOfDays(); i++) {
                 updateDayButton(dayButtons[i])
             }
