@@ -33,7 +33,8 @@ export class HabitMonth {
     }
 
     static #expectedNumberOfDaysInMonth(id){// aux function for the constructor and daysArray validator
-        return new Date(this.#toDate().getFullYear(), this.#toDate().getMonth()+1, 0).getDate(); 
+        const date = new Date(id + '-01T00:00:01')
+        return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate(); 
     }
 
     #toDate() {
