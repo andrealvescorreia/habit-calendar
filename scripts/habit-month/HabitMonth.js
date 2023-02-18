@@ -33,11 +33,12 @@ export class HabitMonth {
     }
 
     static #expectedNumberOfDaysInMonth(id){// aux function for the constructor and daysArray validator
-        const date = new Date(id + '-1')
-        return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate(); 
+        return new Date(this.#toDate().getFullYear(), this.#toDate().getMonth()+1, 0).getDate(); 
     }
 
-
+    #toDate() {
+        return new Date(this.#id + '-01T00:00:01')
+    }
 
     getJson(){
         const simpleMonth = {
@@ -73,22 +74,18 @@ export class HabitMonth {
 
 
     getMonthName(){
-        const date = new Date(this.#id + '-1')
-        let monthName = date.toLocaleString('default', { month: 'long' })
+        let monthName = this.#toDate().toLocaleString('default', { month: 'long' })
         monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
         return monthName;
     }
     getYear(){
-        const date = new Date(this.#id + '-1')
-        return date.getFullYear()
+        return this.#toDate().getFullYear()
     }
     getNumber(){//january: 1, december: 12
-        const date = new Date(this.#id + '-1')
-        return date.getMonth()+1
+        return this.#toDate().getMonth()+1
     }
     getFirstDayNumber(){// 0 (Sunday), ... , 6 (Saturday)
-        const date = new Date(this.#id + '-1')
-        return date.getDay()
+        return this.#toDate().getDay()
     }
 
     switchDayState(dayIndex){
