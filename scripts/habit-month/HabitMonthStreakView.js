@@ -2,12 +2,10 @@ import {txtStreak} from '../utils/DOMelements.js';
 
 import {getTodayDay} from '../utils/dateUtils.js';
 
-import { createHabitMonthController } from './HabitMonthController.js';
 import { HabitMonth } from './HabitMonth.js';
 
-export function createHabitMonthStreakRenderer(){
+export function createHabitMonthStreakView(){
     var displayHabitMonth;
-    const habitMonthController = createHabitMonthController();
 
     function update(habitMonth){
 
@@ -34,18 +32,17 @@ export function createHabitMonthStreakRenderer(){
     
         
         function isNotCurrentMonth(){
-            let todayHabitMonth = HabitMonth.create({})
-            return displayHabitMonth.getId() != todayHabitMonth.getId()
+            return displayHabitMonth.getId() != HabitMonth.generateTodaysId()
         }
         function todayIsInNeutralState(){
             return displayHabitMonth.getDayAt(getTodayDay() - 1) == 0
         }
         
         function calculateStreakFromToday(){
-            return habitMonthController.getStreak(displayHabitMonth.getId(), getTodayDay())
+            return habitMonth.getStreak(getTodayDay())
         }
         function calculateStreakFromYesterday(){
-            return habitMonthController.getStreak(displayHabitMonth.getId(), getTodayDay() - 1)
+            return habitMonth.getStreak(getTodayDay() - 1)
         }
     }
     return {

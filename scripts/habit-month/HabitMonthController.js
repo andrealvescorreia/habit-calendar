@@ -1,62 +1,72 @@
+// this script is responsible for the interection between the user and the habit calendar.
+// __________________________________________________________________
+
+
 import {HabitMonth} from './HabitMonth.js';
 
 export function createHabitMonthController(){
     
+    var currentlyViewingHabitMonth
+
     const state = {
         observers: []
     }
-
     function subscribe(observerFunction){
         state.observers.push(observerFunction)
     }
-
     function notifyAll(habitMonth){
         for (const observerFunction of state.observers){
-            observerFunction(habitMonth)
+            observerFunction(habitMonth.clone())
         }
     }
 
-    function getFromLocalStorage(id){// returns null if not found it
-        let rawHabitMonthData = JSON.parse(localStorage.getItem(id))
-        if(rawHabitMonthData == null) return null
-        let foundHabitMonth = HabitMonth.create(rawHabitMonthData)
-        return foundHabitMonth;
+    
+    function changeToDefault(){
+        changeDisplayingHabitMonth(HabitMonth.generateTodaysId())
+    }
+    
+    function changeDisplayingHabitMonth(habitMonthId){
+        const existingHabitMonth = HabitMonth.get(habitMonthId)
+        if(existingHabitMonth != null){
+            currentlyViewingHabitMonth = existingHabitMonth
+        } 
+        else {
+            let newHabitMonth = HabitMonth.create({id: habitMonthId})
+            currentlyViewingHabitMonth = newHabitMonth
+        }
+        notifyAll(currentlyViewingHabitMonth)
+    }
+    
+    function changeToPrevious(){
+        let previousHabitMonthId = currentlyViewingHabitMonth.generatePreviousHabitMonthId()
+        changeDisplayingHabitMonth(previousHabitMonthId)
     }
 
-    function putIntoLocalStorage(habitMonth){
-        localStorage.setItem(habitMonth.getId(), habitMonth.getJson())
-        notifyAll(habitMonth)
+
+    function changeToNext() {
+        let nextHabitMonthId = currentlyViewingHabitMonth.generateNextHabitMonthId()
+        changeDisplayingHabitMonth(nextHabitMonthId);
     }
-    
-    function getStreak(habitMonthId, pivotDay){
-        let habitMonthStreak = 0
-        const foundHabitMonth = getFromLocalStorage(habitMonthId)
-    
-        if(foundHabitMonth == null) return 0
-    
-        for (let dayIndex = pivotDay - 1; dayIndex >= 0; dayIndex--) {
-            if(foundHabitMonth.isSuccessful(dayIndex))
-                habitMonthStreak++
-            else 
-                return habitMonthStreak
-        }
-    
-        const previousHabitMonthId = foundHabitMonth.generatePreviousHabitMonthId()
-        const lastDayOfPreviousMonth = getLastDayOfMonth(previousHabitMonthId)
-        
-        return habitMonthStreak + getStreak(previousHabitMonthId, lastDayOfPreviousMonth)
-    
-        // aux fun    
-        function getLastDayOfMonth(habitMonthId){
-            return HabitMonth.create({id: habitMonthId}).getQuantityOfDays();
-        }
+
+    function clearAllDataFromViewingMonth(){
+        const cleanHabitMonth = HabitMonth.create({id: currentlyViewingHabitMonth.getId()})
+        currentlyViewingHabitMonth = cleanHabitMonth
+        currentlyViewingHabitMonth.save()
+        notifyAll(currentlyViewingHabitMonth)
     }
-    
+
+    function switchDayState(dayIndex){
+        currentlyViewingHabitMonth.switchDayState(dayIndex)
+        currentlyViewingHabitMonth.save()
+        notifyAll(currentlyViewingHabitMonth)
+    }
+
     return{
-        getFromLocalStorage, 
-        putIntoLocalStorage,
-        getStreak,
-        subscribe     
+        changeToPrevious,
+        changeToNext,
+        clearAllDataFromViewingMonth,
+        switchDayState,
+        subscribe,
+        changeToDefault
     }
 }
-

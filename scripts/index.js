@@ -1,53 +1,48 @@
 import { dayButtons, 
-         bttnHabitMonthSwitcherPrevious, 
-         bttnHabitMonthSwitcherNext, 
+         bttnPreviousHabitMonth, 
+         bttnNextHabitMonth, 
          bttnTrashCan, 
-         bttnDarkModeToggle }             from './utils/DOMelements.js';
+         bttnDarkModeToggle }         from './utils/DOMelements.js';
 
 
-import { createThemeView }                from './theme/themeView.js';
-import { createHabitMonthView }           from './habit-month/HabitMonthView.js';
-import { createHabitMonthController }     from './habit-month/HabitMonthController.js';
-import { createHabitMonthRenderer }       from './habit-month/HabitMonthRenderer.js';
-import { createHabitMonthStreakRenderer } from './habit-month/HabitMonthStreakRenderer.js';
+import { createThemeController }      from './theme/themeController.js';
+import { createHabitMonthController } from './habit-month/HabitMonthController.js';
+import { createHabitMonthView }       from './habit-month/HabitMonthView.js';
+import { createHabitMonthStreakView } from './habit-month/HabitMonthStreakView.js';
 
 
-const themeView = createThemeView()
+const themeController = createThemeController()
 
-const habitMonthController     = createHabitMonthController()
-const habitMonthRenderer       = createHabitMonthRenderer()
-const habitMonthStreakRenderer = createHabitMonthStreakRenderer()
-const habitMonthView           = createHabitMonthView()
+const habitMonthView       = createHabitMonthView()
+const habitMonthStreakView = createHabitMonthStreakView()
+const habitMonthController = createHabitMonthController()
 
-habitMonthView.subscribe(habitMonthController.putIntoLocalStorage)
-habitMonthView.subscribe(habitMonthRenderer.update)
-habitMonthController.subscribe(habitMonthStreakRenderer.update)
+habitMonthController.subscribe(habitMonthView.update)
+habitMonthController.subscribe(habitMonthStreakView.update)
 
-
-
-habitMonthView.changeToDefault()
+habitMonthController.changeToDefault()
 
 // EVENT LISTENERS:
 
-bttnHabitMonthSwitcherPrevious.addEventListener("click", ()=>{
-    habitMonthView.changeToPrevious()
+bttnPreviousHabitMonth.addEventListener("click", ()=>{
+    habitMonthController.changeToPrevious()
 })
-bttnHabitMonthSwitcherNext.addEventListener("click", ()=>{
-    habitMonthView.changeToNext()
+bttnNextHabitMonth.addEventListener("click", ()=>{
+    habitMonthController.changeToNext()
 })
 
 dayButtons.forEach( button =>{
     button.addEventListener("click", ()=>{
         const dayIndex = parseInt(button.innerText) - 1
-        habitMonthView.switchDayState(dayIndex)
+        habitMonthController.switchDayState(dayIndex)
     })
 })
 
 bttnTrashCan.addEventListener("click", ()=>{
     if (confirm("You sure? This action can't be undone!"))
-        habitMonthView.clearAllDataFromCurrentlyViewingMonth()  
+        habitMonthController.clearAllDataFromViewingMonth()  
 })
 
 bttnDarkModeToggle.addEventListener("click", () => {
-    themeView.switchTheme()
+    themeController.switchTheme()
 })

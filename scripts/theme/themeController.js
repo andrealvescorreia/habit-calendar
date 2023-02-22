@@ -1,14 +1,38 @@
+
+
 export function createThemeController(){
+
+    updateTheme()
+
+    function switchTheme(){
+        document.body.classList.toggle("dark");
+        if (themeIsDark()) 
+            set("light")
+        else 
+            set("dark")
     
-    function getTheme(){
-        return window.localStorage.getItem("theme")
+        updateTheme()
     }
-    function setTheme(theme){
+    
+    function updateTheme(){
+        if(themeIsDark())
+            document.body.classList.toggle("dark", true) 
+    }
+    
+    function themeIsDark(){
+        return get() === "dark"
+    }
+    
+    function set(theme){
         window.localStorage.setItem("theme", theme)
     }
-    return{
-        getTheme,
-        setTheme
+    function get(){
+        return window.localStorage.getItem("theme")
+    }
+
+    return {
+        switchTheme
     }
 }
+
 
