@@ -23,7 +23,7 @@ export function createHabitMonthView(){
 
     
     function changeToDefault(){
-        const defaultId = HabitMonth.createHabitMonth().getId()
+        const defaultId = HabitMonth.create({}).getId()
         changeDisplayingHabitMonth(defaultId)
     }
     
@@ -33,7 +33,7 @@ export function createHabitMonthView(){
             currentlyViewingHabitMonth = existingHabitMonth
         } 
         else {
-            let newHabitMonth = HabitMonth.createHabitMonth(habitMonthId)
+            let newHabitMonth = HabitMonth.create({id: habitMonthId})
             currentlyViewingHabitMonth = newHabitMonth
         }
         notifyAll(currentlyViewingHabitMonth)
@@ -51,7 +51,7 @@ export function createHabitMonthView(){
     }
 
     function clearAllDataFromCurrentlyViewingMonth(){
-        const cleanHabitMonth = HabitMonth.createHabitMonth(currentlyViewingHabitMonth.getId())
+        const cleanHabitMonth = HabitMonth.create({id: currentlyViewingHabitMonth.getId()})
         currentlyViewingHabitMonth = cleanHabitMonth
         notifyAll(currentlyViewingHabitMonth)
     }

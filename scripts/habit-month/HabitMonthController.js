@@ -17,9 +17,9 @@ export function createHabitMonthController(){
     }
 
     function getFromLocalStorage(id){// returns null if not found it
-        let simpleHabitMonth = JSON.parse(localStorage.getItem(id))
-        if(simpleHabitMonth == null) return null
-        let foundHabitMonth = HabitMonth.createHabitMonth(simpleHabitMonth.id, simpleHabitMonth.daysArray)
+        let rawHabitMonthData = JSON.parse(localStorage.getItem(id))
+        if(rawHabitMonthData == null) return null
+        let foundHabitMonth = HabitMonth.create(rawHabitMonthData)
         return foundHabitMonth;
     }
 
@@ -30,27 +30,25 @@ export function createHabitMonthController(){
     
     function getStreak(habitMonthId, pivotDay){
         let habitMonthStreak = 0
-        const habitMonth = getFromLocalStorage(habitMonthId)
+        const foundHabitMonth = getFromLocalStorage(habitMonthId)
     
-        if(habitMonth == null) return 0
+        if(foundHabitMonth == null) return 0
     
         for (let dayIndex = pivotDay - 1; dayIndex >= 0; dayIndex--) {
-            if(habitMonth.isSuccessful(dayIndex))
+            if(foundHabitMonth.isSuccessful(dayIndex))
                 habitMonthStreak++
             else 
                 return habitMonthStreak
         }
     
-        const previousHabitMonthId = habitMonth.generatePreviousHabitMonthId()
+        const previousHabitMonthId = foundHabitMonth.generatePreviousHabitMonthId()
         const lastDayOfPreviousMonth = getLastDayOfMonth(previousHabitMonthId)
         
         return habitMonthStreak + getStreak(previousHabitMonthId, lastDayOfPreviousMonth)
     
-    
-        // bellow are aux functions:        
+        // aux fun    
         function getLastDayOfMonth(habitMonthId){
-            const auxDate = new Date(habitMonthId + '-1')
-            return new Date(auxDate.getFullYear(), auxDate.getMonth()+1, 0).getDate()
+            return HabitMonth.create({id: habitMonthId}).getQuantityOfDays();
         }
     }
     

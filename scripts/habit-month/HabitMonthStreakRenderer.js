@@ -34,7 +34,7 @@ export function createHabitMonthStreakRenderer(){
     
         
         function isNotCurrentMonth(){
-            let todayHabitMonth = HabitMonth.createHabitMonth()
+            let todayHabitMonth = HabitMonth.create({})
             return displayHabitMonth.getId() != todayHabitMonth.getId()
         }
         function todayIsInNeutralState(){

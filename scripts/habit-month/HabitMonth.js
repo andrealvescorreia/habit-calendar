@@ -8,13 +8,13 @@ export class HabitMonth {
         NEUTRAL: 0
     }
 
-    static createHabitMonth(id, daysArray){
+    static create({id, daysArray}){
         if(id != null && this.#isIdValid(id) == false)
             return null
-        
+
         if(daysArray != null && this.#isDaysArrayValid(daysArray, id) == false)
             return null
-        
+      
         return new HabitMonth(id, daysArray)
     }
 
@@ -22,7 +22,8 @@ export class HabitMonth {
         this.#id = id;
         this.#daysArray = daysArray;
     }
-    
+   
+
     #defaultId(){
         const todayDate = new Date()
         return String(todayDate.getFullYear()+ '-' + String(todayDate.getMonth() + 1).padStart(2, '0'));
@@ -37,7 +38,7 @@ export class HabitMonth {
         return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate(); 
     }
 
-    #toDate() {
+    toDate() {
         return new Date(this.#id + '-01T00:00:01')
     }
 
@@ -52,7 +53,7 @@ export class HabitMonth {
 
     clone(){
         let simpleHabitMonth = JSON.parse(this.getJson())
-        return HabitMonth.createHabitMonth(simpleHabitMonth.id, simpleHabitMonth.daysArray)
+        return HabitMonth.create(simpleHabitMonth)
     }
     getSuccessPercentage(){
         const countOccurrences = (value, array) => array.reduce((a, v) => (v === value ? a + 1 : a), 0);
@@ -75,18 +76,18 @@ export class HabitMonth {
 
 
     getMonthName(){
-        let monthName = this.#toDate().toLocaleString('default', { month: 'long' })
+        let monthName = this.toDate().toLocaleString('default', { month: 'long' })
         monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
         return monthName;
     }
     getYear(){
-        return this.#toDate().getFullYear()
+        return this.toDate().getFullYear()
     }
     getNumber(){//january: 1, december: 12
-        return this.#toDate().getMonth()+1
+        return this.toDate().getMonth()+1
     }
     getFirstDayNumber(){// 0 (Sunday), ... , 6 (Saturday)
-        return this.#toDate().getDay()
+        return this.toDate().getDay()
     }
 
     switchDayState(dayIndex){
@@ -182,11 +183,11 @@ export class HabitMonth {
 
 
     alreadyPassed(){
-        let todayHabitMonth = HabitMonth.createHabitMonth();
+        let todayHabitMonth = HabitMonth.create({});
         return (new Date(todayHabitMonth.getId() + '-1')).getTime() > (new Date(this.getId() + '-1')).getTime()
     }
     isCurrentMonth(){
-        let todayHabitMonth = HabitMonth.createHabitMonth()
+        let todayHabitMonth = HabitMonth.create({})
         return this.getId() == todayHabitMonth.getId()
     }
 
