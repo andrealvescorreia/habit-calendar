@@ -23,6 +23,6 @@ Here are some habits indications for you to pick one and try to reach the 100% m
 * **Month-navigation** (arrows):
 * **Clear month data** (trash-can);
 * **Responsiveness** (for multiple devices);
-* **Pure HTML+CSS+JS**;
+
 ***
 *Made by @andrealvescorreia*
