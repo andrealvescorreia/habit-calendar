@@ -15,8 +15,6 @@ export class HabitMonth {
         return new HabitMonth(id, daysArray)
     }
 
-   
-
     constructor(id, daysArray) {
         this.#id = id;
         this.#daysArray = daysArray;
@@ -72,13 +70,16 @@ export class HabitMonth {
         return this.#daysArray[index]
     }
 
+    getName(){
+        return this.#getMonthName() + ' ' + this.#getYear()
+    }
 
-    getMonthName(){
+    #getMonthName(){
         let monthName = this.toDate().toLocaleString('default', { month: 'long' })
         monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
         return monthName;
     }
-    getYear(){
+    #getYear(){
         return this.toDate().getFullYear()
     }
     getNumber(){//january: 1, december: 12
@@ -124,8 +125,8 @@ export class HabitMonth {
 
     generatePreviousHabitMonthId(){
         if(habitMonthIsJanuary(this))
-            return this.getYear() - 1 + '-12'
-        return this.getYear() + '-' + String(this.getNumber() - 1).padStart(2, '0')
+            return this.#getYear() - 1 + '-12'
+        return this.#getYear() + '-' + String(this.getNumber() - 1).padStart(2, '0')
     
         function habitMonthIsJanuary(m){
             return m.getNumber() == 1
@@ -134,8 +135,8 @@ export class HabitMonth {
     
     generateNextHabitMonthId(){
         if(habitMonthIsDecember(this))
-            return this.getYear() + 1 + '-01'
-        return this.getYear() + '-' + String(this.getNumber() + 1).padStart(2, '0')
+            return this.#getYear() + 1 + '-01'
+        return this.#getYear() + '-' + String(this.getNumber() + 1).padStart(2, '0')
         
         function habitMonthIsDecember(m){
             return m.getNumber() == 12

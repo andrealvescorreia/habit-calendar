@@ -34,14 +34,18 @@ export class HabitMonthValidator {
         if (monthDaysArray.length != this.#expectedNumberOfDaysInMonth(monthId)) { 
             console.log('wrong array size (should be',this.#expectedNumberOfDaysInMonth(monthId),', but received ', monthDaysArray.length,')')
             return false
-        }   
-        for (let i = 0; i < monthDaysArray.length; i++) {
-            const element = monthDaysArray[i];
-            if(!(Object.values(HabitMonth.DAY_STATES).includes(element))) {
-                console.log('invalid value at [',i,']')
+        }
+
+        if(monthDaysArray.every(item => typeof item == 'number') == false){
+            console.log('one of the values is not a number')
+        }
+
+        monthDaysArray.forEach(element => {
+            if(Object.values(HabitMonth.DAY_STATES).includes(element) == false) {
+                console.log('invalid value of ', element, ' at indexOf: ',monthDaysArray.indexOf(element))
                 return false
             }
-        }
+        })
         return true
     }
 

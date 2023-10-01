@@ -24,22 +24,22 @@ habitMonthController.changeToDefault()
 
 // EVENT LISTENERS:
 
-bttnPreviousHabitMonth.addEventListener("click", ()=>{
+bttnPreviousHabitMonth.addEventListener("click", ()=> {
     habitMonthController.changeToPrevious()
 })
-bttnNextHabitMonth.addEventListener("click", ()=>{
+bttnNextHabitMonth.addEventListener("click", ()=> {
     habitMonthController.changeToNext()
 })
 
-dayButtons.forEach( button =>{
-    button.addEventListener("click", ()=>{
+dayButtons.forEach( button => {
+    button.addEventListener("click", ()=> {
         const dayIndex = parseInt(button.innerText) - 1
         habitMonthController.switchDayState(dayIndex)
     })
 })
 
-bttnTrashCan.addEventListener("click", ()=>{
-    if (confirm("You sure? This action can't be undone!"))
+bttnTrashCan.addEventListener("click", ()=> {
+    if (confirm("Erase this month's data?"))
         habitMonthController.clearAllDataFromViewingMonth()  
 })
 

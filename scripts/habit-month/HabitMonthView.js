@@ -100,7 +100,7 @@ export function createHabitMonthView(){
     }
 
     function updateHabitMonthNameDisplay(){
-        txtHabitMonthName.innerText = displayHabitMonth.getMonthName() + ' ' + displayHabitMonth.getYear()
+        txtHabitMonthName.innerText = displayHabitMonth.getName()
     }
     
     
@@ -151,9 +151,9 @@ export function createHabitMonthView(){
             }
         }
         function updateDayBttnsStyle() {
-            for (let i = 0; i < displayHabitMonth.getQuantityOfDays(); i++) {
-                updateDayButton(dayButtons[i])
-            }
+            dayButtons.forEach(bttn => {
+                updateDayButton(bttn)
+            })
         }
     }
 }
