@@ -2,51 +2,40 @@ import { HabitMonth } from "./HabitMonth.js"
 
 export class HabitMonthValidator {
     static validate({id, daysArray}){
-        if(id != null && this.#isIdValid(id) == false)
-            return null
+        this.#validateId(id)
 
-        if(daysArray != null && this.#isDaysArrayValid(daysArray, id) == false)
-            return null
+        if(daysArray != null && this.#validateDaysArray(daysArray, id) == false)
+            throw new Error('array de dias invalido')
     }
 
-    static #isIdValid(monthId){
+    static #validateId(monthId){
         // exemples of valid ids:
         // '0001-01'
         // '2022-09'
         // '9999-12'
-        const idRegex = "^[0-9]{4}-(0?[1-9]|1[012])$"
 
-        function isString(value){
-            return (typeof value === 'string' || value instanceof String)
-        }
-        if (isString(monthId) == false) {
-            console.log('not a string')
-            return false
-        }
-        return (monthId.match(idRegex))
+        if(typeof monthId != 'string')
+            throw new TypeError('must be string')
+
+        const idRegex = "^[0-9]{4}-(0?[1-9]|1[012])$"
+        if (!monthId.match(idRegex)) 
+            throw new Error('id de formato ivalido')
     }
 
-    static #isDaysArrayValid(monthDaysArray, monthId){
-        if (!Array.isArray(monthDaysArray)) {
-            console.log('not an array')
-            return false
-        }
-        if (monthDaysArray.length != this.#expectedNumberOfDaysInMonth(monthId)) { 
-            console.log('wrong array size (should be',this.#expectedNumberOfDaysInMonth(monthId),', but received ', monthDaysArray.length,')')
-            return false
-        }
+    static #validateDaysArray(monthDaysArray, monthId){
+        if (!Array.isArray(monthDaysArray)) 
+            throw new TypeError('must be array')
+            
+        if (monthDaysArray.length != this.#expectedNumberOfDaysInMonth(monthId)) 
+            throw new Error('wrong array size (should be',this.#expectedNumberOfDaysInMonth(monthId),', but received ', monthDaysArray.length,')')
 
-        if(monthDaysArray.every(item => typeof item == 'number') == false){
-            console.log('one of the values is not a number')
-        }
+        if(monthDaysArray.every(item => typeof item == 'number') == false)
+            throw new TypeError('one of the values is not a number')
 
         monthDaysArray.forEach(element => {
-            if(Object.values(HabitMonth.DAY_STATES).includes(element) == false) {
-                console.log('invalid value of ', element, ' at indexOf: ',monthDaysArray.indexOf(element))
-                return false
-            }
+            if(Object.values(HabitMonth.DAY_STATES).includes(element) == false) 
+                throw new Error('invalid value of ', element, ' at indexOf: ',monthDaysArray.indexOf(element))
         })
-        return true
     }
 
     static #expectedNumberOfDaysInMonth(id){
