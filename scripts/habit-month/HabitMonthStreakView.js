@@ -32,10 +32,10 @@ export function createHabitMonthStreakView(){
     
         
         function isNotCurrentMonth(){
-            return displayHabitMonth.getId() != HabitMonth.generateTodaysId()
+            return displayHabitMonth.id != HabitMonth.generateTodaysId()
         }
         function todayIsInNeutralState(){
-            return displayHabitMonth.getDayAt(getTodayDay() - 1) == 0
+            return displayHabitMonth.stateOfDayAt(getTodayDay() - 1) == 0
         }
         
         function calculateStreakFromToday(){

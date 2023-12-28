@@ -22,7 +22,7 @@ export function createHabitMonthView(){
         }
         else {
             detectDaysChangedInSameHabitMonth().forEach((dayIndex)=>{
-                changeDayButtonStateStyle(dayButtons[dayIndex], habitMonth.getDayAt(dayIndex))
+                changeDayButtonStateStyle(dayButtons[dayIndex], habitMonth.stateOfDayAt(dayIndex))
                 playDayStateAnimation(dayButtons[dayIndex])
             })
         }
@@ -34,7 +34,7 @@ export function createHabitMonthView(){
     }
 
     function previousAndCurrentAreDifferent(){
-        return displayHabitMonth.getId() != previousDisplayHabitMonth.getId()
+        return displayHabitMonth.id != previousDisplayHabitMonth.id
     }
 
     function removeAnyStateStyle(dayButton){
@@ -73,7 +73,7 @@ export function createHabitMonthView(){
     }
 
     function updateDayButton(dayButton){
-        const dayState = displayHabitMonth.getDayAt(parseInt(dayButton.innerText)-1)
+        const dayState = displayHabitMonth.stateOfDayAt(parseInt(dayButton.innerText)-1)
         updateDayBttnFontWeight(dayButton)
         changeDayButtonStateStyle(dayButton, dayState)
     }
@@ -91,8 +91,8 @@ export function createHabitMonthView(){
         if(previousAndCurrentAreDifferent()){
             return daysChanged
         }
-        for (let i = 0; i < displayHabitMonth.getQuantityOfDays(); i++) {
-            if(displayHabitMonth.getDayAt(i) !== previousDisplayHabitMonth.getDayAt(i)){
+        for (let i = 0; i < displayHabitMonth.quantityOfDays; i++) {
+            if(displayHabitMonth.stateOfDayAt(i) !== previousDisplayHabitMonth.stateOfDayAt(i)){
                 daysChanged.push(i);
             }
         }
@@ -100,7 +100,7 @@ export function createHabitMonthView(){
     }
 
     function updateHabitMonthNameDisplay(){
-        txtHabitMonthName.innerText = displayHabitMonth.getName()
+        txtHabitMonthName.innerText = displayHabitMonth.name
     }
     
     
@@ -145,7 +145,7 @@ export function createHabitMonthView(){
         }
         function hideDaysNotInTheMonth() {
             // ex: february only has 28 days. So day 29, 30 and 31 should NOT display.
-            for (let i = dayButtons.length; i > displayHabitMonth.getQuantityOfDays(); i--) {
+            for (let i = dayButtons.length; i > displayHabitMonth.quantityOfDays; i--) {
                 const button = dayButtons[i - 1];
                 button.disabled = true;
             }

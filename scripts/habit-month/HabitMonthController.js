@@ -49,15 +49,15 @@ export function createHabitMonthController(){
     }
 
     function clearAllDataFromViewingMonth(){
-        const cleanHabitMonth = HabitMonth.create({id: currentlyViewingHabitMonth.getId()})
+        const cleanHabitMonth = HabitMonth.create({id: currentlyViewingHabitMonth.id})
         currentlyViewingHabitMonth = cleanHabitMonth
-        currentlyViewingHabitMonth.save()
+        currentlyViewingHabitMonth.saveInLocalStorage()
         notifyAll(currentlyViewingHabitMonth)
     }
 
-    function switchDayState(dayIndex){
-        currentlyViewingHabitMonth.switchDayState(dayIndex)
-        currentlyViewingHabitMonth.save()
+    function switchDayStateAt(dayIndex){
+        currentlyViewingHabitMonth.switchDayStateAt(dayIndex)
+        currentlyViewingHabitMonth.saveInLocalStorage()
         notifyAll(currentlyViewingHabitMonth)
     }
 
@@ -65,7 +65,7 @@ export function createHabitMonthController(){
         changeToPrevious,
         changeToNext,
         clearAllDataFromViewingMonth,
-        switchDayState,
+        switchDayStateAt: switchDayStateAt,
         subscribe,
         changeToDefault
     }

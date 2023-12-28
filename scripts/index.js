@@ -34,7 +34,7 @@ bttnNextHabitMonth.addEventListener("click", ()=> {
 dayButtons.forEach( button => {
     button.addEventListener("click", ()=> {
         const dayIndex = parseInt(button.innerText) - 1
-        habitMonthController.switchDayState(dayIndex)
+        habitMonthController.switchDayStateAt(dayIndex)
     })
 })
 
