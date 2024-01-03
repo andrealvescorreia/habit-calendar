@@ -194,7 +194,7 @@ export class HabitMonth {
     
         // aux fun    
         function getLastDayOfMonth(habitMonthId){
-            return HabitMonth.create({id: habitMonthId}).quantityOfDays();
+            return HabitMonth.create({id: habitMonthId}).quantityOfDays;
         }
     }
 }
