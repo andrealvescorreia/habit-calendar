@@ -144,8 +144,10 @@ export class HabitMonth {
     }
 
 
-    alreadyPassed(){
-        return (new Date(HabitMonth.generateTodaysId() + '-1')).getTime() > (new Date(this.id + '-1')).getTime()
+    hasAlreadyPassed(){
+        const thisHabitMonthDate = new Date(this.id + '-1');
+        const todaysMonthDate = new Date(HabitMonth.generateTodaysId() + '-1');
+        return thisHabitMonthDate.getTime() < todaysMonthDate.getTime();
     }
     isCurrentMonth(){
         return this.id == HabitMonth.generateTodaysId()

@@ -2,116 +2,131 @@
 // __________________________________________________________________
 
 
-import {txtHabitMonthName, 
-        txtSuccessPercentage, 
-        dayButtons} from '../utils/DOMelements.js';
+import {
+    txtHabitMonthName,
+    txtSuccessPercentage,
+    dayButtons
+} from '../utils/DOMelements.js';
 
 import { dayHasPassed, isToday } from '../utils/dateUtils.js';
 import { HabitMonth } from './HabitMonth.js';
 import { playDayStateAnimation } from './animations.js';
 
-export function createHabitMonthView(){
-    var previousDisplayHabitMonth
-    var displayHabitMonth
+import {
+    DAY_BTTN_STATES_CLASSNAME,
+    DAY_BTTN_CLASSNAME
+} from '../utils/classNames.js';
 
-    function update(habitMonth) {
-        displayHabitMonth = habitMonth.clone()
+export function createHabitMonthView() {
+    var previousDisplayedHabitMonth
+    var currentDisplayingHabitMonth
 
-        if(previousDisplayHabitMonth == undefined || previousAndCurrentAreDifferent()){
-            updateEverything()
-        }
-        else {
-            detectDaysChangedInSameHabitMonth().forEach((dayIndex)=>{
-                changeDayButtonStateStyle(dayButtons[dayIndex], habitMonth.stateOfDayAt(dayIndex))
-                playDayStateAnimation(dayButtons[dayIndex])
-            })
-        }
-        updateSuccessPercentageDisplay()
-        previousDisplayHabitMonth = habitMonth.clone()
-    }
+
+
+
+
     return {
-        update
-    }
+        update(habitMonth) {
+            currentDisplayingHabitMonth = habitMonth.clone()
 
-    function previousAndCurrentAreDifferent(){
-        return displayHabitMonth.id != previousDisplayHabitMonth.id
-    }
-
-    function removeAnyStateStyle(dayButton){
-        dayButton.classList.remove('failure-state');
-        dayButton.classList.remove('success-state');
-    }
-
-    function updateDayBttnFontWeight(dayButton) {
-        if(displayHabitMonth.alreadyPassed()) {
-            dayButton.className = "day-button day-button-past";
-            return
-        }
-        if(displayHabitMonth.isCurrentMonth()) {
-            let buttonDay = parseInt(dayButton.innerText)
-            if (dayHasPassed(buttonDay)) {
-                dayButton.className = "day-button day-button-past";
-                return
+            if (previousDisplayedHabitMonth == undefined || previousAndCurrentAreDifferent()) {
+                updateEverything()
             }
-            if (isToday(buttonDay)) {
-                dayButton.className = "day-button day-button-today";
-                return
+            else {
+                detectDaysChangedInSameHabitMonth().forEach((dayIndex) => {
+                    changeDayButtonStateStyle(dayButtons[dayIndex], habitMonth.stateOfDayAt(dayIndex))
+                    playDayStateAnimation(dayButtons[dayIndex])
+                })
+            }
+            updateSuccessPercentageDisplay()
+            previousDisplayedHabitMonth = currentDisplayingHabitMonth.clone()
+        }
+    }
+
+    function previousAndCurrentAreDifferent() {
+        return currentDisplayingHabitMonth.id != previousDisplayedHabitMonth.id
+    }
+
+    function removeAnyStateStyle(dayButtonEl) {
+        DAY_BTTN_STATES_CLASSNAME
+
+        dayButtonEl.classList.remove(DAY_BTTN_STATES_CLASSNAME.FAILURE);
+        dayButtonEl.classList.remove(DAY_BTTN_STATES_CLASSNAME.SUCCESS);
+    }
+
+    function updateDayBttnFontWeight(dayButtonEl) {
+        if (currentDisplayingHabitMonth.hasAlreadyPassed()) {
+            dayButtonEl.className = "day-button day-button-past";
+        }
+        else if (currentDisplayingHabitMonth.isCurrentMonth()) {
+            let dayOfButton = parseInt(dayButtonEl.innerText)
+            if (dayHasPassed(dayOfButton)) {
+                dayButtonEl.className = "day-button day-button-past";
+            }
+            else if (isToday(dayOfButton)) {
+                dayButtonEl.className = "day-button day-button-today";
             }
         }
     }
 
-    function changeDayButtonStateStyle(dayButton, dayState){
-        removeAnyStateStyle(dayButton)
-        if (dayState == HabitMonth.DAY_STATES.SUCCESS) {
-            dayButton.classList.add('success-state');
-            return
+    function changeDayButtonStateStyle(dayButtonEl, newState) {
+        removeAnyStateStyle(dayButtonEl)
+        if (newState == HabitMonth.DAY_STATES.SUCCESS) {
+            dayButtonEl.classList.add(DAY_BTTN_STATES_CLASSNAME.SUCCESS);
         }
-        if (dayState == HabitMonth.DAY_STATES.FAILURE) {
-            dayButton.classList.add('failure-state');
-            return
+        else if (newState == HabitMonth.DAY_STATES.FAILURE) {
+            dayButtonEl.classList.add(DAY_BTTN_STATES_CLASSNAME.FAILURE);
         }
     }
 
-    function updateDayButton(dayButton){
-        const dayState = displayHabitMonth.stateOfDayAt(parseInt(dayButton.innerText)-1)
-        updateDayBttnFontWeight(dayButton)
-        changeDayButtonStateStyle(dayButton, dayState)
+    function updateDayButton(dayButtonEl) {
+        const dayState = currentDisplayingHabitMonth.stateOfDayAt(parseInt(dayButtonEl.innerText) - 1)
+        updateDayBttnFontWeight(dayButtonEl)
+        changeDayButtonStateStyle(dayButtonEl, dayState)
     }
 
-    function updateEverything(){
+    function updateEverything() {
         updateHabitMonthNameDisplay()
         updateSuccessPercentageDisplay()
         updateDayButtonsDisplay()
     }
 
-    
 
-    function detectDaysChangedInSameHabitMonth(){
+
+    function detectDaysChangedInSameHabitMonth() {
         let daysChanged = []
-        if(previousAndCurrentAreDifferent()){
-            return daysChanged
+        const dayStateHasChanged = (index) => {
+            return (
+                currentDisplayingHabitMonth.stateOfDayAt(index)
+                !==
+                previousDisplayedHabitMonth.stateOfDayAt(index)
+            )
         }
-        for (let i = 0; i < displayHabitMonth.quantityOfDays; i++) {
-            if(displayHabitMonth.stateOfDayAt(i) !== previousDisplayHabitMonth.stateOfDayAt(i)){
-                daysChanged.push(i);
-            }
+
+        if (previousAndCurrentAreDifferent()) {
+            return [];
         }
-        return daysChanged
+        for (let index = 0; index < currentDisplayingHabitMonth.quantityOfDays; index++) {
+            if (dayStateHasChanged(index))
+                daysChanged.push(index);
+
+        }
+        return daysChanged;
     }
 
-    function updateHabitMonthNameDisplay(){
-        txtHabitMonthName.innerText = displayHabitMonth.name
+    function updateHabitMonthNameDisplay() {
+        txtHabitMonthName.innerText = currentDisplayingHabitMonth.name
     }
-    
-    
-    function updateSuccessPercentageDisplay(){
+
+
+    function updateSuccessPercentageDisplay() {
         let previousPercentage = parseInt(txtSuccessPercentage.innerText)
-        if(isNaN(previousPercentage)){
-            animateTransition(txtSuccessPercentage, 0, displayHabitMonth.getSuccessPercentage(), 1)
+        if (isNaN(previousPercentage)) {
+            animateTransition(txtSuccessPercentage, 0, currentDisplayingHabitMonth.getSuccessPercentage(), 1)
             return
         }
-        animateTransition(txtSuccessPercentage, previousPercentage, displayHabitMonth.getSuccessPercentage(), 600)
-        
+        animateTransition(txtSuccessPercentage, previousPercentage, currentDisplayingHabitMonth.getSuccessPercentage(), 600)
+
         function animateTransition(obj, start, end, duration) {
             let startTimestamp = null;
             const step = (timestamp) => {
@@ -125,27 +140,27 @@ export function createHabitMonthView(){
             window.requestAnimationFrame(step);
         }
     }
-    
-    
-    function updateDayButtonsDisplay(){
+
+
+    function updateDayButtonsDisplay() {
         updateGridStart();
         resetDayBttnsToDefault();
         hideDaysNotInTheMonth();
         updateDayBttnsStyle();
-    
-    
-        function updateGridStart(){
-            dayButtons[0].style.gridColumnStart = displayHabitMonth.getFirstDayNumber() + 1; /* 1(Sunday), ... , 7(Saturday) */
+
+
+        function updateGridStart() {
+            dayButtons[0].style.gridColumnStart = currentDisplayingHabitMonth.getFirstDayNumber() + 1; /* 1(Sunday), ... , 7(Saturday) */
         }
         function resetDayBttnsToDefault() {
             dayButtons.forEach(button => {
-                button.className = "day-button"
+                button.className = DAY_BTTN_CLASSNAME;
                 button.disabled = false;
             });
         }
         function hideDaysNotInTheMonth() {
             // ex: february only has 28 days. So day 29, 30 and 31 should NOT display.
-            for (let i = dayButtons.length; i > displayHabitMonth.quantityOfDays; i--) {
+            for (let i = dayButtons.length; i > currentDisplayingHabitMonth.quantityOfDays; i--) {
                 const button = dayButtons[i - 1];
                 button.disabled = true;
             }
