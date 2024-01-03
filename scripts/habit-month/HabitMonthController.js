@@ -27,7 +27,7 @@ export function createHabitMonthController(){
     
     function changeDisplayingHabitMonth(habitMonthId){
         const existingHabitMonth = HabitMonth.get(habitMonthId)
-        if(existingHabitMonth != null){
+        if(existingHabitMonth){
             currentlyViewingHabitMonth = existingHabitMonth
         } 
         else {
@@ -65,7 +65,7 @@ export function createHabitMonthController(){
         changeToPrevious,
         changeToNext,
         clearAllDataFromViewingMonth,
-        switchDayStateAt: switchDayStateAt,
+        switchDayStateAt,
         subscribe,
         changeToDefault
     }
