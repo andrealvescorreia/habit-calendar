@@ -1,5 +1,5 @@
 # About
-Sometimes creating new habits can be hard, so it's important to record your progress.<br>
+Sometimes creating new habits it's hard, so it's important to record your progress.<br>
 In Habit Calendar you can mark a day as green, meaning that you have done a daily task that you want to turn it into a habit. <br>
 If you missed it on that day, mark it as red.<br>
 At the end of the month, you will have the success percentage of your habit. <br>
